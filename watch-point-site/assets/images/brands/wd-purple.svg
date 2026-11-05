@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <rect width="240" height="70" rx="10" fill="#ffffff"/>
+  <g transform="translate(25, 12)">
+    <rect x="5" y="8" width="30" height="30" rx="6" fill="#7e22ce"/>
+    <text x="20" y="29" font-family="'Segoe UI', Arial, sans-serif" font-weight="900" font-size="16" fill="#ffffff" text-anchor="middle">WD</text>
+    <text x="44" y="24" font-family="'Segoe UI', Arial, sans-serif" font-weight="900" font-size="18" fill="#1e1b4b">PURPLE</text>
+    <text x="44" y="36" font-family="'Segoe UI', Arial, sans-serif" font-weight="700" font-size="9" fill="#7e22ce" letter-spacing="1">SURVEILLANCE STORAGE</text>
+  </g>
+</svg>

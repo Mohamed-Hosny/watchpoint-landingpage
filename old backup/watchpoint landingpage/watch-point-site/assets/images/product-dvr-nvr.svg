@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-labelledby="title desc">
+<title id="title">جهاز DVR و NVR — رسم توضيحي</title>
+<desc id="desc">رسم توضيحي لجهاز تسجيل رقمي وشاشة مراقبة، بيانات تجريبية.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8FBFF"/>
+      <stop offset=".58" stop-color="#EAF2FF"/>
+      <stop offset="1" stop-color="#D7E6FD"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="44%" r="55%">
+      <stop offset="0" stop-color="#3B82F6" stop-opacity=".28"/>
+      <stop offset=".62" stop-color="#3B82F6" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#20334F"/>
+      <stop offset=".48" stop-color="#0B1B33"/>
+      <stop offset="1" stop-color="#071426"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset=".45" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#0B3FA8"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".55" stop-color="#E8EEF7"/>
+      <stop offset="1" stop-color="#B9C7D9"/>
+    </linearGradient>
+    <linearGradient id="steelDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#64748B"/>
+      <stop offset=".5" stop-color="#334155"/>
+      <stop offset="1" stop-color="#111E32"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A1B35"/>
+      <stop offset=".5" stop-color="#173A69"/>
+      <stop offset="1" stop-color="#06101F"/>
+    </linearGradient>
+    <radialGradient id="lens" cx="38%" cy="32%" r="70%">
+      <stop offset="0" stop-color="#DBEAFE"/>
+      <stop offset=".18" stop-color="#60A5FA"/>
+      <stop offset=".48" stop-color="#1D4ED8"/>
+      <stop offset=".8" stop-color="#0B1B33"/>
+      <stop offset="1" stop-color="#020617"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2563EB" stroke-opacity=".10" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#081A33" flood-opacity=".24"/>
+    </filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+<rect width="800" height="600" fill="url(#bg)"/>
+<rect width="800" height="600" fill="url(#grid)" opacity=".85"/>
+<circle cx="400" cy="290" r="285" fill="url(#glow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="96" y="172" width="356" height="216" rx="16" fill="url(#navy)"/>
+    <rect x="96" y="172" width="356" height="42" rx="16" fill="#162B49"/>
+    <rect x="96" y="198" width="356" height="16" fill="#162B49"/>
+    <circle cx="126" cy="193" r="5" fill="#22C55E"/>
+    <circle cx="146" cy="193" r="5" fill="#3B82F6"/>
+    <circle cx="166" cy="193" r="5" fill="#60A5FA" opacity=".4"/>
+    <rect x="118" y="238" width="142" height="86" rx="8" fill="#0A172B" stroke="#3B82F6" stroke-opacity=".3"/>
+    <rect x="134" y="256" width="110" height="8" rx="4" fill="#3B82F6" opacity=".6"/>
+    <rect x="134" y="276" width="76" height="7" rx="3.5" fill="#3B82F6" opacity=".32"/>
+    <rect x="134" y="294" width="92" height="7" rx="3.5" fill="#3B82F6" opacity=".22"/>
+    <g fill="#1E3A5F" stroke="#3B82F6" stroke-opacity=".25">
+      <rect x="280" y="238" width="150" height="40" rx="6"/>
+      <rect x="280" y="288" width="150" height="40" rx="6"/>
+      <rect x="280" y="338" width="150" height="40" rx="6"/>
+    </g>
+    <g fill="#3B82F6" opacity=".55">
+      <rect x="296" y="254" width="66" height="5" rx="2.5"/><rect x="296" y="304" width="86" height="5" rx="2.5"/><rect x="296" y="354" width="54" height="5" rx="2.5"/>
+    </g>
+    <g fill="#64748B">
+      <circle cx="412" cy="258" r="4"/><circle cx="412" cy="308" r="4"/><circle cx="412" cy="358" r="4"/>
+    </g>
+    <rect x="118" y="348" width="310" height="18" rx="9" fill="#081424"/>
+    <g fill="#60A5FA" opacity=".35"><rect x="132" y="354" width="60" height="6" rx="3"/><rect x="202" y="354" width="90" height="6" rx="3"/></g>
+  </g>
+  <g filter="url(#shadow)">
+    <rect x="486" y="132" width="242" height="172" rx="12" fill="#081426" stroke="#1D4ED8" stroke-opacity=".4" stroke-width="2"/>
+    <rect x="502" y="148" width="104" height="64" rx="4" fill="#0E2A4E"/>
+    <rect x="614" y="148" width="98" height="64" rx="4" fill="#0E2A4E"/>
+    <rect x="502" y="220" width="104" height="64" rx="4" fill="#0E2A4E"/>
+    <rect x="614" y="220" width="98" height="64" rx="4" fill="#0E2A4E"/>
+    <g fill="#60A5FA" opacity=".5">
+      <circle cx="520" cy="166" r="7"/><circle cx="632" cy="166" r="7"/><circle cx="520" cy="238" r="7"/><circle cx="632" cy="238" r="7"/>
+    </g>
+    <g fill="#3B82F6" opacity=".25">
+      <rect x="536" y="180" width="54" height="4" rx="2"/><rect x="648" y="180" width="48" height="4" rx="2"/>
+      <rect x="536" y="252" width="54" height="4" rx="2"/><rect x="648" y="252" width="48" height="4" rx="2"/>
+    </g>
+    <rect x="572" y="304" width="70" height="26" rx="4" fill="#0F172A"/>
+    <path d="M580 330l-28 32h146l-38-32" fill="#0F172A"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="13" fill="#2C4F7C">
+    <rect x="286" y="512" width="228" height="38" rx="19" fill="#FFFFFF" opacity=".85"/>
+    <circle cx="308" cy="531" r="5" fill="#22C55E"/>
+    <text x="322" y="536">Channels · Storage · Playback</text>
+  </g>
+  
+</svg>

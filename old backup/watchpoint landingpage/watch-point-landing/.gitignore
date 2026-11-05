@@ -1,0 +1,3 @@
+# Admin runtime data (password hash, store, backups) — never commit.
+admin/data/
+*.tmp-*

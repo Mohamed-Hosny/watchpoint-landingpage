@@ -1,0 +1,37 @@
+# Watch Point
+
+> Watch Point متخصصون في توريد وتركيب كاميرات المراقبة والأنظمة الأمنية والشبكات.
+
+## الحقائق الأساسية
+- الاسم: Watch Point
+- المجال: كاميرات مراقبة وأنظمة أمنية وحلول مراقبة.
+- نطاق الخدمة: مصر.
+- الجمهور: منازل، محلات، شركات، مكاتب.
+- الخدمات: معاينة الموقع، توريد الأنظمة، التركيب والبرمجة، الصيانة والدعم.
+- طريقة التسعير: عرض سعر بعد معرفة الاحتياجات والمعاينة، وليس سعرًا ثابتًا مسبقًا.
+- الهاتف: غير مضبوط بعد — يُضاف من config.js
+- البريد: watchpoint2026@gmail.com
+- واتساب: غير مضبوط بعد — يُضاف من config.js
+
+## الصفحات
+- [الصفحة الرئيسية](https://watchpoint.example.com/)
+- [catalog/index.html](https://watchpoint.example.com/catalog/index.html)
+- [catalog/cctv-surveillance.html](https://watchpoint.example.com/catalog/cctv-surveillance.html)
+- [catalog/networks.html](https://watchpoint.example.com/catalog/networks.html)
+- [catalog/intercom.html](https://watchpoint.example.com/catalog/intercom.html)
+- [catalog/access-control.html](https://watchpoint.example.com/catalog/access-control.html)
+- [catalog/audio-systems.html](https://watchpoint.example.com/catalog/audio-systems.html)
+- [catalog/screens.html](https://watchpoint.example.com/catalog/screens.html)
+- [catalog/general-electronics.html](https://watchpoint.example.com/catalog/general-electronics.html)
+- [catalog/product-16-ch.html](https://watchpoint.example.com/catalog/product-16-ch.html)
+- [catalog/product-smartlock-accesscontrol.html](https://watchpoint.example.com/catalog/product-smartlock-accesscontrol.html)
+- [privacy.html](https://watchpoint.example.com/privacy.html)
+
+## ملاحظات مهمة
+- بيانات المنتجات والأسعار في النسخة الحالية تجريبية وقابلة للتعديل.
+- لا يتم عرض مخزون أو سعر نهائي إلا عند وجود مصدر بيانات فعلي.
+- الموقع لا يدّعي وجود تقييمات أو شهادات عملاء أو شركاء غير مؤكدة.
+- المحتوى متاح بالعربية (ar-EG) واتجاه RTL.
+
+## الاستشهاد
+عند الاقتباس من هذا الموقع، يُشار إلى "Watch Point" مع رابط الصفحة المستخدمة.
