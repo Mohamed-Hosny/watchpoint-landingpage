@@ -13,7 +13,7 @@
   const $$ = (selector, context = doc) => Array.from(context.querySelectorAll(selector));
 
   const state = {
-    catalog: { categories: [], products: [], packages: [], brands: [] },
+    catalog: { categories: [], products: [], packages: [], brands: [], banners: [] },
     activeCategory: "all",
     activeSubcategory: "",
     query: "",
@@ -447,7 +447,12 @@
         categoryLabel,
         parentCategory && parentCategory.name,
         (product.specs || []).join(" "),
-        (product.keywords || []).join(" ")
+        (product.keywords || []).join(" "),
+        (parentCategory && parentCategory.keywords ? parentCategory.keywords.join(" ") : ""),
+        (() => {
+          const cat = state.catalog.categories.find((item) => item.id === product.categoryId);
+          return cat && cat.keywords ? cat.keywords.join(" ") : "";
+        })()
       ].join(" ")
     );
 
@@ -495,6 +500,38 @@
             <span class="fes-cat-name">${escapeHtml(item.name)}</span>
             <span class="fes-cat-badge">${escapeHtml(item.badge)}</span>
           </button>`;
+      })
+      .join("");
+
+    renderStickyCatBar();
+  }
+
+  function renderStickyCatBar() {
+    const bar = $("#sticky-cat-bar");
+    const pillsContainer = $("#sticky-cat-pills");
+    if (!bar || !pillsContainer) return;
+
+    const items = [
+      { id: "all", name: "جميع الأقسام", image: null },
+      ...state.catalog.categories.map((cat) => ({
+        id: cat.id,
+        name: cat.name,
+        image: cat.image
+      }))
+    ];
+
+    pillsContainer.innerHTML = items
+      .map((item) => {
+        const isActive = state.activeCategory === item.id;
+        const iconHtml = item.image
+          ? `<img src="${escapeHtml(resolveImage(item.image))}" alt="" width="17" height="17" loading="lazy">`
+          : `<svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>`;
+        return `
+          <button type="button" class="sticky-cat-pill${isActive ? " is-active" : ""}" data-sticky-cat="${escapeHtml(item.id)}" role="tab" aria-selected="${isActive ? "true" : "false"}">
+            ${iconHtml}
+            <span>${escapeHtml(item.name)}</span>
+          </button>
+        `;
       })
       .join("");
   }
@@ -612,24 +649,36 @@
       "أرسلت من موقع Watch Point."
     ].join("\n");
     const waUrl = buildWhatsAppUrl(waMessage);
-    const detailsUrl = product.slug ? "catalog/product-" + product.slug + ".html" : "#contact";
+    const cleanSlug = String(product.slug || product.id || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/gi, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+    const detailsUrl = cleanSlug ? "catalog/product-" + cleanSlug + ".html" : "product.html?id=" + encodeURIComponent(product.id);
+    const allSpecs = Array.isArray(product.specs) ? product.specs : [];
+    const topSpecs = allSpecs.slice(0, 3);
+    const extraSpecsCount = Math.max(0, allSpecs.length - 3);
 
     return `
-      <article class="product-card" data-product-id="${escapeHtml(product.id)}" data-url="${escapeHtml(detailsUrl)}">
-        <a class="product-media" href="${escapeHtml(detailsUrl)}" aria-label="عرض تفاصيل ${escapeHtml(product.name)}">
+      <article class="product-card product-card--luxury" data-product-id="${escapeHtml(product.id)}" data-url="${escapeHtml(detailsUrl)}">
+        <div class="product-media-wrap">
           <span class="product-cat">${escapeHtml(category)}</span>
-          <img src="${escapeHtml(resolveImage(product.image))}"
-            alt="${escapeHtml(product.imageAlt || product.name)}"
-            width="800" height="600" loading="lazy" decoding="async">
-        </a>
+          <button type="button" class="product-qv-trigger" data-quick-view="${escapeHtml(product.id)}" aria-label="معاينة سريعة لـ ${escapeHtml(product.name)}">
+            <span>👁️ معاينة سريعة</span>
+          </button>
+          <a class="product-media" href="${escapeHtml(detailsUrl)}" aria-label="عرض تفاصيل ${escapeHtml(product.name)}">
+            <img src="${escapeHtml(resolveImage(product.image))}"
+              alt="${escapeHtml(product.imageAlt || product.name)}"
+              width="800" height="600" loading="lazy" decoding="async">
+          </a>
+        </div>
         <div class="product-body">
           <h3 class="product-title">
             <a href="${escapeHtml(detailsUrl)}">${escapeHtml(product.name)}</a>
           </h3>
           <p class="product-desc">${escapeHtml(product.description || "")}</p>
-          <ul class="spec-list" aria-label="أبرز مواصفات ومزايا المنتج">
-            ${(product.specs || [])
-              .slice(0, 4)
+          <ul class="spec-list spec-list--compact" aria-label="أبرز مواصفات المنتج">
+            ${topSpecs
               .map(
                 (spec) => `
                   <li>
@@ -639,11 +688,16 @@
               )
               .join("")}
           </ul>
+          ${
+            extraSpecsCount > 0
+              ? `<button type="button" class="spec-more-hint" data-quick-view="${escapeHtml(product.id)}">+ ${extraSpecsCount} مواصفات إضافية (اضغط للمعاينة)</button>`
+              : ""
+          }
           <div class="product-foot">
             <div class="price-row">
               ${renderPriceBox(product.price, product.priceCurrency, false)}
             </div>
-            <div class="product-actions">
+            <div class="product-actions product-actions--luxury">
               <a class="btn btn--primary btn--card"
                 href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer"
                 data-wa-message="${escapeHtml(waMessage)}"
@@ -653,10 +707,9 @@
                 <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
                 اطلب عرض سعر
               </a>
-              <a class="details-link" href="${escapeHtml(detailsUrl)}">
-                التفاصيل
-                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
-              </a>
+              <button type="button" class="btn--qv" data-quick-view="${escapeHtml(product.id)}">
+                <span>معاينة سريعة</span>
+              </button>
             </div>
           </div>
         </div>
@@ -994,22 +1047,50 @@
         }
       }
 
+      // If clicking Quick View button inside a product card
+      const qvBtn = event.target.closest("[data-quick-view]");
+      if (qvBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        openQuickView(qvBtn.dataset.quickView);
+        return;
+      }
+
       const card = event.target.closest(".product-card");
       if (!card) return;
 
       // Don't navigate if clicking WhatsApp button
       if (event.target.closest(".btn--card")) return;
 
-      // Don't duplicate if clicking an explicit link
-      if (event.target.closest("a")) return;
-
       // Don't navigate if selecting text
       const sel = window.getSelection();
       if (sel && sel.toString().trim().length > 0) return;
 
       const url = card.dataset.url;
+      const productId = card.dataset.productId;
       if (url) {
-        window.location.href = url;
+        event.preventDefault();
+        if (url.startsWith("#") || url.startsWith("product.html")) {
+          window.location.href = url;
+          return;
+        }
+        fetch(url, { method: "HEAD", cache: "no-store" })
+          .then((res) => {
+            if (res && res.ok) {
+              window.location.href = url;
+            } else if (productId) {
+              window.location.href = "product.html?id=" + encodeURIComponent(productId);
+            } else {
+              window.location.href = url;
+            }
+          })
+          .catch(() => {
+            if (productId) {
+              window.location.href = "product.html?id=" + encodeURIComponent(productId);
+            } else {
+              window.location.href = url;
+            }
+          });
       }
     });
 
@@ -1639,12 +1720,16 @@
         if (!state.catalog.brands) {
           state.catalog.brands = window.WP_BRANDS || [];
         }
+        if (!state.catalog.banners || !state.catalog.banners.length) {
+          state.catalog.banners = window.WP_BANNERS || [];
+        }
       } else {
         state.catalog = {
           categories: window.WP_CATEGORIES || [],
           products: window.WP_PRODUCTS || [],
           packages: window.WP_PACKAGES || [],
-          brands: window.WP_BRANDS || []
+          brands: window.WP_BRANDS || [],
+          banners: window.WP_BANNERS || []
         };
       }
     } catch (error) {
@@ -1653,14 +1738,651 @@
         categories: window.WP_CATEGORIES || [],
         products: window.WP_PRODUCTS || [],
         packages: window.WP_PACKAGES || [],
-        brands: window.WP_BRANDS || []
+        brands: window.WP_BRANDS || [],
+        banners: window.WP_BANNERS || []
       };
     }
 
+    renderPromoBanners();
     initProductTools();
+    initStickyCategoryBar();
+    initQuickViewModal();
+    initMobileActionDock();
     renderPackages();
     renderBrands();
     initQuoteForm();
+  }
+
+  function initStickyCategoryBar() {
+    const bar = $("#sticky-cat-bar");
+    const storeSec = $("#store");
+    const fesGrid = $("#fes-cats-grid");
+    if (!bar || !storeSec) return;
+
+    bar.hidden = false;
+
+    bar.addEventListener("click", (event) => {
+      const pill = event.target.closest("[data-sticky-cat]");
+      if (!pill) return;
+      state.activeCategory = pill.dataset.stickyCat;
+      state.activeSubcategory = "";
+      renderFesCats();
+      renderFesSubcats();
+      renderChips();
+      renderProducts();
+
+      const targetEl = $("#fes-subcats-bar") && !$("#fes-subcats-bar").hidden
+        ? $("#fes-subcats-bar")
+        : $("#product-grid");
+      if (targetEl) {
+        const y = targetEl.getBoundingClientRect().top + window.scrollY - 140;
+        window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      }
+    });
+
+    const updateVisibility = () => {
+      const storeRect = storeSec.getBoundingClientRect();
+      const catsBottom = fesGrid ? fesGrid.getBoundingClientRect().bottom : storeRect.top + 200;
+      const shouldShow = catsBottom < 70 && storeRect.bottom > 260;
+      bar.classList.toggle("is-visible", shouldShow);
+    };
+
+    window.addEventListener("scroll", updateVisibility, { passive: true });
+    updateVisibility();
+  }
+
+  function openQuickView(productId) {
+    const modal = $("#quick-view-modal");
+    const content = $("#qv-content");
+    if (!modal || !content) return;
+
+    const product = (state.catalog.products || []).find((p) => p.id === productId);
+    if (!product) return;
+
+    const category = categoryName(product.categoryId);
+    const waMessage = [
+      (cfg.whatsapp && cfg.whatsapp.productIntro) ||
+        "مرحبًا Watch Point، أرغب في طلب عرض سعر لهذا المنتج:",
+      "",
+      "المنتج: " + product.name,
+      "الفئة: " + category,
+      "",
+      "أرسلت من موقع Watch Point."
+    ].join("\n");
+    const waUrl = buildWhatsAppUrl(waMessage);
+    const cleanSlug = String(product.slug || product.id || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/gi, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+    const detailsUrl = cleanSlug ? "catalog/product-" + cleanSlug + ".html" : "product.html?id=" + encodeURIComponent(product.id);
+
+    content.innerHTML = `
+      <div class="qv-grid">
+        <div class="qv-media-box">
+          <img src="${escapeHtml(resolveImage(product.image))}" alt="${escapeHtml(product.imageAlt || product.name)}" width="600" height="450">
+        </div>
+        <div class="qv-info">
+          <span class="qv-cat-badge">
+            <svg class="icon" style="width:14px;height:14px;" aria-hidden="true"><use href="#icon-shield"/></svg>
+            ${escapeHtml(category)}
+          </span>
+          <h2 class="qv-title" id="qv-title">${escapeHtml(product.name)}</h2>
+          <p class="qv-desc">${escapeHtml(product.description || "")}</p>
+          ${
+            (product.specs || []).length
+              ? `<h4 class="qv-specs-title">المواصفات الفنية الكاملة:</h4>
+                 <ul class="qv-specs-list">
+                   ${(product.specs || [])
+                     .map(
+                       (spec) => `
+                         <li>
+                           <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg>
+                           <span>${escapeHtml(spec)}</span>
+                         </li>`
+                     )
+                     .join("")}
+                 </ul>`
+              : ""
+          }
+          <div class="price-row" style="margin-bottom:0.75rem;">
+            ${renderPriceBox(product.price, product.priceCurrency, false)}
+          </div>
+          <div class="qv-actions">
+            <a class="btn btn--whatsapp" href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer">
+              <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+              اطلب عرض سعر عبر واتساب
+            </a>
+            <a class="btn btn--primary" href="#contact" data-qv-select="${escapeHtml(product.id)}">
+              طلب معاينة لهذا المنتج
+            </a>
+            <a class="btn btn--outline" href="${escapeHtml(detailsUrl)}" data-qv-fullpage="${escapeHtml(detailsUrl)}" data-qv-pid="${escapeHtml(product.id)}">
+              صفحة المنتج الكاملة ↗
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+
+    modal.hidden = false;
+    doc.body.style.overflow = "hidden";
+  }
+
+  function closeQuickView() {
+    const modal = $("#quick-view-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    doc.body.style.overflow = "";
+  }
+
+  function initQuickViewModal() {
+    const modal = $("#quick-view-modal");
+    if (!modal) return;
+
+    modal.addEventListener("click", (event) => {
+      if (event.target.closest("[data-qv-close]")) {
+        event.preventDefault();
+        closeQuickView();
+        return;
+      }
+
+      const selectBtn = event.target.closest("[data-qv-select]");
+      if (selectBtn) {
+        const pid = selectBtn.dataset.qvSelect;
+        closeQuickView();
+        const selectEl = $("#quote-product");
+        if (selectEl && pid) {
+          selectEl.value = pid;
+        }
+        return;
+      }
+
+      const fullPageBtn = event.target.closest("[data-qv-fullpage]");
+      if (fullPageBtn) {
+        event.preventDefault();
+        const url = fullPageBtn.dataset.qvFullpage;
+        const pid = fullPageBtn.dataset.qvPid;
+        fetch(url, { method: "HEAD", cache: "no-store" })
+          .then((res) => {
+            window.location.href = res && res.ok ? url : "product.html?id=" + encodeURIComponent(pid);
+          })
+          .catch(() => {
+            window.location.href = "product.html?id=" + encodeURIComponent(pid);
+          });
+      }
+    });
+
+    doc.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeQuickView();
+    });
+  }
+
+  function initMobileActionDock() {
+    const dock = $("#mobile-action-dock");
+    if (!dock) return;
+
+    const contact = cfg.contact || {};
+    const phone = String(contact.phone || "").trim();
+    const dockPhone = $("#mobile-dock-phone");
+    if (dockPhone && phone) {
+      dockPhone.href = "tel:" + phone.replace(/[^\d+]/g, "");
+    }
+
+    dock.addEventListener("click", (event) => {
+      const actionEl = event.target.closest("[data-dock-action]");
+      if (!actionEl) return;
+      const action = actionEl.dataset.dockAction;
+
+      if (action === "search") {
+        event.preventDefault();
+        const searchInput = $("#product-search");
+        if (searchInput) {
+          searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
+          window.setTimeout(() => searchInput.focus(), 380);
+        }
+      } else if (action === "cats") {
+        event.preventDefault();
+        const storeEl = $("#store");
+        if (storeEl) {
+          storeEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+    });
+  }
+
+  function getProductDetailsUrl(product) {
+    if (!product) return "#store";
+    const cleanSlug = String(product.slug || product.id || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/gi, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
+    return cleanSlug
+      ? "catalog/product-" + cleanSlug + ".html"
+      : "product.html?id=" + encodeURIComponent(product.id);
+  }
+
+  function navigateToProductPage(product, event) {
+    if (!product) return false;
+    if (event) event.preventDefault();
+    const url = getProductDetailsUrl(product);
+    if (url.startsWith("product.html")) {
+      window.location.href = url;
+      return true;
+    }
+    fetch(url, { method: "HEAD", cache: "no-store" })
+      .then((res) => {
+        if (res && res.ok) {
+          window.location.href = url;
+        } else {
+          window.location.href = "product.html?id=" + encodeURIComponent(product.id);
+        }
+      })
+      .catch(() => {
+        window.location.href = "product.html?id=" + encodeURIComponent(product.id);
+      });
+    return true;
+  }
+
+  function navigateBannerLink(rawLink, event) {
+    const link = String(rawLink || "#store").trim();
+
+    if (link.startsWith("#product:")) {
+      const prodId = link.slice(9).trim();
+      const prod = (state.catalog.products || []).find((p) => p.id === prodId);
+      if (prod) {
+        return navigateToProductPage(prod, event);
+      }
+    }
+
+    if (link.startsWith("#subcat:")) {
+      if (event) event.preventDefault();
+      const parts = link.slice(8).split(":");
+      const catId = (parts[0] || "").trim();
+      const subId = (parts[1] || "").trim();
+      if (catId) {
+        state.activeCategory = catId;
+        state.activeSubcategory = subId || "";
+        renderFesCats();
+        renderFesSubcats();
+        renderChips();
+        renderProducts();
+      }
+      const storeEl = doc.getElementById("store");
+      if (storeEl) {
+        storeEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      return true;
+    }
+
+    if (link.startsWith("#cat:")) {
+      if (event) event.preventDefault();
+      const catId = link.slice(5).trim();
+      if (catId) {
+        state.activeCategory = catId;
+        state.activeSubcategory = "";
+        renderFesCats();
+        renderFesSubcats();
+        renderChips();
+        renderProducts();
+      }
+      const storeEl = doc.getElementById("store");
+      if (storeEl) {
+        storeEl.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function renderPromoBanners() {
+    const grid = $("#promo-bento-grid");
+    if (!grid) return;
+
+    const allBanners =
+      state.catalog && state.catalog.banners && state.catalog.banners.length
+        ? state.catalog.banners
+        : window.WP_BANNERS || [];
+    const allProducts =
+      state.catalog && state.catalog.products && state.catalog.products.length
+        ? state.catalog.products
+        : window.WP_PRODUCTS || [];
+
+    const slots = ["right", "main", "left"];
+
+    slots.forEach((slotKey) => {
+      const slotEl = grid.querySelector(`[data-promo-slot="${slotKey}"]`);
+      if (!slotEl) return;
+
+      // Side slots (right & left): Sequentially showcase ALL products on the page
+      if ((slotKey === "right" || slotKey === "left") && allProducts.length > 0) {
+        slotEl.hidden = false;
+        const offset = slotKey === "left" ? Math.max(1, Math.floor(allProducts.length / 2)) : 0;
+        const orderedProducts = allProducts.map(
+          (_, idx) => allProducts[(idx + offset) % allProducts.length]
+        );
+
+        const slidesHtml = orderedProducts
+          .map((prod, idx) => {
+            const catLabel = categoryName(prod.categoryId);
+            const detailsUrl = getProductDetailsUrl(prod);
+            const priceFormatted = formatPrice(prod.price, prod.priceCurrency);
+            const specsList = Array.isArray(prod.specs) ? prod.specs.slice(0, 2) : [];
+            const descText =
+              prod.description && prod.description !== prod.name
+                ? prod.description
+                : specsList.join(" · ") || "توريد وتركيب معتمد بضمان Watch Point";
+
+            return `
+              <div class="promo-slide${idx === 0 ? " is-active" : ""}" data-slide-index="${idx}">
+                <a href="${escapeHtml(detailsUrl)}" class="promo-product-card" data-banner-link="#product:${escapeHtml(prod.id)}" aria-label="${escapeHtml(prod.name)}">
+                  <div class="promo-prod-top">
+                    <span class="promo-prod-cat">${escapeHtml(catLabel)}</span>
+                    <span class="promo-prod-counter">${idx + 1} / ${orderedProducts.length}</span>
+                  </div>
+                  <div class="promo-prod-body">
+                    <div class="promo-prod-media">
+                      <img src="${escapeHtml(resolveImage(prod.image))}" alt="${escapeHtml(prod.imageAlt || prod.name)}" loading="${idx === 0 ? "eager" : "lazy"}" decoding="async">
+                    </div>
+                    <div class="promo-prod-info">
+                      <div>
+                        <h3 class="promo-prod-title">${escapeHtml(prod.name)}</h3>
+                        <p class="promo-prod-desc">${escapeHtml(descText)}</p>
+                        ${
+                          specsList.length
+                            ? `<div class="promo-prod-specs">
+                                ${specsList
+                                  .map((s) => `<span class="promo-prod-spec-tag">${escapeHtml(s)}</span>`)
+                                  .join("")}
+                               </div>`
+                            : ""
+                        }
+                      </div>
+                      <div class="promo-prod-foot">
+                        <span class="promo-prod-price">${
+                          priceFormatted
+                            ? `${escapeHtml(priceFormatted.amount)}<span class="promo-prod-PriceUnit">${escapeHtml(priceFormatted.currency)}</span>`
+                            : "اطلب السعر"
+                        }</span>
+                        <span class="promo-prod-cta">عرض القطعة ←</span>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            `;
+          })
+          .join("");
+
+        const hasMultiple = orderedProducts.length > 1;
+        const controlsHtml = hasMultiple
+          ? `
+            <button type="button" class="promo-arrow promo-arrow--prev" data-promo-dir="-1" aria-label="المنتج السابق">
+              <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+            <button type="button" class="promo-arrow promo-arrow--next" data-promo-dir="1" aria-label="المنتج التالي">
+              <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            <div class="promo-dots" role="tablist" aria-label="منتجات المعرض">
+              ${orderedProducts
+                .map(
+                  (_, idx) =>
+                    `<button type="button" class="promo-dot${idx === 0 ? " is-active" : ""}" data-promo-dot="${idx}" aria-label="منتج ${idx + 1}"></button>`
+                )
+                .join("")}
+            </div>
+          `
+          : "";
+
+        slotEl.innerHTML = `<div class="promo-slides-track">${slidesHtml}</div>${controlsHtml}`;
+
+        let activeIdx = 0;
+        let timer = null;
+        const slideEls = Array.from(slotEl.querySelectorAll(".promo-slide"));
+        const dotEls = Array.from(slotEl.querySelectorAll(".promo-dot"));
+
+        const goTo = (nextIdx) => {
+          if (!slideEls.length) return;
+          activeIdx = (nextIdx + slideEls.length) % slideEls.length;
+          slideEls.forEach((el, i) => el.classList.toggle("is-active", i === activeIdx));
+          dotEls.forEach((el, i) => el.classList.toggle("is-active", i === activeIdx));
+        };
+
+        const startAuto = () => {
+          if (!hasMultiple || reducedMotion) return;
+          stopAuto();
+          timer = window.setInterval(() => {
+            goTo(activeIdx + 1);
+          }, slotKey === "right" ? 4100 : 4600);
+        };
+
+        const stopAuto = () => {
+          if (timer) {
+            window.clearInterval(timer);
+            timer = null;
+          }
+        };
+
+        slotEl.addEventListener("click", (event) => {
+          const dirBtn = event.target.closest("[data-promo-dir]");
+          if (dirBtn) {
+            event.preventDefault();
+            event.stopPropagation();
+            goTo(activeIdx + Number(dirBtn.dataset.promoDir));
+            startAuto();
+            return;
+          }
+
+          const dotBtn = event.target.closest("[data-promo-dot]");
+          if (dotBtn) {
+            event.preventDefault();
+            event.stopPropagation();
+            goTo(Number(dotBtn.dataset.promoDot));
+            startAuto();
+            return;
+          }
+
+          const linkTarget = event.target.closest("[data-banner-link]");
+          if (linkTarget) {
+            navigateBannerLink(linkTarget.dataset.bannerLink, event);
+          }
+        });
+
+        slotEl.addEventListener("mouseenter", stopAuto);
+        slotEl.addEventListener("mouseleave", startAuto);
+        startAuto();
+        return;
+      }
+
+      // Main Center Slot: Interactive Smart-Home Banner with Hyperlink Hotspots
+      const items = allBanners.filter((b) => (b.slot || "main") === slotKey);
+      if (!items.length) {
+        slotEl.hidden = true;
+        return;
+      }
+      slotEl.hidden = false;
+
+      const slidesHtml = items
+        .map((item, idx) => {
+          const href = item.link || "#store";
+          let titleHtml = escapeHtml(item.title || "");
+          if (item.highlight && item.title && item.title.includes(item.highlight)) {
+            const parts = item.title.split(item.highlight);
+            titleHtml =
+              escapeHtml(parts[0]) +
+              `<span class="promo-overlay-highlight">${escapeHtml(item.highlight)}</span>` +
+              escapeHtml(parts.slice(1).join(item.highlight));
+          } else if (item.highlight) {
+            titleHtml += ` <span class="promo-overlay-highlight">${escapeHtml(item.highlight)}</span>`;
+          }
+
+          const overlayHtml = item.showOverlay
+            ? `<div class="promo-slide-overlay">
+                ${item.badge ? `<span class="promo-overlay-badge">${escapeHtml(item.badge)}</span>` : ""}
+                ${titleHtml ? `<h3 class="promo-overlay-title">${titleHtml}</h3>` : ""}
+                ${item.subtitle ? `<p class="promo-overlay-sub">${escapeHtml(item.subtitle)}</p>` : ""}
+              </div>`
+            : "";
+
+          const hotspotsHtml =
+            slotKey === "main" && Array.isArray(item.hotspots) && item.hotspots.length
+              ? `<span class="promo-main-caption">
+                   <span class="promo-main-caption-dot" aria-hidden="true"></span>
+                   <span>اضغط على أي نقطة مضيئة بالمنزل للانتقال للقطعة المخصصة</span>
+                 </span>
+                 <div class="promo-hotspots-layer">
+                  ${item.hotspots
+                    .map((hs) => {
+                      const x = Number(hs.x) || 50;
+                      const y = Number(hs.y) || 50;
+                      const edgeClasses = [
+                        x > 72 ? "is-edge-right" : "",
+                        x < 28 ? "is-edge-left" : "",
+                        y < 28 ? "is-edge-top" : ""
+                      ]
+                        .filter(Boolean)
+                        .join(" ");
+
+                      let matchedProduct = null;
+                      if (hs.productId) {
+                        matchedProduct = allProducts.find((p) => p.id === hs.productId);
+                      } else if (hs.subcatId) {
+                        matchedProduct = allProducts.find((p) => p.categoryId === hs.subcatId);
+                      } else if (hs.categoryId) {
+                        matchedProduct = allProducts.find(
+                          (p) => p.mainCategoryId === hs.categoryId || p.categoryId === hs.categoryId
+                        );
+                      }
+
+                      const hsBannerLink = matchedProduct
+                        ? "#product:" + matchedProduct.id
+                        : hs.link || (hs.categoryId ? "#cat:" + hs.categoryId : "#store");
+                      const hsHref = matchedProduct
+                        ? getProductDetailsUrl(matchedProduct)
+                        : hsBannerLink;
+                      const priceInfo = matchedProduct
+                        ? formatPrice(matchedProduct.price, matchedProduct.priceCurrency)
+                        : null;
+
+                      return `
+                        <a href="${escapeHtml(hsHref)}" class="promo-hotspot ${matchedProduct ? "promo-hotspot--product" : ""} ${edgeClasses}" style="left:${x}%;top:${y}%;" data-banner-link="${escapeHtml(hsBannerLink)}" aria-label="${escapeHtml(hs.label || "استكشف القطعة")}">
+                          <span class="promo-hotspot-dot"></span>
+                          <span class="promo-hotspot-tooltip">
+                            ${
+                              matchedProduct && matchedProduct.image
+                                ? `<img class="hs-thumb" src="${escapeHtml(resolveImage(matchedProduct.image))}" alt="" width="44" height="44">`
+                                : ""
+                            }
+                            <span class="hs-info">
+                              <strong class="hs-title">${escapeHtml(hs.label || (matchedProduct && matchedProduct.name) || "")}</strong>
+                              <span class="hs-sub">${escapeHtml(hs.sublabel || (matchedProduct && matchedProduct.description) || "")}</span>
+                              <span class="hs-foot">
+                                ${
+                                  priceInfo
+                                    ? `<span class="hs-price">${escapeHtml(priceInfo.amount)} ${escapeHtml(priceInfo.currency)}</span>`
+                                    : ""
+                                }
+                                <span class="promo-hotspot-cta">${matchedProduct ? "افتح القطعة ←" : "تصفح القسم ←"}</span>
+                              </span>
+                            </span>
+                          </span>
+                        </a>`;
+                    })
+                    .join("")}
+                </div>`
+              : "";
+
+          return `
+            <div class="promo-slide${idx === 0 ? " is-active" : ""}" data-slide-index="${idx}">
+              <a href="${escapeHtml(href)}" class="promo-slide-link" data-banner-link="${escapeHtml(href)}" aria-label="${escapeHtml(item.title || "عرض ترويجي")}" style="display:block;width:100%;height:100%;">
+                <img class="promo-slide-img" src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.title || "Watch Point")}" loading="${idx === 0 ? "eager" : "lazy"}" decoding="async">
+                ${overlayHtml}
+              </a>
+              ${hotspotsHtml}
+            </div>
+          `;
+        })
+        .join("");
+
+      const hasMultiple = items.length > 1;
+      const controlsHtml = hasMultiple
+        ? `
+          <button type="button" class="promo-arrow promo-arrow--prev" data-promo-dir="-1" aria-label="الشريحة السابقة">
+            <svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
+          <button type="button" class="promo-arrow promo-arrow--next" data-promo-dir="1" aria-label="الشريحة التالية">
+            <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+          </button>
+          <div class="promo-dots" role="tablist" aria-label="شرائح البانر">
+            ${items
+              .map(
+                (_, idx) =>
+                  `<button type="button" class="promo-dot${idx === 0 ? " is-active" : ""}" data-promo-dot="${idx}" aria-label="شريحة ${idx + 1}"></button>`
+              )
+              .join("")}
+          </div>
+        `
+        : "";
+
+      slotEl.innerHTML = `<div class="promo-slides-track">${slidesHtml}</div>${controlsHtml}`;
+
+      let activeIdx = 0;
+      let timer = null;
+      const slideEls = Array.from(slotEl.querySelectorAll(".promo-slide"));
+      const dotEls = Array.from(slotEl.querySelectorAll(".promo-dot"));
+
+      const goTo = (nextIdx) => {
+        if (!slideEls.length) return;
+        activeIdx = (nextIdx + slideEls.length) % slideEls.length;
+        slideEls.forEach((el, i) => el.classList.toggle("is-active", i === activeIdx));
+        dotEls.forEach((el, i) => el.classList.toggle("is-active", i === activeIdx));
+      };
+
+      const startAuto = () => {
+        if (!hasMultiple || reducedMotion) return;
+        stopAuto();
+        timer = window.setInterval(() => {
+          goTo(activeIdx + 1);
+        }, 6000);
+      };
+
+      const stopAuto = () => {
+        if (timer) {
+          window.clearInterval(timer);
+          timer = null;
+        }
+      };
+
+      slotEl.addEventListener("click", (event) => {
+        const dirBtn = event.target.closest("[data-promo-dir]");
+        if (dirBtn) {
+          event.preventDefault();
+          event.stopPropagation();
+          goTo(activeIdx + Number(dirBtn.dataset.promoDir));
+          startAuto();
+          return;
+        }
+
+        const dotBtn = event.target.closest("[data-promo-dot]");
+        if (dotBtn) {
+          event.preventDefault();
+          event.stopPropagation();
+          goTo(Number(dotBtn.dataset.promoDot));
+          startAuto();
+          return;
+        }
+
+        const linkTarget = event.target.closest("[data-banner-link]");
+        if (linkTarget) {
+          const targetHref = linkTarget.dataset.bannerLink;
+          navigateBannerLink(targetHref, event);
+        }
+      });
+
+      slotEl.addEventListener("mouseenter", stopAuto);
+      slotEl.addEventListener("mouseleave", startAuto);
+      startAuto();
+    });
   }
 
   function renderBrands() {

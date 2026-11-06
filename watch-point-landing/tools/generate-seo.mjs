@@ -36,15 +36,15 @@ function loadData() {
   const products = context.window.WP_PRODUCTS || [];
   const packages = context.window.WP_PACKAGES || [];
   const brands = context.window.WP_BRANDS || [];
+  const banners = context.window.WP_BANNERS || [];
 
   if (!config) throw new Error("WP_CONFIG is missing.");
   if (!categories.length) throw new Error("No categories found in js/data.js.");
-  if (!products.length) throw new Error("No products found in js/data.js.");
 
-  return { config, categories, products, packages, brands };
+  return { config, categories, products, packages, brands, banners };
 }
 
-const { config, categories, products, packages, brands } = loadData();
+const { config, categories, products, packages, brands, banners } = loadData();
 
 const SITE = config.site || {};
 const COMPANY = config.company || {};
@@ -112,9 +112,54 @@ function parentCategoryForProduct(product) {
   const directCategory = categories.find((category) => category.id === product.categoryId);
   if (directCategory) return directCategory;
 
-  return categories.find((category) =>
-    (category.subcategories || []).some((subcategory) => subcategory.id === product.categoryId)
-  ) || null;
+  return (
+    categories.find((category) =>
+      (category.subcategories || []).some((subcategory) => subcategory.id === product.categoryId)
+    ) ||
+    categories[0] ||
+    null
+  );
+}
+
+function getCategorySeo(category) {
+  const raw = (category && category.seo) || {};
+  const name = (category && category.name) || "قسم المنتجات";
+  const desc =
+    (category && category.description) ||
+    `توريد وتركيب منتجات ${name} الأصلية من Watch Point في مصر مع الضمان المعتمد.`;
+  return {
+    title: raw.title || `${name} — توريد وتركيب معتمد`,
+    metaDescription: raw.metaDescription || desc,
+    h1: raw.h1 || name,
+    intro: raw.intro || desc,
+    guide:
+      Array.isArray(raw.guide) && raw.guide.length
+        ? raw.guide
+        : [
+            {
+              title: `كيف تختار ${name} المناسب لاحتياجك؟`,
+              body: `يعتمد اختيار ${name} على طبيعة الموقع والمساحة والمواصفات الفنية المطلوبة لضمان أفضل أداء واعتمادية.`,
+              bullets: [
+                "تحديد المواصفات الفنية المناسبة لطبيعة المكان.",
+                "التأكد من توافق الأجهزة والمكونات مع النظام بالكامل.",
+                "الاعتماد على منتجات أصلية بضمان معتمد وتركيب احترافي."
+              ]
+            }
+          ],
+    faq:
+      Array.isArray(raw.faq) && raw.faq.length
+        ? raw.faq
+        : [
+            {
+              q: `كيف أطلب عرض سعر لمنتجات ${name}؟`,
+              a: "يمكنك طلب عرض سعر مباشرة عبر واتساب أو نموذج التواصل في الموقع، وسيقوم فريقنا بمراجعة طلبك وتقديم السعر المناسب."
+            },
+            {
+              q: `هل تتوفر خدمة التركيب والضمان لقسم ${name}؟`,
+              a: "نعم، نوفر في Watch Point خدمات التوريد والتركيب والبرمجة مع ضمان فني معتمد ودعم فني متكامل."
+            }
+          ]
+  };
 }
 
 function productForCategory(category) {
@@ -153,7 +198,13 @@ function productsInCategory(category) {
 }
 
 function productPageFile(product) {
-  return "product-" + String(product.slug || product.id).replace(/[^a-z0-9-]/gi, "-") + ".html";
+  const cleanSlug =
+    String(product.slug || product.id || "product")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/gi, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || "product";
+  return "product-" + cleanSlug + ".html";
 }
 
 function productPriceLabel(product) {
@@ -393,6 +444,7 @@ function breadcrumbs(prefix, items) {
 }
 
 function categorySchema(category, product) {
+  const seo = getCategorySeo(category);
   const pagePath = "catalog/" + category.slug + ".html";
   const pageUrl = publicUrl(pagePath, "./" + category.slug + ".html");
   const homeUrl = SITE_URL ? SITE_URL + "/" : "../index.html";
@@ -427,8 +479,8 @@ function categorySchema(category, product) {
       },
       {
         "@type": "CollectionPage",
-        name: category.seo.title,
-        description: category.seo.metaDescription,
+        name: seo.title,
+        description: seo.metaDescription,
         url: pageUrl,
         inLanguage: "ar",
         about: { "@type": "Thing", name: category.name },
@@ -440,7 +492,7 @@ function categorySchema(category, product) {
       },
       {
         "@type": "FAQPage",
-        mainEntity: category.seo.faq.map((faq) => ({
+        mainEntity: seo.faq.map((faq) => ({
           "@type": "Question",
           name: faq.q,
           acceptedAnswer: { "@type": "Answer", text: faq.a }
@@ -451,7 +503,8 @@ function categorySchema(category, product) {
 }
 
 function guideHtml(category) {
-  return (category.seo.guide || [])
+  const seo = getCategorySeo(category);
+  return (seo.guide || [])
     .map(
       (section) => `
         <h2>${esc(section.title)}</h2>
@@ -466,8 +519,9 @@ function guideHtml(category) {
 }
 
 function faqHtml(category, openFirst = true) {
+  const seo = getCategorySeo(category);
   return `<div class="faq-list">
-    ${category.seo.faq
+    ${seo.faq
       .map(
         (faq, index) => `
           <details class="faq-item"${openFirst && index === 0 ? " open" : ""}>
@@ -482,13 +536,324 @@ function faqHtml(category, openFirst = true) {
   </div>`;
 }
 
+/* --------------------------- Category filters ------------------------------ */
+const PRICE_BUCKETS = [
+  { id: "lt-2000", label: "أقل من 2,000 ج.م", test: (value) => value !== null && value < 2000 },
+  { id: "2000-10000", label: "من 2,000 إلى 10,000 ج.م", test: (value) => value !== null && value >= 2000 && value <= 10000 },
+  { id: "gt-10000", label: "أكثر من 10,000 ج.م", test: (value) => value !== null && value > 10000 },
+  { id: "quote", label: "اطلب آخر سعر", test: (value) => value === null }
+];
+
+function numericPrice(product) {
+  const value = product ? product.price : null;
+  if (value === null || value === undefined || value === "") return null;
+  const numeric = Number(value);
+  return Number.isFinite(numeric) ? numeric : null;
+}
+
+function priceAttr(product) {
+  const numeric = numericPrice(product);
+  return numeric === null ? "" : String(numeric);
+}
+
+function countLabel(count) {
+  if (count === 1) return "منتج واحد معروض";
+  if (count === 2) return "منتجان معروضان";
+  return count + " منتج معروض";
+}
+
+function filterChip({ filter, value, label, count }) {
+  return `
+            <label class="cat-chip">
+              <input type="checkbox" data-filter="${esc(filter)}" value="${esc(value)}">
+              <span>${esc(label)}</span>
+              <em>${count}</em>
+            </label>`;
+}
+
+function filterProductCard(item, order) {
+  const priceLabel = productPriceLabel(item);
+  return `
+            <a class="fp-card" href="./${esc(productPageFile(item))}" data-filter-item data-order="${order}" data-subcategory="${esc(item.categoryId || "")}" data-price="${esc(priceAttr(item))}" data-brand="${esc(item.brandId || "")}" data-name="${esc(item.name)}">
+              <span class="fp-card-media">
+                <img src="${prefixImage("../", item.image)}" alt="${esc(item.imageAlt || item.name)}" width="600" height="450" loading="lazy" decoding="async">
+                ${item.demo ? '<span class="demo-pill">بيانات تجريبية</span>' : ""}
+              </span>
+              <span class="fp-card-body">
+                <span class="fp-card-title">${esc(item.name)}</span>
+                <span class="fp-card-price${priceLabel ? "" : " fp-card-price--quote"}">${esc(priceLabel || "اطلب آخر سعر")}</span>
+              </span>
+            </a>`;
+}
+
+function categoryFilterSection(category, gridItems, filterableItems, subcategories) {
+  const anchors = subcategories
+    .map((subcategory) => `<span class="scroll-target" id="subcategory-${esc(subcategory.id)}" aria-hidden="true"></span>`)
+    .join("\n      ");
+
+  if (!filterableItems.length) {
+    return `
+    <section class="cat-filter" id="category-products">
+      ${anchors}
+      <h2>منتجات ${esc(category.name)}</h2>
+      <p class="cat-empty">ستُضاف المنتجات المتاحة في ${esc(category.name)} قريبًا. تقدر تطلب عرض سعر الآن وسنبلغك عند توفرها.</p>
+    </section>`;
+  }
+
+  /* الفئات الفرعية التي تحتوي على منتجات فعليًا */
+  const subOptions = subcategories
+    .map((subcategory) => ({
+      id: subcategory.id,
+      name: subcategory.name,
+      count: filterableItems.filter((item) => item.categoryId === subcategory.id).length
+    }))
+    .filter((option) => option.count > 0);
+  const directCount = filterableItems.filter((item) => item.categoryId === category.id).length;
+  if (directCount > 0 && subcategories.length) {
+    subOptions.unshift({ id: category.id, name: category.name + " (منتجات مباشرة)", count: directCount });
+  }
+
+  /* نطاقات السعر التي يوجد بها منتجات فعلًا */
+  const priceBuckets = PRICE_BUCKETS.map((bucket) => ({
+    ...bucket,
+    count: filterableItems.filter((item) => bucket.test(numericPrice(item))).length
+  })).filter((bucket) => bucket.count > 0);
+
+  /* العلامات التجارية الموجودة على منتجات هذا القسم */
+  const brandNameById = new Map(brands.map((brand) => [brand.id, brand.name]));
+  const brandSeen = new Set();
+  const brandList = [];
+  filterableItems.forEach((item) => {
+    const id = item.brandId || "";
+    if (!id || brandSeen.has(id)) return;
+    brandSeen.add(id);
+    brandList.push({
+      id,
+      name: brandNameById.get(id) || id,
+      count: filterableItems.filter((entry) => (entry.brandId || "") === id).length
+    });
+  });
+
+  const groups = [];
+  if (subOptions.length) {
+    groups.push(`
+        <fieldset class="cat-filter-group">
+          <legend>الفئة / النوعية</legend>
+          <div class="cat-chips">
+            ${subOptions.map((option) => filterChip({ filter: "subcategory", value: option.id, label: option.name, count: option.count })).join("")}
+          </div>
+        </fieldset>`);
+  }
+  if (priceBuckets.length > 1) {
+    groups.push(`
+        <fieldset class="cat-filter-group">
+          <legend>نطاق السعر</legend>
+          <div class="cat-chips">
+            ${priceBuckets.map((bucket) => filterChip({ filter: "price", value: bucket.id, label: bucket.label, count: bucket.count })).join("")}
+          </div>
+        </fieldset>`);
+  }
+  if (brandList.length) {
+    groups.push(`
+        <fieldset class="cat-filter-group">
+          <legend>العلامة التجارية</legend>
+          <div class="cat-chips">
+            ${brandList.map((brand) => filterChip({ filter: "brand", value: brand.id, label: brand.name, count: brand.count })).join("")}
+          </div>
+        </fieldset>`);
+  }
+
+  const hasControls = groups.length > 0;
+
+  return `
+    <section class="cat-filter" id="category-products" aria-labelledby="cat-filter-title">
+      ${anchors}
+      <div class="cat-filter-head">
+        <h2 id="cat-filter-title">منتجات ${esc(category.name)}</h2>
+        <p class="cat-filter-count" id="cat-filter-count" role="status" aria-live="polite">${countLabel(filterableItems.length)}</p>
+      </div>
+      ${
+        hasControls
+          ? `<div class="cat-filter-panel">
+            ${groups.join("")}
+        <div class="cat-filter-group cat-filter-sort">
+          <label for="cat-sort">ترتيب النتائج</label>
+          <div class="cat-filter-sort-row">
+            <select id="cat-sort">
+              <option value="default">الترتيب الافتراضي</option>
+              <option value="price-asc">السعر: من الأقل إلى الأعلى</option>
+              <option value="price-desc">السعر: من الأعلى إلى الأقل</option>
+              <option value="name-asc">الاسم (أبجدي)</option>
+            </select>
+            <button type="button" class="cat-filter-reset" id="cat-filter-reset">مسح الفلاتر</button>
+          </div>
+        </div>
+      </div>
+      <div class="cat-products-grid" id="cat-products-grid">
+        ${gridItems.map((item, index) => filterProductCard(item, index)).join("\n")}
+      </div>
+      <p class="cat-no-results" id="cat-no-results" hidden>لا توجد منتجات مطابقة لهذه الفلاتر. جرّب إزالة بعض الاختيارات.</p>`
+          : gridItems.length
+            ? `<div class="cat-products-grid" id="cat-products-grid">
+        ${gridItems.map((item, index) => filterProductCard(item, index)).join("\n")}
+      </div>`
+            : ""
+      }
+    </section>`;
+}
+
+function categoryFilterScript() {
+  return `
+<script>
+(function () {
+  var section = document.getElementById("category-products");
+  if (!section) return;
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-filter-item]"));
+  var grid = document.getElementById("cat-products-grid");
+  var countEl = document.getElementById("cat-filter-count");
+  var noResults = document.getElementById("cat-no-results");
+  var sortEl = document.getElementById("cat-sort");
+  var resetBtn = document.getElementById("cat-filter-reset");
+
+  function bucketOf(raw) {
+    var price = parseFloat(raw);
+    if (!isFinite(price)) return "quote";
+    if (price < 2000) return "lt-2000";
+    if (price <= 10000) return "2000-10000";
+    return "gt-10000";
+  }
+
+  function inputs(name) {
+    return Array.prototype.slice.call(section.querySelectorAll('input[data-filter="' + name + '"]'));
+  }
+
+  function checkedValues(name) {
+    return inputs(name)
+      .filter(function (input) { return input.checked; })
+      .map(function (input) { return input.value; });
+  }
+
+  function chipFor(id) {
+    return inputs("subcategory").filter(function (input) { return input.value === id; })[0] || null;
+  }
+
+  function syncChip(input) {
+    var chip = input.closest ? input.closest(".cat-chip") : null;
+    if (chip) chip.classList.toggle("is-on", input.checked);
+  }
+
+  function apply() {
+    var subs = checkedValues("subcategory");
+    var prices = checkedValues("price");
+    var brandList = checkedValues("brand");
+    var visible = 0;
+    items.forEach(function (item) {
+      var ok = true;
+      if (subs.length && subs.indexOf(item.getAttribute("data-subcategory")) === -1) ok = false;
+      if (ok && prices.length && prices.indexOf(bucketOf(item.getAttribute("data-price"))) === -1) ok = false;
+      if (ok && brandList.length && brandList.indexOf(item.getAttribute("data-brand")) === -1) ok = false;
+      item.hidden = !ok;
+      if (ok) visible += 1;
+    });
+    if (countEl) {
+      countEl.textContent =
+        visible === 1 ? "منتج واحد معروض" :
+        visible === 2 ? "منتجان معروضان" :
+        visible + " منتج معروض";
+    }
+    if (noResults) noResults.hidden = visible !== 0;
+  }
+
+  function sortGrid() {
+    if (!grid || !sortEl) return;
+    var mode = sortEl.value;
+    var cards = Array.prototype.slice.call(grid.children);
+    cards.sort(function (a, b) {
+      if (mode === "price-asc" || mode === "price-desc") {
+        var pa = parseFloat(a.getAttribute("data-price"));
+        var pb = parseFloat(b.getAttribute("data-price"));
+        var na = isFinite(pa);
+        var nb = isFinite(pb);
+        if (!na && !nb) return 0;
+        if (!na) return 1;
+        if (!nb) return -1;
+        return mode === "price-asc" ? pa - pb : pb - pa;
+      }
+      if (mode === "name-asc") {
+        return String(a.getAttribute("data-name") || "").localeCompare(String(b.getAttribute("data-name") || ""), "ar");
+      }
+      return (
+        parseInt(a.getAttribute("data-order") || "0", 10) -
+        parseInt(b.getAttribute("data-order") || "0", 10)
+      );
+    });
+    cards.forEach(function (card) { grid.appendChild(card); });
+  }
+
+  function selectSubcategory(id) {
+    inputs("subcategory").forEach(function (input) {
+      input.checked = input.value === id;
+      syncChip(input);
+    });
+  }
+
+  section.addEventListener("change", function (event) {
+    var input = event.target;
+    if (input && input.hasAttribute && input.hasAttribute("data-filter")) {
+      syncChip(input);
+      apply();
+    }
+  });
+
+  if (sortEl) sortEl.addEventListener("change", sortGrid);
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      inputs("subcategory").concat(inputs("price"), inputs("brand")).forEach(function (input) {
+        input.checked = false;
+        syncChip(input);
+      });
+      if (sortEl) sortEl.value = "default";
+      sortGrid();
+      apply();
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("a[data-sub-filter]"), function (link) {
+    link.addEventListener("click", function (event) {
+      var id = link.getAttribute("data-sub-filter");
+      if (!chipFor(id)) return;
+      event.preventDefault();
+      selectSubcategory(id);
+      apply();
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  function applyHash() {
+    var hash = window.location.hash || "";
+    if (hash.indexOf("#subcategory-") !== 0) return;
+    var id = hash.slice("#subcategory-".length);
+    if (chipFor(id)) {
+      selectSubcategory(id);
+      apply();
+    }
+  }
+
+  applyHash();
+  window.addEventListener("hashchange", applyHash);
+  apply();
+})();
+</script>`;
+}
+
 function categoryPage(category) {
+  const seo = getCategorySeo(category);
   const directCategoryItems = products.filter(
     (item) => item.categoryId === category.id
   );
   const product = directCategoryItems[0] || null;
   const categoryItems = productsInCategory(category);
-  const otherProducts = product ? directCategoryItems.filter((item) => item.id !== product.id) : [];
   const related = relatedCategories(category);
   const quoteUrl = `../index.html?product=${encodeURIComponent(product ? product.id : category.id)}#contact`;
   const waMessage =
@@ -496,7 +861,7 @@ function categoryPage(category) {
   const priceLabel = product ? productPriceLabel(product) : null;
 
   const productBlock = product
-    ? `<article class="category-product" id="product">
+    ? `<article class="category-product" id="product" data-filter-item data-subcategory="${esc(product.categoryId || "")}" data-price="${esc(priceAttr(product))}" data-brand="${esc(product.brandId || "")}" data-name="${esc(product.name)}">
         <div class="category-product-media">
           <img src="${prefixImage("../", product.image)}" alt="${esc(product.imageAlt || product.name)}" width="800" height="600" loading="eager" decoding="async">
         </div>
@@ -522,23 +887,6 @@ function categoryPage(category) {
       </article>`
     : "";
 
-  const otherProductsBlock = otherProducts.length
-    ? `<section class="related-categories">
-        <h2>منتجات أخرى في ${esc(category.name)}</h2>
-        <div class="related-grid">
-          ${otherProducts
-            .map(
-              (item) => `
-                <a class="related-card" href="./${esc(productPageFile(item))}">
-                  <strong>${esc(item.name)}</strong>
-                  <span>${esc(productPriceLabel(item) || "اطلب آخر سعر")}</span>
-                </a>`
-            )
-            .join("")}
-        </div>
-      </section>`
-    : "";
-
   const subcategories = category.subcategories || [];
   const subcategoryNavigation = subcategories.length
     ? `<section class="related-categories">
@@ -547,7 +895,7 @@ function categoryPage(category) {
           ${subcategories
             .map(
               (subcategory) => `
-                <a class="related-card" href="#subcategory-${esc(subcategory.id)}">
+                <a class="related-card" href="#subcategory-${esc(subcategory.id)}" data-sub-filter="${esc(subcategory.id)}">
                   <strong>${esc(subcategory.name)}</strong>
                   <span>${products.filter((item) => item.categoryId === subcategory.id).length} منتج</span>
                 </a>`
@@ -556,32 +904,12 @@ function categoryPage(category) {
         </div>
       </section>`
     : "";
-  const subcategorySections = subcategories
-    .map((subcategory) => {
-      const items = products.filter((item) => item.categoryId === subcategory.id);
-      return `<section class="related-categories" id="subcategory-${esc(subcategory.id)}">
-        <h2>${esc(subcategory.name)}</h2>
-        ${
-          items.length
-            ? `<div class="related-grid">
-                ${items
-                  .map(
-                  (item) => {
-                    const content = `
-                        <strong>${esc(item.name)}</strong>
-                      <span>${esc(productPriceLabel(item) || "اطلب آخر سعر")}</span>`;
-                    return item.slug
-                      ? `<a class="related-card" href="./${esc(productPageFile(item))}">${content}</a>`
-                      : `<div class="related-card">${content}</div>`;
-                  }
-                )
-                .join("")}
-            </div>`
-            : '<p class="muted">ستُضاف المنتجات المتاحة في هذه الفئة قريبًا.</p>'
-        }
-      </section>`;
-    })
-    .join("");
+
+  /* شبكة المنتجات القابلة للفلترة (المنتج المميز يظهر فوقها ويتفلتر معها). */
+  const gridItems = product
+    ? categoryItems.filter((item) => item.id !== product.id)
+    : categoryItems;
+  const filterSection = categoryFilterSection(category, gridItems, categoryItems, subcategories);
 
   return `<!DOCTYPE html>
 <html lang="ar" dir="rtl" class="no-js">
@@ -589,9 +917,9 @@ function categoryPage(category) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script>document.documentElement.className = "js";</script>
-  <title>${esc(pageTitle(category.seo.title))}</title>
-  <meta name="description" content="${esc(category.seo.metaDescription)}">
-  <meta name="keywords" content="${esc([...(category.keywords || []), ...(config.seo.keywords || [])].join(", "))}">
+  <title>${esc(pageTitle(seo.title))}</title>
+  <meta name="description" content="${esc(seo.metaDescription)}">
+  <meta name="keywords" content="${esc([...(category.keywords || []), ...((config.seo && config.seo.keywords) || [])].join(", "))}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <meta name="theme-color" content="${esc(SITE.themeColor || "#0B1B33")}">
   <meta name="geo.region" content="EG">
@@ -601,13 +929,13 @@ function categoryPage(category) {
   <meta property="og:type" content="article">
   <meta property="og:site_name" content="${esc(BRAND)}">
   <meta property="og:locale" content="ar_EG">
-  <meta property="og:title" content="${esc(category.seo.title)}">
-  <meta property="og:description" content="${esc(category.seo.metaDescription)}">
+  <meta property="og:title" content="${esc(seo.title)}">
+  <meta property="og:description" content="${esc(seo.metaDescription)}">
   <meta property="og:image" content="${esc(publicImage("../", image(SITE.ogImage || "assets/images/og-cover.jpg")))}">
   <meta property="og:url" content="${esc(publicUrl("catalog/" + category.slug + ".html", "./" + category.slug + ".html"))}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="${esc(category.seo.title)}">
-  <meta name="twitter:description" content="${esc(category.seo.metaDescription)}">
+  <meta name="twitter:title" content="${esc(seo.title)}">
+  <meta name="twitter:description" content="${esc(seo.metaDescription)}">
   <meta name="twitter:image" content="${esc(publicImage("../", image(SITE.ogImage || "assets/images/og-cover.jpg")))}">
   <link rel="icon" type="image/x-icon" href="../favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="../assets/images/brand-mark-64.png">
@@ -630,8 +958,8 @@ function categoryPage(category) {
       <div class="container">
         <div class="page-hero-copy">
           <p class="eyebrow eyebrow--light">فئة منتجات</p>
-          <h1>${esc(category.seo.h1)}</h1>
-          <p>${esc(category.seo.intro)}</p>
+          <h1>${esc(seo.h1)}</h1>
+          <p>${esc(seo.intro)}</p>
           <div class="page-hero-actions">
             <a class="btn btn--primary btn--lg" href="${quoteUrl}">
               اطلب عرض سعر لهذه الفئة
@@ -667,9 +995,7 @@ function categoryPage(category) {
 
           ${productBlock}
 
-          ${otherProductsBlock}
-
-          ${subcategorySections}
+          ${filterSection}
 
           <h2>دليل اختيار ${esc(category.name)}</h2>
           ${guideHtml(category)}
@@ -730,6 +1056,7 @@ function categoryPage(category) {
   </main>
   ${siteFooter("../")}
   ${tail("../")}
+  ${categoryFilterScript()}
 </body>
 </html>`;
 }
@@ -814,7 +1141,7 @@ function productPage(product, category) {
   <script>document.documentElement.className = "js";</script>
   <title>${esc(pageTitle(product.name))}</title>
   <meta name="description" content="${esc(description)}">
-  <meta name="keywords" content="${esc([...(product.keywords || []), category.name, ...(config.seo.keywords || [])].join(", "))}">
+  <meta name="keywords" content="${esc([...(category.keywords || []), ...(product.keywords || []), category.name, ...(config.seo.keywords || [])].join(", "))}">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <meta name="theme-color" content="${esc(SITE.themeColor || "#0B1B33")}">
   <meta name="geo.region" content="EG">
@@ -1165,6 +1492,122 @@ function privacyPage() {
 </html>`;
 }
 
+function dynamicProductPage() {
+  return `<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script>document.documentElement.className = "js";</script>
+  <title>${esc(pageTitle("تفاصيل المنتج"))}</title>
+  <meta name="description" content="تفاصيل ومواصفات منتجات وأنظمة المراقبة من Watch Point.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="${esc(SITE.themeColor || "#0B1B33")}">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/images/brand-mark-64.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+  <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+  <link rel="preload" href="assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css?v=${ASSET_VERSION}">
+</head>
+<body class="subpage">
+  ${siteHeader("")}
+  <main id="main-content">
+    <div id="dynamic-product-root"></div>
+  </main>
+  ${siteFooter("")}
+  <script src="js/config.js?v=${ASSET_VERSION}"></script>
+  <script src="js/data.js?v=${ASSET_VERSION}"></script>
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var idParam = params.get("id") || "";
+      var slugParam = params.get("slug") || "";
+      var allProducts = window.WP_PRODUCTS || [];
+      var allCategories = window.WP_CATEGORIES || [];
+
+      function cleanSlug(val) {
+        return String(val || "").toLowerCase().replace(/[^a-z0-9-]/gi, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
+      }
+
+      var product = allProducts.find(function(p) {
+        return (idParam && p.id === idParam) ||
+               (slugParam && (p.slug === slugParam || cleanSlug(p.slug || p.id) === cleanSlug(slugParam)));
+      }) || allProducts[0];
+
+      var root = document.getElementById("dynamic-product-root");
+      if (!product || !root) {
+        if (root) {
+          root.innerHTML = '<div class="container" style="padding:4rem 1rem;text-align:center;"><h2>المنتج غير متوفر حاليًا</h2><p><a class="btn btn--primary" href="index.html#products">العودة إلى المتجر</a></p></div>';
+        }
+        return;
+      }
+
+      var category = allCategories.find(function(c) { return c.id === product.mainCategoryId || c.id === product.categoryId; }) ||
+                     allCategories.find(function(c) { return (c.subcategories || []).some(function(s) { return s.id === product.categoryId; }); }) ||
+                     allCategories[0] || { name: "المنتجات", slug: "index" };
+
+      document.title = product.name + " | Watch Point";
+
+      function escHtml(v) {
+        return String(v == null ? "" : v).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      }
+
+      var priceBoxHtml = "";
+      if (product.price !== null && product.price !== undefined && product.price !== "" && Number.isFinite(Number(product.price))) {
+        var amount = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 }).format(Number(product.price));
+        var curr = product.priceCurrency === "USD" ? "$" : "ج.م";
+        priceBoxHtml = '<div class="price-box price-box--numeric"><div class="price-top"><span class="price-label">السعر:</span><span class="price-badge-stock">متاح للتوريد والتركيب</span></div><div class="price-main"><span class="price-amount">' + escHtml(amount) + '</span><span class="price-unit">' + escHtml(curr) + '</span></div><span class="price-subtext">شامل التوريد والضمان الفني المعتمد</span></div>';
+      } else {
+        priceBoxHtml = '<div class="price-box price-box--quote"><div class="price-top"><span class="price-label">عرض السعر:</span><span class="price-badge-quote">أفضل سعر جملة</span></div><div class="price-main"><span class="price-quote-text">اطلب آخر سعر</span></div><span class="price-subtext">السعر يُحدد بدقة بعد المعاينة الفنية مجانًا</span></div>';
+      }
+
+      var specs = Array.isArray(product.specs) ? product.specs : [];
+      var specsHtml = specs.length
+        ? '<ul class="spec-list">' + specs.map(function(s) { return '<li><svg class="icon spec-icon" aria-hidden="true"><use href="#icon-check-circle"/></svg><span>' + escHtml(s) + '</span></li>'; }).join("") + '</ul>'
+        : '<p>تُؤكد المواصفات التفصيلية للموديل المتاح في عرض السعر بعد مراجعة الاحتياج.</p>';
+
+      var quoteUrl = "index.html?product=" + encodeURIComponent(product.id) + "#contact";
+      var categoryUrl = category.slug ? "catalog/" + category.slug + ".html" : "catalog/index.html";
+      var imgPath = String(product.image || "assets/images/brand-mark.webp").replace(/^\\.?\\//, "");
+
+      root.innerHTML =
+        '<div class="breadcrumbs"><div class="container"><nav aria-label="مسار التصفح"><ol>' +
+          '<li><a href="index.html">الرئيسية</a></li>' +
+          '<li><a href="catalog/index.html">دليل الفئات</a></li>' +
+          '<li><a href="' + escHtml(categoryUrl) + '">' + escHtml(category.name) + '</a></li>' +
+          '<li aria-current="page">' + escHtml(product.name) + '</li>' +
+        '</ol></nav></div></div>' +
+        '<section class="page-hero"><div class="container">' +
+          '<p class="eyebrow eyebrow--light"><a href="' + escHtml(categoryUrl) + '">' + escHtml(category.name) + '</a></p>' +
+          '<h1>' + escHtml(product.name) + '</h1>' +
+          '<p>' + escHtml(product.description || product.shortName || "") + '</p>' +
+          '<div class="page-hero-actions">' +
+            '<a class="btn btn--primary btn--lg" href="' + escHtml(quoteUrl) + '">اطلب عرض سعر لهذا المنتج <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>' +
+            '<a class="btn btn--ghost btn--lg" href="index.html#products">العودة للمتجر</a>' +
+          '</div>' +
+        '</div></section>' +
+        '<section class="page-body"><div class="container page-layout"><article class="prose">' +
+          '<div class="category-product">' +
+            '<div class="category-product-media"><img src="' + escHtml(imgPath) + '" alt="' + escHtml(product.imageAlt || product.name) + '" width="800" height="600" loading="eager"></div>' +
+            '<div class="category-product-body">' +
+              '<h3>' + escHtml(product.name) + '</h3>' +
+              '<p>' + escHtml(product.description || "") + '</p>' +
+              specsHtml +
+              '<div class="price-row">' + priceBoxHtml + '</div>' +
+              '<a class="btn btn--primary btn--block" href="' + escHtml(quoteUrl) + '">اطلب عرض سعر <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>' +
+            '</div>' +
+          '</div>' +
+          '<h2>أبرز المواصفات والمميزات</h2>' +
+          specsHtml +
+        '</article></div></section>';
+    })();
+  </script>
+  ${tail("")}
+</body>
+</html>`;
+}
+
 /* ----------------------------- Files output ------------------------------ */
 
 const catalogDir = path.join(ROOT, "catalog");
@@ -1172,20 +1615,27 @@ fs.mkdirSync(catalogDir, { recursive: true });
 
 let count = 0;
 for (const category of categories) {
-  if (!category.slug) throw new Error("Category slug missing: " + category.id);
-  fs.writeFileSync(path.join(catalogDir, category.slug + ".html"), categoryPage(category), "utf8");
+  const slug =
+    String(category.slug || category.id || "category")
+      .toLowerCase()
+      .replace(/[^a-z0-9-]/gi, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "") || "category";
+  category.slug = slug;
+  fs.writeFileSync(path.join(catalogDir, slug + ".html"), categoryPage(category), "utf8");
   count += 1;
 }
 
 let productCount = 0;
 for (const product of products) {
   const category = parentCategoryForProduct(product);
-  if (!category || !product.slug) continue;
+  if (!category) continue;
   fs.writeFileSync(path.join(catalogDir, productPageFile(product)), productPage(product, category), "utf8");
   productCount += 1;
 }
 
 fs.writeFileSync(path.join(catalogDir, "index.html"), catalogIndexPage(), "utf8");
+fs.writeFileSync(path.join(ROOT, "product.html"), dynamicProductPage(), "utf8");
 fs.writeFileSync(path.join(ROOT, "privacy.html"), privacyPage(), "utf8");
 
 const catalogSnapshot = {
@@ -1195,7 +1645,8 @@ const catalogSnapshot = {
   categories,
   products,
   packages,
-  brands
+  brands,
+  banners
 };
 fs.writeFileSync(path.join(catalogDir, "catalog.json"), JSON.stringify(catalogSnapshot, null, 2), "utf8");
 
@@ -1208,7 +1659,7 @@ const pages = [
     changefreq: "monthly"
   })),
   ...products
-    .filter((product) => product.slug && categoryById(product.categoryId))
+    .filter((product) => parentCategoryForProduct(product))
     .map((product) => ({
       path: "catalog/" + productPageFile(product),
       priority: "0.7",
@@ -1309,8 +1760,33 @@ try {
   console.warn("[generator] index.html asset version patch skipped:", error.message);
 }
 
+// Mirror generated files to watch-point-site if present.
+try {
+  const siteRoot = path.resolve(ROOT, "..", "watch-point-site");
+  if (fs.existsSync(siteRoot)) {
+    const copyRecursive = (src, dest) => {
+      if (!fs.existsSync(src)) return;
+      const stat = fs.statSync(src);
+      if (stat.isDirectory()) {
+        fs.mkdirSync(dest, { recursive: true });
+        for (const child of fs.readdirSync(src)) {
+          copyRecursive(path.join(src, child), path.join(dest, child));
+        }
+      } else {
+        fs.mkdirSync(path.dirname(dest), { recursive: true });
+        fs.copyFileSync(src, dest);
+      }
+    };
+    for (const item of ["index.html", "product.html", "privacy.html", "sitemap.xml", "robots.txt", "llms.txt", "js", "css", "catalog", "assets"]) {
+      copyRecursive(path.join(ROOT, item), path.join(siteRoot, item));
+    }
+  }
+} catch (error) {
+  console.warn("[generator] watch-point-site sync skipped:", error.message);
+}
+
 console.log(`Generated: catalog/index.html + ${count} category pages + ${productCount} product pages`);
-console.log("Generated: privacy.html, catalog/catalog.json, sitemap.xml, robots.txt, llms.txt");
+console.log("Generated: product.html, privacy.html, catalog/catalog.json, sitemap.xml, robots.txt, llms.txt");
 console.log(`Canonical base: ${BASE}`);
 if (!SITE_URL) {
   console.warn(

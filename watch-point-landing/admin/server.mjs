@@ -45,11 +45,13 @@ import {
   categorySubcategoriesPage,
   quickProductPage,
   brandsPage,
+  bannersPage,
   settingsPage,
   publishResultPage,
   messageFromQuery,
   errorPage,
-  escapeHtml
+  escapeHtml,
+  normalizeProductName
 } from "./views.mjs";
 
 const ADMIN_DIR = path.dirname(fileURLToPath(import.meta.url));
@@ -458,18 +460,58 @@ async function handleAuth(req, res, url, pathname) {
 
 /* ----------------------------------------------------------------------- app */
 
+/* مساعدة: اسم القسم (مع الأب) لعرضه في رسالة التكرار. */
+function categoryLabel(store, categoryId) {
+  for (const cat of store.categories) {
+    if (cat.id === categoryId) return cat.name;
+    const sub = (cat.subcategories || []).find((item) => item.id === categoryId);
+    if (sub) return `${cat.name} ← ${sub.name}`;
+  }
+  return "غير محدد";
+}
+
+/* كشف تكرار المنتج بنفس الموديل (مع توحيد العربية: همزات/تشكيل/يا/ة). */
+function findDuplicateProduct(store, name, excludeId = "") {
+  const key = normalizeProductName(name);
+  if (!key) return null;
+  return (
+    store.products.find(
+      (item) => item.id !== excludeId && normalizeProductName(item.name) === key
+    ) || null
+  );
+}
+
+function duplicateProductError(dup, store) {
+  return {
+    text: `هذا المنتج موجود بالفعل: «${dup.name}» — القسم: ${categoryLabel(
+      store,
+      dup.categoryId
+    )} — الرابط: /${dup.slug}.`,
+    href: `/admin/products/${encodeURIComponent(dup.id)}/edit`,
+    label: "فتح المنتج الموجود للتعديل"
+  };
+}
+
 function buildProduct(fields, store, existing, imagePath) {
   const errors = [];
   const name = String(fields.name || "").trim();
-  const slug = String(fields.slug || "").trim().toLowerCase();
+  let slug = String(fields.slug || fields.shortName || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+  if (!slug) {
+    slug = existing?.slug || ("prod-" + Date.now().toString(36));
+  }
   const categoryId = String(fields.categoryId || "").trim();
   const price = parsePrice(fields.price);
 
-  if (!name) errors.push("اسم المنتج مطلوب.");
-  if (!slug) errors.push("الرابط (slug) مطلوب.");
-  else if (!slugIsValid(slug)) errors.push("الرابط يجب أن يحتوي على حروف إنجليزية صغيرة وأرقام وشرطات فقط.");
-  else if (store.products.some((item) => item.slug === slug && item.id !== existing?.id)) {
-    errors.push("الرابط مستخدم في منتج آخر.");
+  if (!name) errors.push("موديل المنتج مطلوب.");
+  const duplicate = findDuplicateProduct(store, name, existing?.id);
+  if (duplicate) errors.push(duplicateProductError(duplicate, store));
+  if (store.products.some((item) => item.slug === slug && item.id !== existing?.id)) {
+    slug += "-" + Date.now().toString(36).slice(-4);
   }
   let mainCategoryId = String(fields.mainCategoryId || "").trim();
   let categoryValid = false;
@@ -496,6 +538,10 @@ function buildProduct(fields, store, existing, imagePath) {
     ? fields.availability
     : "quote";
 
+  const specs = parseLines(fields.specs);
+  /* الوصف يُشتق من المواصفات (خانة الوصف اتشالت من النموذج). */
+  const derivedDescription = specs.join("، ");
+
   const product = {
     id:
       existing?.id ||
@@ -512,18 +558,23 @@ function buildProduct(fields, store, existing, imagePath) {
     slug,
     categoryId,
     mainCategoryId,
+    /* العلامة التجارية اختياري وتُستخدم في فلاتر صفحة الفئة. */
+    brandId: (store.brands || []).some((brand) => brand.id === fields.brandId)
+      ? String(fields.brandId)
+      : "",
     name,
     shortName: String(fields.shortName || "").trim() || name,
-    description: String(fields.description || "").trim(),
+    description: derivedDescription || existing?.description || "",
     image: imagePath,
     imageAlt: String(fields.imageAlt || "").trim() || name,
-    specs: parseLines(fields.specs),
+    specs,
     price: price.value,
     priceCurrency: String(fields.priceCurrency || "EGP").trim() || "EGP",
     availability,
     featured: fields.featured === "1",
     demo: existing ? Boolean(existing.demo) : false,
-    keywords: parseKeywords(fields.keywords)
+    /* الكلمات المفتاحية تيجي من الفئة (القسم) — مش من المنتج. */
+    keywords: existing?.keywords || []
   };
 
   return { product, errors };
@@ -579,17 +630,16 @@ function buildPackage(fields, store, existing, imagePath) {
 function buildCategory(fields, store, existing = null, imagePath = "") {
   const errors = [];
   const name = String(fields.name || "").trim();
-  let slug = String(fields.slug || "").trim().toLowerCase();
+  let slug = String(fields.slug || "")
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 
   if (!name) errors.push("اسم القسم الرئيسي مطلوب.");
   if (!slug) {
-    slug = name
-      .replace(/[^\u0621-\u064Aa-zA-Z0-9\s-]/g, "")
-      .trim()
-      .replace(/\s+/g, "-");
-    if (!slug) slug = "cat-" + Date.now().toString(36);
-  } else if (!slugIsValid(slug)) {
-    errors.push("الرابط يجب أن يحتوي على حروف إنجليزية صغيرة وأرقام وشرطات فقط.");
+    slug = "cat-" + Date.now().toString(36);
   } else if (store.categories.some((item) => item.slug === slug && (!existing || item.id !== existing.id))) {
     errors.push("الرابط مستخدم في قسم آخر.");
   }
@@ -599,20 +649,49 @@ function buildCategory(fields, store, existing = null, imagePath = "") {
     subcategories: []
   };
 
+  const desc = String(fields.description || "").trim();
+
   const category = {
     ...baseExisting,
     name,
     plural: String(fields.plural || "").trim() || name,
     slug,
     image: imagePath || baseExisting.image || "assets/images/brand-mark.webp",
-    description: String(fields.description || "").trim(),
+    description: desc,
     keywords: parseKeywords(fields.keywords),
     seo: {
       ...(baseExisting.seo || {}),
-      title: String(fields.seoTitle || "").trim(),
-      metaDescription: String(fields.seoDescription || "").trim(),
-      h1: String(fields.seoH1 || "").trim(),
-      intro: String(fields.seoIntro || "").trim()
+      title: String(fields.seoTitle || "").trim() || `${name} — توريد وتركيب معتمد`,
+      metaDescription: String(fields.seoDescription || "").trim() || desc || `تصفح منتجات ${name} من Watch Point في مصر.`,
+      h1: String(fields.seoH1 || "").trim() || name,
+      intro: String(fields.seoIntro || "").trim() || desc || `نوفر تشكيلة متنوعة من ${name} مع إمكانية التوريد والتركيب والضمان الفني المعتمد في مصر.`,
+      guide:
+        Array.isArray(baseExisting.seo?.guide) && baseExisting.seo.guide.length
+          ? baseExisting.seo.guide
+          : [
+              {
+                title: `كيف تختار ${name} المناسب لاحتياجك؟`,
+                body: `يعتمد اختيار ${name} على طبيعة الموقع والمساحة والمواصفات الفنية المطلوبة لضمان أفضل أداء واعتمادية.`,
+                bullets: [
+                  "تحديد المواصفات الفنية المناسبة لطبيعة المكان.",
+                  "التأكد من توافق الأجهزة والمكونات مع النظام بالكامل.",
+                  "الاعتماد على منتجات أصلية بضمان معتمد وتركيب احترافي."
+                ]
+              }
+            ],
+      faq:
+        Array.isArray(baseExisting.seo?.faq) && baseExisting.seo.faq.length
+          ? baseExisting.seo.faq
+          : [
+              {
+                q: `كيف أطلب عرض سعر لمنتجات ${name}؟`,
+                a: "يمكنك طلب عرض سعر مباشرة عبر واتساب أو نموذج التواصل في الموقع، وسيقوم فريقنا بمراجعة طلبك وتقديم السعر المناسب."
+              },
+              {
+                q: `هل تتوفر خدمة التركيب والضمان لقسم ${name}؟`,
+                a: "نعم، نوفر في Watch Point خدمات التوريد والتركيب والبرمجة مع ضمان فني معتمد ودعم فني متكامل."
+              }
+            ]
     }
   };
 
@@ -895,11 +974,13 @@ async function handleAdmin(req, res, url, pathname) {
     const mainCategoryId = String(fields.mainCategoryId || "").trim();
     let categoryId = String(fields.categoryId || "").trim() || mainCategoryId;
     const { value: price, error: priceError } = parsePrice(fields.price);
-    const description = String(fields.description || "").trim();
+    const specs = parseLines(fields.specs);
     const featured = fields.featured === "1" || fields.featured === "true";
 
     const errors = [];
-    if (!name) errors.push("اسم المنتج مطلوب.");
+    if (!name) errors.push("موديل المنتج مطلوب.");
+    const duplicate = findDuplicateProduct(store, name);
+    if (duplicate) errors.push(duplicateProductError(duplicate, store));
     if (priceError) errors.push(priceError);
     if (price === null) errors.push("السعر مطلوب.");
     if (!mainCategoryId) errors.push("القسم الرئيسي مطلوب.");
@@ -932,9 +1013,9 @@ async function handleAdmin(req, res, url, pathname) {
     const prodId = "prod-" + Date.now().toString(36) + "-" + crypto.randomBytes(3).toString("hex");
     let slug = (shortName || name)
       .toLowerCase()
-      .replace(/[^\w\s-]/g, "")
-      .trim()
-      .replace(/\s+/g, "-");
+      .replace(/[^a-z0-9-]+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-|-$/g, "");
     if (!slug) slug = prodId;
     if (store.products.some((p) => p.slug === slug)) {
       slug += "-" + Date.now().toString(36).slice(-4);
@@ -947,14 +1028,19 @@ async function handleAdmin(req, res, url, pathname) {
       shortName,
       mainCategoryId,
       categoryId,
+      brandId: (store.brands || []).some((brand) => brand.id === fields.brandId)
+        ? String(fields.brandId)
+        : "",
       price,
       priceCurrency: "EGP",
       availability: "in_stock",
       image: imagePath,
       imageAlt: name,
-      description,
+      /* الوصف يُشتق من المواصفات؛ الكلمات المفتاحية تيجي من الفئة. */
+      description: specs.join("، "),
       featured,
-      specs: description ? [description] : []
+      specs,
+      keywords: []
     };
 
     store.products.unshift(newProduct);
@@ -1184,6 +1270,100 @@ async function handleAdmin(req, res, url, pathname) {
     store.brands = (store.brands || []).filter((b) => b.id !== brandId);
     saveStore(store);
     return redirect(res, "/admin/brands?msg=deleted");
+  }
+
+  /* ---------- banners ---------- */
+  if (pathname === "/admin/banners" && method === "GET") {
+    const editId = url.searchParams.get("edit") || "";
+    const slotParam = url.searchParams.get("slot") || "";
+    let editBanner = editId ? (store.banners || []).find((b) => b.id === editId) : null;
+    if (!editBanner && slotParam) {
+      editBanner = { slot: slotParam };
+    }
+    return adminHtml(
+      res,
+      bannersPage({
+        store,
+        editBanner,
+        csrf: session.csrf,
+        pending: hasPendingChanges(store),
+        flash: flashFromQuery(url)
+      })
+    );
+  }
+
+  if (pathname === "/admin/banners/save" && method === "POST") {
+    const { fields, files } = await parseBody(req);
+    if (!csrfOk(session, fields)) {
+      return adminHtml(res, errorPage({ status: 403, message: "انتهت صلاحية الجلسة." }), 403);
+    }
+
+    store.banners = store.banners || [];
+    const existing = fields.id ? store.banners.find((b) => b.id === fields.id) : null;
+
+    let imagePath = cleanImagePath(fields.image || (existing ? existing.image : "") || "");
+    let uploadError = null;
+    try {
+      const uploaded = saveUpload(getFile(files, "imageFile") || getFile(files, "image"));
+      if (uploaded) imagePath = uploaded;
+    } catch (error) {
+      uploadError = error.message;
+    }
+
+    const errors = [];
+    if (uploadError) errors.push(uploadError);
+    if (!imagePath) errors.push("يرجى رفع صورة للبانر أو تحديد مسار الصورة.");
+
+    const slot = ["main", "right", "left"].includes(fields.slot) ? fields.slot : "main";
+    const bannerObj = {
+      id: existing ? existing.id : "banner-" + Date.now().toString(36) + "-" + crypto.randomBytes(2).toString("hex"),
+      slot,
+      title: String(fields.title || "").trim(),
+      highlight: String(fields.highlight || "").trim(),
+      subtitle: String(fields.subtitle || "").trim(),
+      badge: String(fields.badge || "").trim(),
+      image: imagePath,
+      link: String(fields.link || fields.linkPreset || "#store").trim() || "#store",
+      showOverlay: fields.showOverlay === "1" || fields.showOverlay === "true" || fields.showOverlay === "on",
+      hotspots: existing && Array.isArray(existing.hotspots) ? existing.hotspots : []
+    };
+
+    if (errors.length) {
+      return adminHtml(
+        res,
+        bannersPage({
+          store,
+          editBanner: bannerObj,
+          errors,
+          csrf: session.csrf,
+          pending: hasPendingChanges(store),
+          flash: null
+        }),
+        400
+      );
+    }
+
+    if (existing) {
+      const idx = store.banners.findIndex((b) => b.id === existing.id);
+      store.banners[idx] = bannerObj;
+    } else {
+      store.banners.push(bannerObj);
+    }
+
+    saveStore(store);
+    return redirect(res, "/admin/banners?msg=banner_saved");
+  }
+
+  match = pathname.match(/^\/admin\/banners\/([^/]+)\/delete$/);
+  if (match && method === "POST") {
+    const { fields } = await parseBody(req);
+    if (!csrfOk(session, fields)) {
+      return adminHtml(res, errorPage({ status: 403, message: "انتهت صلاحية الجلسة." }), 403);
+    }
+    const bannerId = match[1];
+    store.banners = (store.banners || []).filter((b) => b.id !== bannerId);
+    saveStore(store);
+    return redirect(res, "/admin/banners?msg=banner_deleted");
   }
 
   /* ---------- settings ---------- */

@@ -46,7 +46,7 @@
   <link rel="preload" href="assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/Dubai-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-showcase.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="css/style.css?v=1793917189382">
+  <link rel="stylesheet" href="css/style.css?v=1793992928910">
 
   <script type="application/ld+json">
   {
@@ -344,14 +344,13 @@
 
       <nav class="desktop-nav" aria-label="التنقل الرئيسي">
         <ul>
-          <li><a href="#store" data-nav="store">المتجر</a></li>
+          <li><a href="#store" data-nav="store">المتجر والأقسام</a></li>
           <li><a href="#packages" data-nav="packages">الباقات</a></li>
-          <li><a href="#services" data-nav="services">الخدمات</a></li>
-          <li><a href="#about" data-nav="about">من نحن</a></li>
+          <li><a href="#services" data-nav="services">خدماتنا ومن نحن</a></li>
           <li><a href="#steps" data-nav="steps">طريقة العمل</a></li>
           <li><a href="#brands" data-nav="brands">العلامات التجارية</a></li>
           <li><a href="#faq" data-nav="faq">الأسئلة</a></li>
-          <li><a href="#contact" data-nav="contact">تواصل</a></li>
+          <li><a href="#contact" data-nav="contact">تواصل معنا</a></li>
         </ul>
       </nav>
 
@@ -388,68 +387,80 @@
     </div>
   </header>
 
+  <!-- Sticky Quick-Category Bar (Appears while scrolling through #store) -->
+  <div class="sticky-cat-bar" id="sticky-cat-bar" aria-label="شريط التنقل السريع بين الأقسام" hidden>
+    <div class="container sticky-cat-inner">
+      <span class="sticky-cat-label">الأقسام:</span>
+      <div class="sticky-cat-pills" id="sticky-cat-pills" role="tablist"></div>
+    </div>
+  </div>
+
   <main id="main-content">
-    <section class="hero" id="home" aria-labelledby="hero-title">
+    <section class="hero hero--luxury" id="home" aria-labelledby="hero-title">
       <div class="hero-bg" aria-hidden="true"></div>
-      <div class="container hero-grid">
-        <div class="hero-content">
-          <p class="hero-badge">
-            <span class="pulse-dot" aria-hidden="true"></span>
-            توريد وتركيب أنظمة مراقبة وصوتيات وشبكات
-          </p>
-          <h1 class="hero-title" id="hero-title">
-            أمّن بيتك وشغلك مع
-            <span class="text-gradient" lang="en">Watch Point</span>
-          </h1>
-          <p class="hero-lead">
-            كاميرات مراقبة وأنظمة أمنية متكاملة، مع حلول تناسب احتياجاتك ومشاريعك.
-          </p>
-          <p class="hero-sub">
-            عقود صيانة مدى الحياة وعروض على جميع منتجاتنا بأسعار جملة
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn--primary btn--lg" href="#store" data-analytics="hero_products">
-              تصفح المتجر والأقسام
-              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
-            </a>
-            <a class="btn btn--ghost btn--lg" href="#contact" data-analytics="hero_quote">
-              اطلب عرض سعر
-            </a>
-          </div>
-          <ul class="hero-points" aria-label="مزايا التعامل مع Watch Point">
-            <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> معاينة قبل التنفيذ</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> عرض سعر واضح</li>
-            <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> حلول لموازنات مختلفة</li>
-          </ul>
-        </div>
-
-        <div class="hero-visual">
-          <div class="hero-orbit" aria-hidden="true"></div>
-          <div class="hero-image-wrap">
-            <img class="hero-image" src="assets/images/hero-showcase.webp" alt="Watch Point - Integrated Security Solutions - Protecting What Matters Most" width="780" height="918" fetchpriority="high" decoding="async">
-            <div class="hero-image-glow" aria-hidden="true"></div>
-          </div>
-          <div class="floating-card floating-card--top">
-            <span class="floating-icon"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg></span>
-            <span><strong>معاينة الموقع</strong><small>نحدد نقاط التغطية</small></span>
-          </div>
-          <div class="floating-card floating-card--bottom">
-            <span class="floating-icon floating-icon--blue"><svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg></span>
-            <span><strong>عرض سعر واضح</strong><small>المكونات قبل التنفيذ</small></span>
-          </div>
-        </div>
-      </div>
-
       <div class="container">
-        <div class="sector-strip reveal">
-          <div class="sector-intro">
-            <span class="sector-label">نصمم النظام حسب المكان</span>
-            <span class="sector-note">منازل · محلات · شركات · مكاتب</span>
+        <div class="hero-top-bar">
+          <div class="hero-content">
+            <div class="hero-badge-row">
+              <p class="hero-badge">
+                <span class="pulse-dot" aria-hidden="true"></span>
+                توريد وتركيب أنظمة مراقبة وصوتيات وشبكات احترافية
+              </p>
+              <span class="hero-warranty-pill">
+                <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+                عقود صيانة وضمان معتمد
+              </span>
+            </div>
+            <h1 class="hero-title" id="hero-title">
+              أمّن بيتك وشغلك مع
+              <span class="text-gradient" lang="en">Watch Point</span>
+            </h1>
+            <p class="hero-lead">
+              كاميرات مراقبة وأنظمة أمنية متكاملة، مع حلول ذكية تناسب المنازل والشركات والمشاريع بأسعار جملة التوريد.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn--primary" href="#store" data-analytics="hero_products">
+                تصفح المتجر والأقسام
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+              <a class="btn btn--ghost" href="#contact" data-analytics="hero_quote">
+                اطلب معاينة وعرض سعر
+              </a>
+              <ul class="hero-points" aria-label="مزايا التعامل مع Watch Point">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> معاينة فنية للموقع</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> عرض سعر تفصيلي واضح</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> دعم فني وصيانة</li>
+              </ul>
+            </div>
           </div>
-          <div class="sector-item"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg><span>المنازل</span></div>
-          <div class="sector-item"><svg class="icon" aria-hidden="true"><use href="#icon-shop"/></svg><span>المحلات</span></div>
-          <div class="sector-item"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg><span>الشركات</span></div>
-          <div class="sector-item"><svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg><span>المكاتب</span></div>
+
+          <!-- Compact Animated 3D Watch Point Shield Logo -->
+          <div class="hero-emblem-stage" aria-label="شعار Watch Point المتحرك">
+            <div class="emblem-orbit emblem-orbit--outer" aria-hidden="true"></div>
+            <div class="emblem-orbit emblem-orbit--inner" aria-hidden="true"></div>
+            <div class="emblem-radar-ring emblem-radar-ring--1" aria-hidden="true"></div>
+            <div class="emblem-radar-ring emblem-radar-ring--2" aria-hidden="true"></div>
+            <a href="#store" class="emblem-card-3d" title="استكشف حلول Watch Point الأمنية">
+              <div class="emblem-shimmer" aria-hidden="true"></div>
+              <img class="emblem-logo-img" src="assets/images/hero-showcase.webp" alt="Watch Point - Integrated Security Solutions" width="380" height="448" fetchpriority="high" decoding="async">
+              <span class="emblem-live-badge">
+                <span class="emblem-live-dot" aria-hidden="true"></span>
+                <span>حماية متكاملة 24/7</span>
+              </span>
+            </a>
+          </div>
+        </div>
+
+        <!-- FastEgy-Style Interactive Promotional Banners Showcase -->
+        <div class="promo-showcase-wrap" id="promo-banners" aria-label="العروض والحلول التفاعلية">
+          <div class="promo-bento-grid" id="promo-bento-grid">
+            <!-- Slot 1 (Right in RTL): Side Vertical Carousel -->
+            <div class="promo-slot promo-slot--side" data-promo-slot="right" id="promo-slot-right"></div>
+            <!-- Slot 2 (Center): Main Wide Interactive Banner -->
+            <div class="promo-slot promo-slot--main" data-promo-slot="main" id="promo-slot-main"></div>
+            <!-- Slot 3 (Left in RTL): Side Vertical Carousel -->
+            <div class="promo-slot promo-slot--side" data-promo-slot="left" id="promo-slot-left"></div>
+          </div>
         </div>
       </div>
     </section>
@@ -549,148 +560,115 @@
       </div>
     </section>
 
-    <section class="section" id="services" aria-labelledby="services-title">
+    <!-- Unified Executive Section: Why Watch Point + Services + 4-Step Workflow -->
+    <section class="section section--executive-why" id="services" aria-labelledby="services-title">
+      <span id="about" class="scroll-target" aria-hidden="true"></span>
       <div class="container">
-        <div class="section-head section-head--center">
-          <p class="eyebrow">الخدمات</p>
-          <h2 id="services-title">من المعاينة إلى <span class="text-brand">التشغيل</span></h2>
-          <p class="section-lead">
-            خدمة متكاملة تُبني على احتياج المكان، وليس على قائمة جاهزة. نراجع كل خطوة معك قبل التنفيذ.
-          </p>
-        </div>
-
-        <div class="services-grid">
-          <article class="service-card reveal">
-            <span class="service-icon"><svg class="icon" aria-hidden="true"><use href="#icon-survey"/></svg></span>
-            <h3>معاينة الموقع وتحديد الاحتياجات</h3>
-            <p>نزور الموقع أو نراجع التفاصيل عن بُعد لتحديد نقاط التغطية، مسارات الكابلات، ومتطلبات المكان قبل اقتراح النظام.</p>
-            <span class="service-tag">الخطوة الأولى</span>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon"><svg class="icon" aria-hidden="true"><use href="#icon-truck"/></svg></span>
-            <h3>توريد كاميرات وأنظمة أمنية</h3>
-            <p>نوفر الفئات المناسبة من الكاميرات وأجهزة التسجيل والتخزين والمستلزمات، مع توضيح الموديلات المتاحة قبل الاعتماد.</p>
-            <span class="service-tag">مكونات واضحة</span>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon"><svg class="icon" aria-hidden="true"><use href="#icon-tools"/></svg></span>
-            <h3>تركيب وبرمجة أنظمة المراقبة</h3>
-            <p>تنفيذ التركيب وتمديد الكابلات وضبط التسجيل والمشاهدة، ثم اختبار النظام والتأكد من عمله قبل التسليم.</p>
-            <span class="service-tag">تنفيذ واختبار</span>
-          </article>
-          <article class="service-card reveal">
-            <span class="service-icon"><svg class="icon" aria-hidden="true"><use href="#icon-support"/></svg></span>
-            <h3>الصيانة والدعم الفني</h3>
-            <p>متابعة الأعطال وضبط الإعدادات حسب ما يتم الاتفاق عليه. أي التزامات أو مدد تُوضح كتابةً في عرض الخدمة.</p>
-            <span class="service-tag">بعد التركيب</span>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section section--about" id="about" aria-labelledby="about-title">
-      <div class="container about-grid">
-        <div class="about-media reveal">
-          <div class="about-media-frame">
-            <img src="assets/images/watch-point-logo.webp" alt="شعار Watch Point — Integrated Security Solutions" width="1358" height="1600" loading="lazy" decoding="async">
-            <div class="about-media-overlay">
-              <span class="mini-label">Watch Point</span>
-              <strong>حلول أمنية متكاملة</strong>
-              <span>من الفكرة إلى التشغيل</span>
-            </div>
-          </div>
-          <div class="about-float-card">
-            <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
-            <div>
-              <strong>قبل التنفيذ</strong>
-              <span>المكونات والتكلفة موضحتان</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="about-content">
-          <p class="eyebrow">من نحن</p>
-          <h2 id="about-title">لماذا <span class="text-brand">Watch Point</span>؟</h2>
-          <p class="section-lead">
-            في Watch Point، إحنا مش مجرد بنبيع ونركب كاميرات مراقبة وأنظمة أمنية، إحنا بنوفرلك "راحة البال". سواء كنت بتأمن بيتك، محلك، أو شركتك، مفيش عندنا فكرة "نظام واحد ينفع للكل". إحنا بندرس طبيعة مكانك واحتياجاتك الأول، عشان نصمم ونركب النظام الأمني اللي يناسبك أنت بالظبط، وبأفضل جودة وأوفر سعر.
-          </p>
-
-          <div class="why-list">
-            <div class="why-item reveal">
-              <span class="why-num">01</span>
-              <div>
-                <h3>اختيار النظام حسب احتياجات العميل</h3>
-                <p>نبدأ من مساحة المكان وطريقة الاستخدام والميزانية، ثم نقترح النوع وعدد النقاط المناسب.</p>
-              </div>
-            </div>
-            <div class="why-item reveal">
-              <span class="why-num">02</span>
-              <div>
-                <h3>توضيح مكونات العرض قبل التنفيذ</h3>
-                <p>تعرف الكاميرات وجهاز التسجيل والتخزين والمستلزمات وأعمال التركيب قبل البدء، دون بنود غامضة.</p>
-              </div>
-            </div>
-            <div class="why-item reveal">
-              <span class="why-num">03</span>
-              <div>
-                <h3>حلول تناسب ميزانيات مختلفة</h3>
-                <p>نعرض بدائل متعددة عند الإمكان، ونوضح ما يمكن تنفيذه ضمن الميزانية وما يحتاج مرحلة لاحقة.</p>
-              </div>
-            </div>
-            <div class="why-item reveal">
-              <span class="why-num">04</span>
-              <div>
-                <h3>التنسيق على المعاينة والتركيب</h3>
-                <p>نحدد موعد المعاينة وننسّق خطوات التنفيذ معك أو مع المسؤول عن المكان لتقليل التعطيل.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="transparency-note">
-            <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+        <!-- Top Executive Banner: Why Watch Point -->
+        <div class="exec-hero-card reveal">
+          <div class="exec-hero-copy">
+            <span class="exec-pill">
+              <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+              لماذا Watch Point · خدماتنا المتكاملة
+            </span>
+            <h2 id="services-title">منظومة أمان متكاملة <span class="text-gradient">من المعاينة إلى التشغيل</span></h2>
             <p>
-              لا نضيف ضمانات أو مدد استجابة أو اعتمادات غير مؤكدة. كل ما يخص التركيب والصيانة
-              يُوضح في عرض السعر أو عقد الصيانة.
+              في <strong>Watch Point</strong> لا نقدم مجرد أجهزة جاهزة، بل ندرس طبيعة مكانك وميزانيتك لنصمم وننفذ النظام الأمني الأنسب لك بدقة هندسية، مع توضيح كافة المكونات والتكلفة بشفافية كاملة قبل التنفيذ.
             </p>
+            <div class="exec-sectors-row" aria-label="الأماكن التي نخدمها">
+              <span class="exec-sector-chip"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg> منازل وفيلات</span>
+              <span class="exec-sector-chip"><svg class="icon" aria-hidden="true"><use href="#icon-shop"/></svg> محلات ومعارض</span>
+              <span class="exec-sector-chip"><svg class="icon" aria-hidden="true"><use href="#icon-building"/></svg> شركات ومكاتب</span>
+              <span class="exec-sector-chip"><svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg> مصانع ومخازن</span>
+            </div>
+          </div>
+          <div class="exec-hero-visual">
+            <img src="assets/images/watch-point-logo.webp" alt="Watch Point Integrated Security Solutions" width="320" height="376" loading="lazy" decoding="async">
           </div>
         </div>
-      </div>
-    </section>
 
-    <section class="section section--soft" id="steps" aria-labelledby="steps-title">
-      <div class="container">
-        <div class="section-head section-head--center">
-          <p class="eyebrow">طريقة العمل</p>
-          <h2 id="steps-title">أربع خطوات <span class="text-brand">واضحة</span></h2>
-          <p class="section-lead">من أول رسالة إلى تشغيل النظام، تعرف في كل مرحلة ما التالي.</p>
+        <!-- 4 Core Services Bento Grid -->
+        <div class="exec-pillars-grid">
+          <article class="exec-pillar-card reveal">
+            <div class="exec-pillar-top">
+              <span class="exec-pillar-icon"><svg class="icon" aria-hidden="true"><use href="#icon-survey"/></svg></span>
+              <span class="exec-pillar-num">01</span>
+            </div>
+            <h3>معاينة الموقع وتحديد التغطية</h3>
+            <p>نراجع زوايا الرؤية، المساحات، ومسارات الكابلات على الطبيعة لاختيار النظام الأدق بدون هدر.</p>
+          </article>
+
+          <article class="exec-pillar-card reveal">
+            <div class="exec-pillar-top">
+              <span class="exec-pillar-icon"><svg class="icon" aria-hidden="true"><use href="#icon-truck"/></svg></span>
+              <span class="exec-pillar-num">02</span>
+            </div>
+            <h3>توريد أصلي بأسعار جملة واضحة</h3>
+            <p>أجهزة أصلية معتمدة مع عرض سعر تفصيلي يوضح الموديلات وسعة التخزين والمستلزمات قبل البدء.</p>
+          </article>
+
+          <article class="exec-pillar-card reveal">
+            <div class="exec-pillar-top">
+              <span class="exec-pillar-icon"><svg class="icon" aria-hidden="true"><use href="#icon-tools"/></svg></span>
+              <span class="exec-pillar-num">03</span>
+            </div>
+            <h3>تركيب هندسي وبرمجة كاملة</h3>
+            <p>تنفيذ منظم للكابلات، ضبط التسجيل، ربط المشاهدة عبر الموبايل، واختبار شامل لكل نقطة قبل التسليم.</p>
+          </article>
+
+          <article class="exec-pillar-card reveal">
+            <div class="exec-pillar-top">
+              <span class="exec-pillar-icon"><svg class="icon" aria-hidden="true"><use href="#icon-support"/></svg></span>
+              <span class="exec-pillar-num">04</span>
+            </div>
+            <h3>عقود صيانة ودعم فني مستمر</h3>
+            <p>ضمان معتمد ومتابعة فنية دورية لضمان استقرار النظام وكفاءة التسجيل على مدار الساعة.</p>
+          </article>
         </div>
 
-        <ol class="steps-grid">
-          <li class="step-card reveal">
-            <span class="step-num">1</span>
-            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#icon-chat"/></svg></span>
-            <h3>تواصل معنا</h3>
-            <p>أرسل استفسارك عبر واتساب أو وسائل التواصل المتاحة، واذكر نوع المكان والخدمة المطلوبة.</p>
-          </li>
-          <li class="step-card reveal">
-            <span class="step-num">2</span>
-            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg></span>
-            <h3>حدد احتياجاتك</h3>
-            <p>نراجع المساحة ونقاط التغطية والميزانية، ونحدد ما إذا كانت المعاينة مطلوبة.</p>
-          </li>
-          <li class="step-card reveal">
-            <span class="step-num">3</span>
-            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#icon-star"/></svg></span>
-            <h3>استلم عرض السعر</h3>
-            <p>نوضح المكونات والكميات والتكلفة المتوقعة، وأي أعمال إضافية قبل التنفيذ.</p>
-          </li>
-          <li class="step-card reveal">
-            <span class="step-num">4</span>
-            <span class="step-icon"><svg class="icon" aria-hidden="true"><use href="#icon-handshake"/></svg></span>
-            <h3>اتفق على التوريد والتركيب</h3>
-            <p>نحدد الموعد وننفذ التركيب والبرمجة والاختبار، ثم نراجع التشغيل معك.</p>
-          </li>
-        </ol>
+        <!-- Streamlined 4-Step Workflow Ribbon (#steps) -->
+        <div class="exec-steps-ribbon reveal" id="steps">
+          <div class="exec-steps-head">
+            <div>
+              <span class="eyebrow">طريقة العمل</span>
+              <h3 id="steps-title">أربع خطوات بسيطة لتأمين مكانك</h3>
+            </div>
+            <a href="#contact" class="btn btn--primary btn--sm">
+              احجز معاينة أو عرض سعر
+              <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+            </a>
+          </div>
+          <ol class="exec-steps-track">
+            <li class="exec-step-item">
+              <span class="exec-step-badge">1</span>
+              <div>
+                <strong>تواصل معنا</strong>
+                <small>أرسل نوع المكان واحتياجك عبر واتساب</small>
+              </div>
+            </li>
+            <li class="exec-step-item">
+              <span class="exec-step-badge">2</span>
+              <div>
+                <strong>معاينة وتحديد النقاط</strong>
+                <small>نحدد الزوايا والمكونات المناسبة لميزانيتك</small>
+              </div>
+            </li>
+            <li class="exec-step-item">
+              <span class="exec-step-badge">3</span>
+              <div>
+                <strong>استلام عرض السعر</strong>
+                <small>عرض واضح بالموديلات والتكلفة النهائية</small>
+              </div>
+            </li>
+            <li class="exec-step-item">
+              <span class="exec-step-badge">4</span>
+              <div>
+                <strong>التوريد والتركيب والتشغيل</strong>
+                <small>تنفيذ احترافي وتسليم النظام جاهزاً للعمل</small>
+              </div>
+            </li>
+          </ol>
+        </div>
       </div>
     </section>
 
@@ -998,6 +976,41 @@
     </div>
   </footer>
 
+  <!-- Luxury Product Quick View Modal -->
+  <div class="qv-modal" id="quick-view-modal" role="dialog" aria-modal="true" aria-labelledby="qv-title" hidden>
+    <div class="qv-backdrop" data-qv-close></div>
+    <div class="qv-dialog">
+      <button type="button" class="qv-close" data-qv-close aria-label="إغلاق المعاينة السريعة">
+        <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+      </button>
+      <div class="qv-content" id="qv-content"></div>
+    </div>
+  </div>
+
+  <!-- Smart Mobile Bottom Action Bar -->
+  <nav class="mobile-action-dock" id="mobile-action-dock" aria-label="شريط الوصول السريع للموبايل">
+    <a href="#store" class="dock-item" data-dock-action="cats">
+      <svg class="icon" aria-hidden="true"><use href="#icon-camera"/></svg>
+      <span>الأقسام</span>
+    </a>
+    <button type="button" class="dock-item" data-dock-action="search">
+      <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
+      <span>بحث</span>
+    </button>
+    <a href="#contact" class="dock-item" data-dock-action="quote">
+      <svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg>
+      <span>عرض سعر</span>
+    </a>
+    <a href="#contact" class="dock-item" id="mobile-dock-phone">
+      <svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>
+      <span>اتصال</span>
+    </a>
+    <a href="#contact" class="dock-item dock-item--wa" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية." data-analytics="mobile_dock_whatsapp">
+      <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+      <span>واتساب</span>
+    </a>
+  </nav>
+
   <a class="wa-fab" id="wa-fab" href="#contact" aria-label="التواصل عبر واتساب" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
     <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
   </a>
@@ -1035,8 +1048,8 @@
     </div>
   </noscript>
 
-  <script src="js/config.js?v=1793917189382"></script>
-  <script src="js/data.js?v=1793917189382"></script>
-  <script src="js/main.js?v=1793917189382" defer></script>
+  <script src="js/config.js?v=1793992928910"></script>
+  <script src="js/data.js?v=1793992928910"></script>
+  <script src="js/main.js?v=1793992928910" defer></script>
 </body>
 </html>

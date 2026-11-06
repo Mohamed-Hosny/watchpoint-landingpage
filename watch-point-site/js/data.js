@@ -3,7 +3,7 @@
    --------------------------------------------------------------------------
    هذا الملف مُولَّد تلقائيًا من لوحة التحكم (admin).
    لا تعدّله يدويًا؛ استخدم اللوحة ثم اضغط "نشر التغييرات".
-   آخر تحديث: 2026-11-05T22:16:02.295Z
+   آخر تحديث: 2026-11-06T19:22:08.862Z
    ========================================================================== */
 
 window.WP_CATEGORIES = [
@@ -13,7 +13,7 @@ window.WP_CATEGORIES = [
     "plural": "كاميرات وأنظمة المراقبة المتكاملة",
     "slug": "cctv-surveillance",
     "icon": "camera",
-    "image": "assets/images/product-outdoor.svg",
+    "image": "assets/images/uploads/1793917439138-275b5f22.jpg",
     "description": "أنظمة كاميرات المراقبة الداخلية والخارجية والـ IP والواي فاي مع أجهزة التسجيل والتخزين والكابلات.",
     "keywords": [
       "كاميرات مراقبة",
@@ -69,9 +69,9 @@ window.WP_CATEGORIES = [
       }
     ],
     "seo": {
-      "title": "كاميرات المراقبة وأنظمة الأمان المتكاملة",
+      "title": "كاميرات المراقبة",
       "metaDescription": "حلول متكاملة لكاميرات المراقبة: كاميرات HD، IP، واي فاي، أجهزة تسجيل DVR وNVR، وهاردات التخزين مع المعاينة والتركيب والضمان.",
-      "h1": "كاميرات المراقبة والأنظمة الأمنية المتكاملة",
+      "h1": "كاميرات المراقبة ثابتة ومتحركة داخلي وخارجي",
       "intro": "نوفر أحدث أنظمة كاميرات المراقبة من كبرى الماركات العالمية (Hikvision, Dahua, EZVIZ) مع حلول تناسب المنازل والشركات والمحلات بعد معاينة هندسية دقيقة للموقع.",
       "guide": [
         {
@@ -101,7 +101,7 @@ window.WP_CATEGORIES = [
     "plural": "حلول ومعدات الشبكات السلكية واللاسلكية",
     "slug": "networks",
     "icon": "network",
-    "image": "assets/images/product-ip.svg",
+    "image": "assets/images/uploads/1793917528169-b495e3b1.webp",
     "description": "بنية تحتية متكاملة للشبكات: سويتشات PoE، راوترات، مقويات إشارة، وأكسيس بوينت للمنازل والشركات.",
     "keywords": [
       "شبكات",
@@ -184,7 +184,7 @@ window.WP_CATEGORIES = [
     "plural": "أنظمة الإنتركم الصوتي والمرئي الذكي",
     "slug": "intercom",
     "icon": "intercom",
-    "image": "assets/images/product-intercom.svg",
+    "image": "assets/images/uploads/1793917568416-c590483f.jpg",
     "description": "أنظمة الاتصال الداخلي المتقدمة للفيلات والعمارات والشركات مع الربط بالموبايل وفتح الأبواب عن بُعد.",
     "keywords": [
       "انتركم",
@@ -253,7 +253,7 @@ window.WP_CATEGORIES = [
     "plural": "أنظمة التحكم في الدخول والأبواب الذكية",
     "slug": "access-control",
     "icon": "shield",
-    "image": "assets/images/uploads/1793907048593-e781fb25.jpg",
+    "image": "assets/images/uploads/1793917615169-21dcff1b.png",
     "description": "أقفال ذكية ببصمة الإصبع والكارت وكلمة المرور، بوابات إلكترونية، وأجهزة حضور وانصراف متطورة.",
     "keywords": [
       "اكسيس كنترول",
@@ -323,7 +323,7 @@ window.WP_CATEGORIES = [
     "plural": "الأنظمة الصوتية ومكبرات الصوت الاحترافية",
     "slug": "audio-systems",
     "icon": "support",
-    "image": "assets/images/product-indoor.svg",
+    "image": "assets/images/uploads/1793917648748-fdc97b50.webp",
     "description": "حلول الإذاعة الداخلية، مكبرات الصوت، السماعات السقفية والحائطية، والمايكات للمساجد والشركات والمحلات.",
     "keywords": [
       "صوتيات",
@@ -393,7 +393,7 @@ window.WP_CATEGORIES = [
     "plural": "شاشات العرض والمراقبة التخصصية",
     "slug": "screens",
     "icon": "home",
-    "image": "assets/images/product-dvr-nvr.svg",
+    "image": "assets/images/uploads/1793917711911-a7f5b3a6.jpg",
     "description": "شاشات عرض احترافية تعمل على مدار الساعة 24/7 لغرف المراقبة والتحكم، مع حوامل وإكسسوارات التثبيت.",
     "keywords": [
       "شاشات مراقبة",
@@ -446,11 +446,11 @@ window.WP_CATEGORIES = [
   },
   {
     "id": "general-electronics",
-    "name": "اليكترونيات عامة",
+    "name": "إكسسوارات عامة",
     "plural": "الكترونيات وحلول تقنية عامة",
     "slug": "general-electronics",
     "icon": "tools",
-    "image": "assets/images/product-cables.svg",
+    "image": "assets/images/uploads/1793917767452-a8723797.webp",
     "description": "قطع غيار، محولات، باور سبلاي، كابلات، وتوصيلات تقنية متنوعة جاهزة للطلب الفوري.",
     "keywords": [
       "الكترونيات",
@@ -487,27 +487,140 @@ window.WP_CATEGORIES = [
         }
       ]
     }
+  },
+  {
+    "id": "cat-electronics-parts",
+    "subcategories": [],
+    "name": "قطع غيار اليكترونيات",
+    "plural": "اليكترونيات",
+    "slug": "electronics-parts",
+    "image": "assets/images/uploads/1793918134988-61610d10.jpg",
+    "description": "جميع مستلزمات وقطع غيار الاليكترونيات اللي تحتاجها في يومك",
+    "keywords": [
+      "قطع غيار اليكترونيات"
+    ],
+    "seo": {
+      "title": "قطع غيار اليكترونيات",
+      "metaDescription": "شواحن ادابتررات قطع غيار اليكترونيات",
+      "h1": "قطع غيار اليكترونيات",
+      "intro": "جميع مستلزمات وقطع غيار الاليكترونيات اللي تحتاجها في يومك",
+      "guide": [
+        {
+          "title": "كيف تختار قطع غيار اليكترونيات المناسب لاحتياجك؟",
+          "body": "يعتمد اختيار قطع غيار اليكترونيات على طبيعة الموقع والمساحة والمواصفات الفنية المطلوبة لضمان أفضل أداء واعتمادية.",
+          "bullets": [
+            "تحديد المواصفات الفنية المناسبة لطبيعة المكان.",
+            "التأكد من توافق الأجهزة والمكونات مع النظام بالكامل.",
+            "الاعتماد على منتجات أصلية بضمان معتمد وتركيب احترافي."
+          ]
+        }
+      ],
+      "faq": [
+        {
+          "q": "كيف أطلب عرض سعر لمنتجات قطع غيار اليكترونيات؟",
+          "a": "يمكنك طلب عرض سعر مباشرة عبر واتساب أو نموذج التواصل في الموقع، وسيقوم فريقنا بمراجعة طلبك وتقديم السعر المناسب."
+        }
+      ]
+    }
   }
 ];
 
 window.WP_PRODUCTS = [
   {
+    "id": "prod-mw4vfgcg-6557d6",
+    "slug": "3k-two-way-audio-fixed-turret",
+    "categoryId": "cctv-hd",
+    "mainCategoryId": "cctv",
+    "name": "DS-2CE78K0T-LPTS (2.8 mm)",
+    "shortName": "3K Two Way Audio Fixed Turret",
+    "description": "3K Two Way Audio Fixed Turret",
+    "image": "assets/images/uploads/1793963298688-8ae03b09.webp",
+    "imageAlt": "DS-2CE78K0T-LPTS (2.8 mm)",
+    "specs": [
+      "Two Way Audio",
+      "العلامة التجارية",
+      "هيكفيجن",
+      "الدقة",
+      "3K",
+      "بيئة الاستخدام",
+      "خارجي"
+    ],
+    "price": 2105,
+    "priceCurrency": "EGP",
+    "availability": "in_stock",
+    "featured": false,
+    "demo": false,
+    "keywords": []
+  },
+  {
+    "id": "prod-mw4uxyot-23221c",
+    "slug": "ds-2ce70df0t-lpfs-28mm",
+    "categoryId": "cctv-hd",
+    "mainCategoryId": "cctv",
+    "name": "كاميرا داخلي 2 ميجا كلر فيو هيكفجن",
+    "shortName": "DS-2CE70DF0T-LPFS (2.8mm)",
+    "description": "colour vu indoor camera from hikvision",
+    "image": "assets/images/uploads/1793962482641-2ba81b5b.webp",
+    "imageAlt": "كاميرا داخلي 2 ميجا كلر فيو هيكفجن",
+    "specs": [
+      "كاميرا توريت ثابتة 2 ميجابكسل بإضاءة هجينة ذكية وتقنية ColorVu",
+      "دقة 2 ميجابكسل Full HD — 1920 × 1080",
+      "تصوير ملوّن على مدار الساعة بفتحة عدسة F1.0 — أقل إضاءة 0.001 لوكس",
+      "إضاءة هجينة ذكية Smart Hybrid Light — تبديل بين الأشعة تحت الحمراء والضوء الأبيض",
+      "مدى إضاءة حتى 20 متر بالضوء الأبيض و20 متر بالأشعة تحت الحمراء",
+      "عدسة ثابتة 2.8 مم — زاوية رؤية أفقية 105°",
+      "ميكروفون مدمج بمدى التقاط حتى 5 متر — الصوت عبر نفس الكابل المحوري",
+      "منفذ واحد بأربع إشارات قابلة للتبديل: TVI / AHD / CVI / CVBS",
+      "تقنية 3D DNR لتقليل التشويش وصورة أوضح",
+      "WDR رقمي و BLC و HLC وتبديل ليلي/نهاري بـ ICR",
+      "تغذية 12 فولت DC بحد أقصى 2.9 وات — تعمل من −40° إلى 60° مئوية"
+    ],
+    "price": 1285,
+    "priceCurrency": "EGP",
+    "availability": "in_stock",
+    "featured": false,
+    "demo": false,
+    "keywords": []
+  },
+  {
+    "id": "prod-mw4uttfs-3c7e21",
+    "slug": "ds-2ae4425itg",
+    "categoryId": "cctv-hd",
+    "mainCategoryId": "cctv",
+    "name": "كاميرا خارجي PTZ هيكفجن",
+    "shortName": "DS-2AE4425ITG",
+    "description": "Camera PTZ ,Camera 4M ,Analog Camera",
+    "image": "assets/images/uploads/1793962289211-a31906ea.jpg",
+    "imageAlt": "كاميرا خارجي PTZ هيكفجن",
+    "specs": [
+      "Camera PTZ ,Camera 4M ,Analog Camera"
+    ],
+    "price": 19825,
+    "priceCurrency": "EGP",
+    "availability": "in_stock",
+    "featured": true,
+    "demo": false,
+    "keywords": [
+      "PTZ",
+      "كاميرا متحركة",
+      "هيكفجن",
+      "مراقبة"
+    ]
+  },
+  {
     "id": "wp-16-ch",
     "slug": "16-ch",
     "categoryId": "cctv-recorders",
+    "mainCategoryId": "cctv",
     "name": "DS-7616NXI-K2",
     "shortName": "Hikvision – 16 Channel – NVR Network Video Recorders",
     "description": "16-ch 1U K Series AcuSense 4K NVR",
     "image": "assets/images/uploads/1793913290334-28f57733.webp",
     "imageAlt": "DS-7616NXI-K2",
     "specs": [
-      "Brand",
       "Hikvision",
-      "Channels",
       "16 Channels",
-      "HDD Bays",
       "2 SATA",
-      "Video Compression",
       "H.265+",
       "Max Recording Resolution",
       "4K (8MP)",
@@ -523,8 +636,7 @@ window.WP_PRODUCTS = [
     "demo": false,
     "keywords": [
       "nvr.dvr"
-    ],
-    "mainCategoryId": "cctv"
+    ]
   },
   {
     "id": "wp-smartlock-accesscontrol",
@@ -629,11 +741,6 @@ window.WP_PACKAGES = [
 
 window.WP_BRANDS = [
   {
-    "id": "brand-hikvision",
-    "name": "Hikvision",
-    "logo": "assets/images/brands/hikvision.svg"
-  },
-  {
     "id": "brand-dahua",
     "name": "Dahua Technology",
     "logo": "assets/images/brands/dahua.svg"
@@ -657,5 +764,163 @@ window.WP_BRANDS = [
     "id": "brand-mw43andh-49dc5b",
     "name": "Hikvision",
     "logo": "assets/images/uploads/1793916045268-ccbf5745.png"
+  }
+];
+
+window.WP_BANNERS = [
+  {
+    "id": "banner-main-smart-home",
+    "slot": "main",
+    "title": "أمّن كل مساحة",
+    "highlight": "مساحة",
+    "subtitle": "حلول متكاملة للأمن والشبكات للمنازل والشركات",
+    "badge": "أنظمة ذكية متكاملة",
+    "image": "assets/images/banners/banner-main-smart-home.webp",
+    "link": "#cat:cctv",
+    "buttonText": "استكشف أنظمة الحماية",
+    "showOverlay": false,
+    "hotspots": [
+      {
+        "x": 88.5,
+        "y": 68.5,
+        "label": "كاميرا خارجي PTZ متحركة — هيكفجن",
+        "sublabel": "DS-2AE4425ITG · تتبع وزووم ذكي للبوابات",
+        "productId": "prod-mw4uttfs-3c7e21",
+        "link": "#product:prod-mw4uttfs-3c7e21"
+      },
+      {
+        "x": 89.2,
+        "y": 44.5,
+        "label": "كاميرا مراقبة خارجية 3K بصوت ثنائي",
+        "sublabel": "DS-2CE78K0T-LPTS · لتأمين الجراج والأسوار",
+        "productId": "prod-mw4vfgcg-6557d6",
+        "link": "#product:prod-mw4vfgcg-6557d6"
+      },
+      {
+        "x": 10.8,
+        "y": 24.8,
+        "label": "كاميرا خارجية ليلية مقاومة للعوامل الجوية",
+        "sublabel": "DS-2CE78K0T-LPTS · تغطية المحيط الخارجي",
+        "productId": "prod-mw4vfgcg-6557d6",
+        "link": "#product:prod-mw4vfgcg-6557d6"
+      },
+      {
+        "x": 49.3,
+        "y": 37.8,
+        "label": "كاميرا داخلي 2 ميجا كلر فيو هيكفجن",
+        "sublabel": "DS-2CE70DF0T-LPFS · تصوير ملون 24/7 بالصوت",
+        "productId": "prod-mw4uxyot-23221c",
+        "link": "#product:prod-mw4uxyot-23221c"
+      },
+      {
+        "x": 27.6,
+        "y": 48.2,
+        "label": "كاميرا داخلية لتغطية الصالة والريسبشن",
+        "sublabel": "DS-2CE70DF0T-LPFS · زاوية عريضة 105°",
+        "productId": "prod-mw4uxyot-23221c",
+        "link": "#product:prod-mw4uxyot-23221c"
+      },
+      {
+        "x": 75.6,
+        "y": 42.6,
+        "label": "جهاز تسجيل الشبكة 16 قناة 4K NVR",
+        "sublabel": "Hikvision DS-7616NXI-K2 · ذكاء اصطناعي AcuSense",
+        "productId": "wp-16-ch",
+        "link": "#product:wp-16-ch"
+      },
+      {
+        "x": 61.3,
+        "y": 63.8,
+        "label": "قفل باب ذكي ببصمة الوجه 3D والشاشة",
+        "sublabel": "EZVIZ DL50FVS · فتح بـ 7 طرق ذكية",
+        "productId": "wp-smartlock-accesscontrol",
+        "link": "#product:wp-smartlock-accesscontrol"
+      },
+      {
+        "x": 69.8,
+        "y": 60.5,
+        "label": "إنتركم فيديو ذكي وشاشة تحكم جدارية",
+        "sublabel": "مشاهدة الزائر وفتح الباب من الشاشة أو الموبايل",
+        "categoryId": "intercom",
+        "subcatId": "intercom-video",
+        "link": "#subcat:intercom:intercom-video"
+      },
+      {
+        "x": 50,
+        "y": 50.8,
+        "label": "راوتر وشبكة واي فاي مركزية",
+        "sublabel": "ربط جميع الكاميرات والأجهزة الذكية بسرعة فائقة",
+        "categoryId": "networks",
+        "subcatId": "net-routers",
+        "link": "#subcat:networks:net-routers"
+      },
+      {
+        "x": 36.8,
+        "y": 28.2,
+        "label": "أكسيس بوينت ومقوي إشارة Wi-Fi",
+        "sublabel": "تغطية لاسلكية كاملة لجميع الغرف والطوابق",
+        "categoryId": "networks",
+        "subcatId": "net-access-point",
+        "link": "#subcat:networks:net-access-point"
+      },
+      {
+        "x": 55.2,
+        "y": 23.2,
+        "label": "شاشات عرض ومراقبة تخصصية 24/7",
+        "sublabel": "شاشات عالية الدقة لمتابعة الكاميرات",
+        "categoryId": "screens",
+        "subcatId": "screens-displays",
+        "link": "#cat:screens"
+      },
+      {
+        "x": 37.2,
+        "y": 55.5,
+        "label": "أنظمة صوتيات وسماعات داخلية",
+        "sublabel": "توزيع صوتي نقي للمنازل والشركات",
+        "categoryId": "audio",
+        "subcatId": "audio-speakers",
+        "link": "#cat:audio"
+      }
+    ]
+  },
+  {
+    "id": "banner-right-smartcam",
+    "slot": "right",
+    "title": "كاميرات واي فاي وإنتركم ذكي",
+    "subtitle": "متابعة مباشرة من الموبايل بدقة فائقة",
+    "badge": "حماية ذكية",
+    "image": "assets/images/banners/banner-side-smartcam.webp",
+    "link": "#cat:intercom",
+    "showOverlay": false
+  },
+  {
+    "id": "banner-right-ptz",
+    "slot": "right",
+    "title": "كاميرات PTZ متحركة",
+    "subtitle": "تغطية شاملة وزووم بصري فائق",
+    "badge": "كاميرات احترافية",
+    "image": "assets/images/banners/banner-side-ptz.webp",
+    "link": "#cat:cctv",
+    "showOverlay": true
+  },
+  {
+    "id": "banner-left-audio",
+    "slot": "left",
+    "title": "أنظمة صوتيات وإذاعة داخلية",
+    "subtitle": "مكبرات صوت وسماعات للمنشآت والمساجد والشركات",
+    "badge": "صوتيات",
+    "image": "assets/images/banners/banner-side-audio.webp",
+    "link": "#cat:audio",
+    "showOverlay": false
+  },
+  {
+    "id": "banner-left-nvr",
+    "slot": "left",
+    "title": "أجهزة تسجيل NVR 4K",
+    "subtitle": "تحليل ذكي وتخزين مستمر بأعلى أمان",
+    "badge": "أجهزة تسجيل",
+    "image": "assets/images/banners/banner-side-nvr.webp",
+    "link": "#cat:cctv",
+    "showOverlay": true
   }
 ];

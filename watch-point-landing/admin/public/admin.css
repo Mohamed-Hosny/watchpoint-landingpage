@@ -287,6 +287,35 @@ code {
 .flash-warn { background: var(--amber-50); border-color: #f5dca0; color: var(--amber-600); }
 .flash a { color: inherit; font-weight: 700; text-decoration: underline; }
 
+/* تنبيه التكرار داخل نموذج المنتج */
+.dup-hint { display: flex; flex-direction: column; gap: 10px; }
+.dup-hint[hidden] { display: none; }
+.dup-hint .flash { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+.dup-hint .flash strong { font-size: 14px; }
+.dup-hint .flash div { font-size: 13px; }
+.dup-hint .flash a {
+  margin-top: 4px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid currentColor;
+  text-decoration: none;
+}
+.dup-hint .flash a:hover { background: #fff; }
+
+/* ملاحظة معلوماتية (مثلاً: الكلمات المفتاحية تُدار على الفئة) */
+.info-note {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 13px;
+  color: #475569;
+}
+.info-note strong { display: block; color: #0f172a; margin-bottom: 4px; font-size: 13px; }
+.info-note p { margin: 0; }
+.info-note a { color: #0284c7; font-weight: 700; }
+
 /* ---------- forms ---------- */
 
 .form-card { display: flex; flex-direction: column; gap: 16px; }
