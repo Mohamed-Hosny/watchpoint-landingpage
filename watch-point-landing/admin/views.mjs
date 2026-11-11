@@ -30,6 +30,7 @@ const MESSAGES = {
   quick_product_saved: ["ok", "⚡ تمت إضافة المنتج سريعاً وإدراجه في مكانه المناسب بنجاح!"],
   banner_saved: ["ok", "🖼️ تم حفظ البانر الترويجي وتحديثه على الواجهة بنجاح!"],
   banner_deleted: ["ok", "تم حذف البانر الترويجي بنجاح."],
+  ticker_saved: ["ok", "📢 تم حفظ وتحديث شريط الإعلانات والأخبار المتحرك أعلى الموقع بنجاح!"],
   settings: ["ok", "تم حفظ بيانات الموقع."],
   password: ["ok", "تم تغيير كلمة المرور بنجاح."],
   reset: ["ok", "تمت إعادة البيانات من ملفات الموقع الحالية."],
@@ -1479,9 +1480,80 @@ export function quickProductPage({ store, initialMainId = "", initialSubId = "",
   });
 }
 
+export function renderTickerEditorCard(store, csrf, returnTo = "/admin/banners") {
+  const ticker = store.ticker || {
+    enabled: true,
+    badgeText: "Watch Point",
+    speedSeconds: 36,
+    items: [
+      "دعم فني",
+      "خدمة 24/7",
+      "اسألنا عن أي حاجة عاوز تفهمها",
+      "موردين لجميع الماركات المعتمدة",
+      "منذ 2012",
+      "خبرة على أعلى مستوى",
+      "عقود صيانة دائمة",
+      "نوفر لك كل احتياجاتك",
+      "IOT",
+      "Smart Homes",
+      "Green Houses"
+    ]
+  };
+  const itemsText = Array.isArray(ticker.items) ? ticker.items.join("\n") : "";
+
+  return `
+    <section class="card form-card" id="ticker-settings" style="margin-bottom:1.5rem;border:1.5px solid #bae6fd;background:linear-gradient(180deg,#ffffff 0%,#f8fafc 100%);">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:0.75rem;margin-bottom:0.85rem;">
+        <div>
+          <h2 style="margin:0 0 0.25rem;color:#0f172a;">📢 شريط الإعلانات والأخبار المتحرك (أعلى الصفحة)</h2>
+          <p class="muted" style="margin:0;">
+            يتحكم هذا القسم في شريط الأخبار المتحرك أعلى الهيدر. يمكنك إضافة أو تعديل أو حذف أي جملة في أي وقت (كل سطر يظهر كجملة مستقلة في الشريط المتحرك).
+          </p>
+        </div>
+        <span class="badge ${ticker.enabled !== false ? "badge-ok" : ""}" style="font-size:0.8rem;">
+          ${ticker.enabled !== false ? "مفعّل حالياً على الموقع" : "متوقف حالياً"}
+        </span>
+      </div>
+
+      <form method="post" action="/admin/ticker/save" class="stack" style="max-width:760px;">
+        ${csrfField(csrf)}
+        <input type="hidden" name="returnTo" value="${attr(returnTo)}">
+
+        <label class="check" style="margin:0.25rem 0 0.5rem;">
+          <input type="checkbox" name="enabled" value="1" ${checked(ticker.enabled !== false)}>
+          <span style="font-weight:700;color:#0f172a;">تفعيل وإظهار شريط الإعلانات المتحرك أعلى الموقع</span>
+        </label>
+
+        <div class="grid-2">
+          <label class="field">
+            <span>عنوان الشارة الثابتة في بداية الشريط</span>
+            <input type="text" name="badgeText" value="${attr(ticker.badgeText || "Watch Point")}" maxlength="40" placeholder="مثال: Watch Point أو عروضنا">
+          </label>
+          <label class="field">
+            <span>سرعة حركة الشريط (بالثواني للدورة الكاملة)</span>
+            <input type="number" name="speedSeconds" value="${attr(ticker.speedSeconds || 36)}" min="12" max="120" step="1">
+            <small class="hint">الافتراضي 36 ثانية (كلما قل الرقم زادت سرعة الحركة).</small>
+          </label>
+        </div>
+
+        <label class="field">
+          <span style="font-weight:700;color:#0f172a;">جمل وعبارات الشريط المتحرك (اكتب كل جملة في سطر مستقل) *</span>
+          <textarea name="items" rows="7" required placeholder="دعم فني&#10;خدمة 24/7&#10;موردين لجميع الماركات المعتمدة...">${escapeHtml(itemsText)}</textarea>
+          <small class="hint">تتحرك هذه الجمل بالتتابع في شريط الأخبار، ويتوقف الشريط مؤقتاً عند وقوف العميل بالماوس عليه لقراءته بوضوح.</small>
+        </label>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" type="submit">💾 حفظ وتحديث شريط الإعلانات المتحرك</button>
+        </div>
+      </form>
+    </section>
+  `;
+}
+
 export function settingsPage({ store, csrf, pending, flash }) {
   const settings = store.settings;
   const body = `
+    ${renderTickerEditorCard(store, csrf, "/admin/settings")}
     <form method="post" action="/admin/settings" enctype="multipart/form-data" class="card form-card">
       ${csrfField(csrf)}
       <h2>بيانات التواصل والموقع</h2>
@@ -1800,6 +1872,8 @@ export function bannersPage({ store, editBanner = null, errors = [], csrf, pendi
 
   const body = `
     ${errors.length ? `<div class="flash flash-error"><ul>${errors.map((e) => `<li>${escapeHtml(e)}</li>`).join("")}</ul></div>` : ""}
+
+    ${renderTickerEditorCard(store, csrf, "/admin/banners")}
 
     <section class="card" style="margin-bottom:1.5rem;">
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;">

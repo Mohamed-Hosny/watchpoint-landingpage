@@ -37,14 +37,15 @@ function loadData() {
   const packages = context.window.WP_PACKAGES || [];
   const brands = context.window.WP_BRANDS || [];
   const banners = context.window.WP_BANNERS || [];
+  const ticker = context.window.WP_TICKER || null;
 
   if (!config) throw new Error("WP_CONFIG is missing.");
   if (!categories.length) throw new Error("No categories found in js/data.js.");
 
-  return { config, categories, products, packages, brands, banners };
+  return { config, categories, products, packages, brands, banners, ticker };
 }
 
-const { config, categories, products, packages, brands, banners } = loadData();
+const { config, categories, products, packages, brands, banners, ticker } = loadData();
 
 const SITE = config.site || {};
 const COMPANY = config.company || {};
@@ -216,37 +217,32 @@ function productPriceLabel(product) {
   return amount + " " + (product.priceCurrency === "USD" ? "$" : "ج.م");
 }
 
+function productShortDescription(product) {
+  if (!product) return "";
+  const shortText = String(product.shortName || "").trim();
+  if (shortText && shortText !== product.name) return shortText;
+  return String(product.description || "").trim();
+}
+
 function renderSeoPriceBox(product, isPackage = false) {
   const value = product ? product.price : null;
   if (value !== null && value !== undefined && value !== "" && Number.isFinite(Number(value))) {
     const numeric = Number(value);
-    const amount = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 }).format(numeric);
-    const curr = product.priceCurrency === "USD" ? "$" : "ج.م";
+    const amount = numeric.toLocaleString("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2
+    });
+    const curr = product.priceCurrency === "USD" ? "USD" : "ج.م";
     return `
-      <div class="price-box price-box--numeric">
-        <div class="price-top">
-          <span class="price-label">السعر:</span>
-          <span class="price-badge-stock">متاح للتوريد والتركيب</span>
-        </div>
-        <div class="price-main">
-          <span class="price-amount">${esc(amount)}</span>
-          <span class="price-unit">${esc(curr)}</span>
-        </div>
-        <span class="price-subtext">${isPackage ? "سعر الباقة يشمل التوريد والتركيب والبرمجة" : "شامل التوريد والضمان الفني المعتمد"}</span>
+      <div class="price-clean">
+        <span class="price-clean-amount">${esc(amount)}</span>
+        <span class="price-clean-unit">${esc(curr)}</span>
       </div>`;
   }
 
   return `
-    <div class="price-box price-box--quote">
-      <div class="price-top">
-        <span class="price-label">${isPackage ? "سعر الباقة:" : "عرض السعر:"}</span>
-        <span class="price-badge-quote">أفضل سعر جملة</span>
-      </div>
-      <div class="price-main">
-        <span class="price-quote-text">اطلب آخر سعر</span>
-        <svg class="icon price-quote-icon" aria-hidden="true"><use href="#icon-clipboard"/></svg>
-      </div>
-      <span class="price-subtext">السعر يُحدد بدقة بعد المعاينة الفنية مجانًا</span>
+    <div class="price-clean price-clean--quote">
+      <span class="price-clean-quote">${isPackage ? "يُحدد بعد المعاينة" : "اطلب السعر"}</span>
     </div>`;
 }
 
@@ -573,6 +569,7 @@ function filterChip({ filter, value, label, count }) {
 
 function filterProductCard(item, order) {
   const priceLabel = productPriceLabel(item);
+  const shortDesc = productShortDescription(item);
   return `
             <a class="fp-card" href="./${esc(productPageFile(item))}" data-filter-item data-order="${order}" data-subcategory="${esc(item.categoryId || "")}" data-price="${esc(priceAttr(item))}" data-brand="${esc(item.brandId || "")}" data-name="${esc(item.name)}">
               <span class="fp-card-media">
@@ -581,6 +578,7 @@ function filterProductCard(item, order) {
               </span>
               <span class="fp-card-body">
                 <span class="fp-card-title">${esc(item.name)}</span>
+                ${shortDesc ? `<span class="fp-card-desc">${esc(shortDesc)}</span>` : ""}
                 <span class="fp-card-price${priceLabel ? "" : " fp-card-price--quote"}">${esc(priceLabel || "اطلب آخر سعر")}</span>
               </span>
             </a>`;
@@ -868,7 +866,7 @@ function categoryPage(category) {
         <div class="category-product-body">
           ${product.demo ? '<span class="demo-pill"><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> بيانات تجريبية</span>' : ""}
           <h3><a href="./${esc(productPageFile(product))}">${esc(product.name)}</a></h3>
-          <p>${esc(product.description)}</p>
+          <p>${esc(productShortDescription(product))}</p>
           <ul class="spec-list" aria-label="أبرز مواصفات ومزايا المنتج">
             ${(product.specs || []).map((spec) => `<li><svg class="icon spec-icon" aria-hidden="true"><use href="#icon-check-circle"/></svg><span>${esc(spec)}</span></li>`).join("")}
           </ul>
@@ -1181,7 +1179,7 @@ function productPage(product, category) {
       <div class="container">
         <p class="eyebrow eyebrow--light"><a href="${categoryUrl}">${esc(category.name)}</a></p>
         <h1>${esc(product.name)}</h1>
-        <p>${esc(description)}</p>
+        <p>${esc(productShortDescription(product) || description)}</p>
         <div class="page-hero-actions">
           <a class="btn btn--primary btn--lg" href="${quoteUrl}">
             اطلب عرض سعر لهذا المنتج
@@ -1212,7 +1210,7 @@ function productPage(product, category) {
             <div class="category-product-body">
               ${product.demo ? '<span class="demo-pill"><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> بيانات تجريبية</span>' : ""}
               <h3>${esc(product.name)}</h3>
-              <p>${esc(product.description)}</p>
+              <p>${esc(productShortDescription(product))}</p>
               <ul class="spec-list" aria-label="أبرز مواصفات ومزايا المنتج">
                 ${(product.specs || []).map((spec) => `<li><svg class="icon spec-icon" aria-hidden="true"><use href="#icon-check-circle"/></svg><span>${esc(spec)}</span></li>`).join("")}
               </ul>
@@ -1555,11 +1553,11 @@ function dynamicProductPage() {
 
       var priceBoxHtml = "";
       if (product.price !== null && product.price !== undefined && product.price !== "" && Number.isFinite(Number(product.price))) {
-        var amount = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 }).format(Number(product.price));
-        var curr = product.priceCurrency === "USD" ? "$" : "ج.م";
-        priceBoxHtml = '<div class="price-box price-box--numeric"><div class="price-top"><span class="price-label">السعر:</span><span class="price-badge-stock">متاح للتوريد والتركيب</span></div><div class="price-main"><span class="price-amount">' + escHtml(amount) + '</span><span class="price-unit">' + escHtml(curr) + '</span></div><span class="price-subtext">شامل التوريد والضمان الفني المعتمد</span></div>';
+        var amount = Number(product.price).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        var curr = product.priceCurrency === "USD" ? "USD" : "ج.م";
+        priceBoxHtml = '<div class="price-clean"><span class="price-clean-amount">' + escHtml(amount) + '</span> <span class="price-clean-unit">' + escHtml(curr) + '</span></div>';
       } else {
-        priceBoxHtml = '<div class="price-box price-box--quote"><div class="price-top"><span class="price-label">عرض السعر:</span><span class="price-badge-quote">أفضل سعر جملة</span></div><div class="price-main"><span class="price-quote-text">اطلب آخر سعر</span></div><span class="price-subtext">السعر يُحدد بدقة بعد المعاينة الفنية مجانًا</span></div>';
+        priceBoxHtml = '<div class="price-clean price-clean--quote"><span class="price-clean-quote">اطلب السعر</span></div>';
       }
 
       var specs = Array.isArray(product.specs) ? product.specs : [];
@@ -1571,6 +1569,7 @@ function dynamicProductPage() {
       var categoryUrl = category.slug ? "catalog/" + category.slug + ".html" : "catalog/index.html";
       var imgPath = String(product.image || "assets/images/brand-mark.webp").replace(/^\\.?\\//, "");
 
+      var shortDesc = (product.shortName && product.shortName !== product.name) ? product.shortName : (product.description || "");
       root.innerHTML =
         '<div class="breadcrumbs"><div class="container"><nav aria-label="مسار التصفح"><ol>' +
           '<li><a href="index.html">الرئيسية</a></li>' +
@@ -1581,7 +1580,7 @@ function dynamicProductPage() {
         '<section class="page-hero"><div class="container">' +
           '<p class="eyebrow eyebrow--light"><a href="' + escHtml(categoryUrl) + '">' + escHtml(category.name) + '</a></p>' +
           '<h1>' + escHtml(product.name) + '</h1>' +
-          '<p>' + escHtml(product.description || product.shortName || "") + '</p>' +
+          '<p>' + escHtml(shortDesc) + '</p>' +
           '<div class="page-hero-actions">' +
             '<a class="btn btn--primary btn--lg" href="' + escHtml(quoteUrl) + '">اطلب عرض سعر لهذا المنتج <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>' +
             '<a class="btn btn--ghost btn--lg" href="index.html#products">العودة للمتجر</a>' +
@@ -1592,7 +1591,7 @@ function dynamicProductPage() {
             '<div class="category-product-media"><img src="' + escHtml(imgPath) + '" alt="' + escHtml(product.imageAlt || product.name) + '" width="800" height="600" loading="eager"></div>' +
             '<div class="category-product-body">' +
               '<h3>' + escHtml(product.name) + '</h3>' +
-              '<p>' + escHtml(product.description || "") + '</p>' +
+              '<p>' + escHtml(shortDesc) + '</p>' +
               specsHtml +
               '<div class="price-row">' + priceBoxHtml + '</div>' +
               '<a class="btn btn--primary btn--block" href="' + escHtml(quoteUrl) + '">اطلب عرض سعر <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>' +
@@ -1646,7 +1645,8 @@ const catalogSnapshot = {
   products,
   packages,
   brands,
-  banners
+  banners,
+  ticker
 };
 fs.writeFileSync(path.join(catalogDir, "catalog.json"), JSON.stringify(catalogSnapshot, null, 2), "utf8");
 

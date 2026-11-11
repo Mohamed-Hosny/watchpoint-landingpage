@@ -1366,6 +1366,47 @@ async function handleAdmin(req, res, url, pathname) {
     return redirect(res, "/admin/banners?msg=banner_deleted");
   }
 
+  /* ---------- top news ticker ---------- */
+  if (pathname === "/admin/ticker/save" && method === "POST") {
+    const { fields } = await parseBody(req);
+    if (!csrfOk(session, fields)) {
+      return adminHtml(res, errorPage({ status: 403, message: "انتهت صلاحية الجلسة." }), 403);
+    }
+
+    const enabled = fields.enabled === "1" || fields.enabled === "true";
+    const badgeText = String(fields.badgeText || "Watch Point").trim() || "Watch Point";
+    const rawSpeed = Number(fields.speedSeconds);
+    const speedSeconds = Number.isFinite(rawSpeed) ? Math.min(120, Math.max(10, rawSpeed)) : 36;
+    const items = parseLines(fields.items);
+
+    store.ticker = {
+      enabled,
+      badgeText,
+      speedSeconds,
+      items: items.length
+        ? items
+        : [
+            "دعم فني",
+            "خدمة 24/7",
+            "اسألنا عن أي حاجة عاوز تفهمها",
+            "موردين لجميع الماركات المعتمدة",
+            "منذ 2012",
+            "خبرة على أعلى مستوى",
+            "عقود صيانة دائمة",
+            "نوفر لك كل احتياجاتك",
+            "IOT",
+            "Smart Homes",
+            "Green Houses"
+          ]
+    };
+
+    saveStore(store);
+    const returnTo = String(fields.returnTo || "").startsWith("/admin/")
+      ? fields.returnTo
+      : "/admin/banners";
+    return redirect(res, returnTo + (returnTo.includes("?") ? "&" : "?") + "msg=ticker_saved");
+  }
+
   /* ---------- settings ---------- */
   if (pathname === "/admin/settings" && method === "GET") {
     return adminHtml(

@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
   <link rel="preload" href="assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="css/style.css?v=1793992928910">
+  <link rel="stylesheet" href="css/style.css?v=1794000774189">
 </head>
 <body class="subpage">
   <svg xmlns="http://www.w3.org/2000/svg" class="svg-sprite" aria-hidden="true" focusable="false">
@@ -145,8 +145,8 @@
     </div>
   </div>
 </footer>
-  <script src="js/config.js?v=1793992928910"></script>
-  <script src="js/data.js?v=1793992928910"></script>
+  <script src="js/config.js?v=1794000774189"></script>
+  <script src="js/data.js?v=1794000774189"></script>
   <script>
     (function() {
       var params = new URLSearchParams(window.location.search);
@@ -184,11 +184,11 @@
 
       var priceBoxHtml = "";
       if (product.price !== null && product.price !== undefined && product.price !== "" && Number.isFinite(Number(product.price))) {
-        var amount = new Intl.NumberFormat("ar-EG", { maximumFractionDigits: 0 }).format(Number(product.price));
-        var curr = product.priceCurrency === "USD" ? "$" : "ج.م";
-        priceBoxHtml = '<div class="price-box price-box--numeric"><div class="price-top"><span class="price-label">السعر:</span><span class="price-badge-stock">متاح للتوريد والتركيب</span></div><div class="price-main"><span class="price-amount">' + escHtml(amount) + '</span><span class="price-unit">' + escHtml(curr) + '</span></div><span class="price-subtext">شامل التوريد والضمان الفني المعتمد</span></div>';
+        var amount = Number(product.price).toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        var curr = product.priceCurrency === "USD" ? "USD" : "ج.م";
+        priceBoxHtml = '<div class="price-clean"><span class="price-clean-amount">' + escHtml(amount) + '</span> <span class="price-clean-unit">' + escHtml(curr) + '</span></div>';
       } else {
-        priceBoxHtml = '<div class="price-box price-box--quote"><div class="price-top"><span class="price-label">عرض السعر:</span><span class="price-badge-quote">أفضل سعر جملة</span></div><div class="price-main"><span class="price-quote-text">اطلب آخر سعر</span></div><span class="price-subtext">السعر يُحدد بدقة بعد المعاينة الفنية مجانًا</span></div>';
+        priceBoxHtml = '<div class="price-clean price-clean--quote"><span class="price-clean-quote">اطلب السعر</span></div>';
       }
 
       var specs = Array.isArray(product.specs) ? product.specs : [];
@@ -200,6 +200,7 @@
       var categoryUrl = category.slug ? "catalog/" + category.slug + ".html" : "catalog/index.html";
       var imgPath = String(product.image || "assets/images/brand-mark.webp").replace(/^\.?\//, "");
 
+      var shortDesc = (product.shortName && product.shortName !== product.name) ? product.shortName : (product.description || "");
       root.innerHTML =
         '<div class="breadcrumbs"><div class="container"><nav aria-label="مسار التصفح"><ol>' +
           '<li><a href="index.html">الرئيسية</a></li>' +
@@ -210,7 +211,7 @@
         '<section class="page-hero"><div class="container">' +
           '<p class="eyebrow eyebrow--light"><a href="' + escHtml(categoryUrl) + '">' + escHtml(category.name) + '</a></p>' +
           '<h1>' + escHtml(product.name) + '</h1>' +
-          '<p>' + escHtml(product.description || product.shortName || "") + '</p>' +
+          '<p>' + escHtml(shortDesc) + '</p>' +
           '<div class="page-hero-actions">' +
             '<a class="btn btn--primary btn--lg" href="' + escHtml(quoteUrl) + '">اطلب عرض سعر لهذا المنتج <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>' +
             '<a class="btn btn--ghost btn--lg" href="index.html#products">العودة للمتجر</a>' +
@@ -221,7 +222,7 @@
             '<div class="category-product-media"><img src="' + escHtml(imgPath) + '" alt="' + escHtml(product.imageAlt || product.name) + '" width="800" height="600" loading="eager"></div>' +
             '<div class="category-product-body">' +
               '<h3>' + escHtml(product.name) + '</h3>' +
-              '<p>' + escHtml(product.description || "") + '</p>' +
+              '<p>' + escHtml(shortDesc) + '</p>' +
               specsHtml +
               '<div class="price-row">' + priceBoxHtml + '</div>' +
               '<a class="btn btn--primary btn--block" href="' + escHtml(quoteUrl) + '">اطلب عرض سعر <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>' +
@@ -258,7 +259,7 @@
     <button class="btn btn--ghost btn--sm" id="consent-decline" type="button">رفض</button>
   </div>
 </div>
-<script src="js/config.js?v=1793992928910"></script>
-<script src="js/main.js?v=1793992928910" defer></script>
+<script src="js/config.js?v=1794000774189"></script>
+<script src="js/main.js?v=1794000774189" defer></script>
 </body>
 </html>

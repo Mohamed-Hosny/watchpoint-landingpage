@@ -29,7 +29,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
   <link rel="preload" href="../assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/style.css?v=1793992928910">
+  <link rel="stylesheet" href="../css/style.css?v=1794000774189">
   <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -208,8 +208,11 @@
           
 
           
-
-          
+    <section class="cat-filter" id="category-products">
+      
+      <h2>منتجات قطع غيار اليكترونيات</h2>
+      <p class="cat-empty">ستُضاف المنتجات المتاحة في قطع غيار اليكترونيات قريبًا. تقدر تطلب عرض سعر الآن وسنبلغك عند توفرها.</p>
+    </section>
 
           <h2>دليل اختيار قطع غيار اليكترونيات</h2>
           
@@ -371,7 +374,149 @@
     <button class="btn btn--ghost btn--sm" id="consent-decline" type="button">رفض</button>
   </div>
 </div>
-<script src="../js/config.js?v=1793992928910"></script>
-<script src="../js/main.js?v=1793992928910" defer></script>
+<script src="../js/config.js?v=1794000774189"></script>
+<script src="../js/main.js?v=1794000774189" defer></script>
+  
+<script>
+(function () {
+  var section = document.getElementById("category-products");
+  if (!section) return;
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-filter-item]"));
+  var grid = document.getElementById("cat-products-grid");
+  var countEl = document.getElementById("cat-filter-count");
+  var noResults = document.getElementById("cat-no-results");
+  var sortEl = document.getElementById("cat-sort");
+  var resetBtn = document.getElementById("cat-filter-reset");
+
+  function bucketOf(raw) {
+    var price = parseFloat(raw);
+    if (!isFinite(price)) return "quote";
+    if (price < 2000) return "lt-2000";
+    if (price <= 10000) return "2000-10000";
+    return "gt-10000";
+  }
+
+  function inputs(name) {
+    return Array.prototype.slice.call(section.querySelectorAll('input[data-filter="' + name + '"]'));
+  }
+
+  function checkedValues(name) {
+    return inputs(name)
+      .filter(function (input) { return input.checked; })
+      .map(function (input) { return input.value; });
+  }
+
+  function chipFor(id) {
+    return inputs("subcategory").filter(function (input) { return input.value === id; })[0] || null;
+  }
+
+  function syncChip(input) {
+    var chip = input.closest ? input.closest(".cat-chip") : null;
+    if (chip) chip.classList.toggle("is-on", input.checked);
+  }
+
+  function apply() {
+    var subs = checkedValues("subcategory");
+    var prices = checkedValues("price");
+    var brandList = checkedValues("brand");
+    var visible = 0;
+    items.forEach(function (item) {
+      var ok = true;
+      if (subs.length && subs.indexOf(item.getAttribute("data-subcategory")) === -1) ok = false;
+      if (ok && prices.length && prices.indexOf(bucketOf(item.getAttribute("data-price"))) === -1) ok = false;
+      if (ok && brandList.length && brandList.indexOf(item.getAttribute("data-brand")) === -1) ok = false;
+      item.hidden = !ok;
+      if (ok) visible += 1;
+    });
+    if (countEl) {
+      countEl.textContent =
+        visible === 1 ? "منتج واحد معروض" :
+        visible === 2 ? "منتجان معروضان" :
+        visible + " منتج معروض";
+    }
+    if (noResults) noResults.hidden = visible !== 0;
+  }
+
+  function sortGrid() {
+    if (!grid || !sortEl) return;
+    var mode = sortEl.value;
+    var cards = Array.prototype.slice.call(grid.children);
+    cards.sort(function (a, b) {
+      if (mode === "price-asc" || mode === "price-desc") {
+        var pa = parseFloat(a.getAttribute("data-price"));
+        var pb = parseFloat(b.getAttribute("data-price"));
+        var na = isFinite(pa);
+        var nb = isFinite(pb);
+        if (!na && !nb) return 0;
+        if (!na) return 1;
+        if (!nb) return -1;
+        return mode === "price-asc" ? pa - pb : pb - pa;
+      }
+      if (mode === "name-asc") {
+        return String(a.getAttribute("data-name") || "").localeCompare(String(b.getAttribute("data-name") || ""), "ar");
+      }
+      return (
+        parseInt(a.getAttribute("data-order") || "0", 10) -
+        parseInt(b.getAttribute("data-order") || "0", 10)
+      );
+    });
+    cards.forEach(function (card) { grid.appendChild(card); });
+  }
+
+  function selectSubcategory(id) {
+    inputs("subcategory").forEach(function (input) {
+      input.checked = input.value === id;
+      syncChip(input);
+    });
+  }
+
+  section.addEventListener("change", function (event) {
+    var input = event.target;
+    if (input && input.hasAttribute && input.hasAttribute("data-filter")) {
+      syncChip(input);
+      apply();
+    }
+  });
+
+  if (sortEl) sortEl.addEventListener("change", sortGrid);
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      inputs("subcategory").concat(inputs("price"), inputs("brand")).forEach(function (input) {
+        input.checked = false;
+        syncChip(input);
+      });
+      if (sortEl) sortEl.value = "default";
+      sortGrid();
+      apply();
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("a[data-sub-filter]"), function (link) {
+    link.addEventListener("click", function (event) {
+      var id = link.getAttribute("data-sub-filter");
+      if (!chipFor(id)) return;
+      event.preventDefault();
+      selectSubcategory(id);
+      apply();
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  function applyHash() {
+    var hash = window.location.hash || "";
+    if (hash.indexOf("#subcategory-") !== 0) return;
+    var id = hash.slice("#subcategory-".length);
+    if (chipFor(id)) {
+      selectSubcategory(id);
+      apply();
+    }
+  }
+
+  applyHash();
+  window.addEventListener("hashchange", applyHash);
+  apply();
+})();
+</script>
 </body>
 </html>

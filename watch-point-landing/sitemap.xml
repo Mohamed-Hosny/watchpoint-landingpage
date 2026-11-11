@@ -62,6 +62,108 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://watchpoint.example.com/catalog/product-ac1200-wireless-router.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-door-closer.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-analog-column-speaker-20w.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-analog-ceiling-speaker-15w.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-ip-video-intercom-kit.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-ds-1ln6uu-cca-network-cable.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-16-port-gigabit-smart-poe-switch.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-6-mp-smart-hybrid-light-fixed-dome-network-camera.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-5.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-n300-wi-fi-extender.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-3k-colorvu-smart-hybrid-light-fixed-mini-bullet-camera.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-8-ch-5-mp-1u-h-265-acusense-dvr.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-8-ch-5mp-1u-h-265-acusense-dvr.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-2-mp-colorvu-fixed-mini-bullet-camera.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-4-ch-1080p-1u-h-265-dvr.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-3k-smart-hybrid-light-audio-fixed-mini-bullet-camera.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-3k-two-way-audio-fixed-mini-bullet-camera.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://watchpoint.example.com/catalog/product-3k-two-way-audio-fixed-turret.html</loc>
     <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
@@ -87,6 +189,30 @@
   </url>
   <url>
     <loc>https://watchpoint.example.com/catalog/product-smartlock-accesscontrol.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-reye-gigabit-poe-switch.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-hikvision-ip-video-intercom-kit.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-dsppa-ceiling-speaker-10w.html</loc>
+    <lastmod>2026-11-06</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://watchpoint.example.com/catalog/product-dahua-22-cctv-monitor.html</loc>
     <lastmod>2026-11-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>

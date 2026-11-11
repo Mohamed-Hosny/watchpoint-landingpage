@@ -522,6 +522,445 @@
   ],
   "products": [
     {
+      "id": "prod-mw5hqnga-be452a",
+      "slug": "ac1200-wireless-router",
+      "name": "DS-3WR12C-E",
+      "shortName": "AC1200 Wireless Router",
+      "mainCategoryId": "networks",
+      "categoryId": "net-routers",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 1200,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1794000772660-c2472808.webp",
+      "imageAlt": "DS-3WR12C-E",
+      "description": "راوتر AC1200 ثنائي النطاق — حتى 866 ميجابت على 5 جيجاهرتز و 300 ميجابت على 2.4 جيجاهرتز، يدعم IEEE 802.11a/n/ac على 5 جيجاهرتز و IEEE 802.11b/g/n على 2.4 جيجاهرتز، 4 أنتينات عالية الكسب بمعدل 5 dBi، تغطية موصى بها للمنازل حوالي 80 إلى 100 متر مربع، حتى 128 جهاز متصل، والموصى به 30 لأداء مستقر، تجوّل سريع بمعيار 802.11k/v، منفذ WAN واحد 10/100 ميجابت و 3 منافذ LAN 10/100 ميجابت، تشفير WPA2-PSK و WPA/WPA2-PSK، وربط سريع WPS، وإخفاء اسم الشبكة، دعم VPN: PPTP و L2TP كسيرفر وكعميل، الإدارة من واجهة الويب أو تطبيق الموبايل أو Hik-Partner Pro — أقصى استهلاك 6 واط",
+      "featured": false,
+      "specs": [
+        "راوتر AC1200 ثنائي النطاق — حتى 866 ميجابت على 5 جيجاهرتز و 300 ميجابت على 2.4 جيجاهرتز",
+        "يدعم IEEE 802.11a/n/ac على 5 جيجاهرتز و IEEE 802.11b/g/n على 2.4 جيجاهرتز",
+        "4 أنتينات عالية الكسب بمعدل 5 dBi",
+        "تغطية موصى بها للمنازل حوالي 80 إلى 100 متر مربع",
+        "حتى 128 جهاز متصل، والموصى به 30 لأداء مستقر",
+        "تجوّل سريع بمعيار 802.11k/v",
+        "منفذ WAN واحد 10/100 ميجابت و 3 منافذ LAN 10/100 ميجابت",
+        "تشفير WPA2-PSK و WPA/WPA2-PSK، وربط سريع WPS، وإخفاء اسم الشبكة",
+        "دعم VPN: PPTP و L2TP كسيرفر وكعميل",
+        "الإدارة من واجهة الويب أو تطبيق الموبايل أو Hik-Partner Pro — أقصى استهلاك 6 واط"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5ho1po-e024ab",
+      "slug": "door-closer",
+      "name": "DS-K4DC104",
+      "shortName": "Door Closer",
+      "mainCategoryId": "access-control",
+      "categoryId": "access-accessories",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 1700,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1794000651176-b39320d8.webp",
+      "imageAlt": "DS-K4DC104",
+      "description": "Suitable for single-action doors with a 900mm width.، Ideal for doors weighing between 60kg to 85kg.، Hydraulic Control:، Provides 0°–180° full hydraulic control for smooth and precise door operation.، Two adjustable speed sections:، Latching speed valve: 0°–15°.، Closing speed valve: 15°–180°.",
+      "featured": false,
+      "specs": [
+        "Suitable for single-action doors with a 900mm width.",
+        "Ideal for doors weighing between 60kg to 85kg.",
+        "Hydraulic Control:",
+        "Provides 0°–180° full hydraulic control for smooth and precise door operation.",
+        "Two adjustable speed sections:",
+        "Latching speed valve: 0°–15°.",
+        "Closing speed valve: 15°–180°."
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5hd2fs-fe7124",
+      "slug": "analog-column-speaker-20w",
+      "name": "DS-QAE0420G1-V",
+      "shortName": "Analog Column Speaker 20W",
+      "mainCategoryId": "audio",
+      "categoryId": "audio-speakers",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 3400,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1794000138896-6e09224f.webp",
+      "imageAlt": "DS-QAE0420G1-V",
+      "description": "-25إلى 55درجة مئوية، Column، 20W، 100 Hz to 20 kHz، 8 Ω، 89.5 dB ± 3 dB، 4\"، 100V Line، Analog Speaker",
+      "featured": false,
+      "specs": [
+        "-25إلى 55درجة مئوية",
+        "Column",
+        "20W",
+        "100 Hz to 20 kHz",
+        "8 Ω",
+        "89.5 dB ± 3 dB",
+        "4\"",
+        "100V Line",
+        "Analog Speaker"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5h9es8-1835da",
+      "slug": "analog-ceiling-speaker-15w",
+      "categoryId": "audio-speakers",
+      "mainCategoryId": "audio",
+      "brandId": "brand-mw43andh-49dc5b",
+      "name": "DS-QAE0215G1-V",
+      "shortName": "Analog Ceiling Speaker 15W",
+      "description": "-20 إلى 50 درجة مئوية، Ceiling، 15W، 70Hz to 18KHz، 8 Ω، 93 dB ± 3 dB، 5\"",
+      "image": "assets/images/uploads/1793999980691-12bfa3bc.webp",
+      "imageAlt": "DS-QAE0215G1-V",
+      "specs": [
+        "-20 إلى 50 درجة مئوية",
+        "Ceiling",
+        "15W",
+        "70Hz to 18KHz",
+        "8 Ω",
+        "93 dB ± 3 dB",
+        "5\""
+      ],
+      "price": 650,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5h7ah8-8e05ce",
+      "slug": "ip-video-intercom-kit",
+      "name": "DS-KIS611-S",
+      "shortName": "IP Video Intercom Kit",
+      "mainCategoryId": "intercom",
+      "categoryId": "intercom-video",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 14560,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793999869380-8c8557b8.jpg",
+      "imageAlt": "DS-KIS611-S",
+      "description": "SIP / H.264",
+      "featured": false,
+      "specs": [
+        "SIP / H.264"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5h63i1-7a8b4a",
+      "slug": "ds-1ln6uu-cca-network-cable",
+      "name": "DS-1LN6UU/CCA",
+      "shortName": "DS-1LN6UU/CCA - Network Cable",
+      "mainCategoryId": "networks",
+      "categoryId": "net-cables",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 3600,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793999813676-4608479a.webp",
+      "imageAlt": "DS-1LN6UU/CCA",
+      "description": "كابل شبكة Cat 6 نوع U/UTP — علبة 305 متر، موصل CCA — ألومنيوم مغطى بالنحاس، نسبة النحاس ≥ 22% — قطر 0.57 مم، 23 AWG، مقاومة تيار مستمر ≤ 12 أوم لكل 100 متر — أعلى من النحاس الخالص، فخطّط لمسافات PoE أقصر، اجتاز اختبار Fluke للقناة 90 متر، مطابق لمعيار ANSI/TIA-568.2-D و RoHS 2.0، غلاف PVC رمادي بتصنيف حريق CPR Eca — عزل داخلي HDPE، قطر خارجي 6.4 مم، خيط تقطيع وفاصل أزواج لتسريع التوصيل، نطاق حرارة التشغيل −10 °م إلى 60 °م — ممانعة 100 ± 15 أوم، انحراف زمني ≤ 45 نانوثانية لكل 100 متر، وزن العلبة 10.5 كجم — جهد تشغيل 57 فولت",
+      "featured": false,
+      "specs": [
+        "كابل شبكة Cat 6 نوع U/UTP — علبة 305 متر",
+        "موصل CCA — ألومنيوم مغطى بالنحاس، نسبة النحاس ≥ 22% — قطر 0.57 مم، 23 AWG",
+        "مقاومة تيار مستمر ≤ 12 أوم لكل 100 متر — أعلى من النحاس الخالص، فخطّط لمسافات PoE أقصر",
+        "اجتاز اختبار Fluke للقناة 90 متر",
+        "مطابق لمعيار ANSI/TIA-568.2-D و RoHS 2.0",
+        "غلاف PVC رمادي بتصنيف حريق CPR Eca — عزل داخلي HDPE، قطر خارجي 6.4 مم",
+        "خيط تقطيع وفاصل أزواج لتسريع التوصيل",
+        "نطاق حرارة التشغيل −10 °م إلى 60 °م — ممانعة 100 ± 15 أوم، انحراف زمني ≤ 45 نانوثانية لكل 100 متر",
+        "وزن العلبة 10.5 كجم — جهد تشغيل 57 فولت"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5h44l5-9d5806",
+      "slug": "16-port-gigabit-smart-poe-switch",
+      "name": "DS-3E1520P-EI/M",
+      "shortName": "16 Port Gigabit Smart POE Switch",
+      "mainCategoryId": "networks",
+      "categoryId": "net-switches",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 9865,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793999721784-c715d214.webp",
+      "imageAlt": "DS-3E1520P-EI/M",
+      "description": "المنافذ: 16 منفذ PoE جيجابت، 2 منفذ RJ45 جيجابت، 2 منفذ ألياف ضوئية جيجابت، تغذية PoE على المنافذ 1 إلى 16، مطابقة لـ IEEE 802.3af، IEEE 802.3at، إجمالي قدرة PoE 125 واط، وحتى 30 واط للمنفذ الواحد، وضع المدى الطويل ينقل حتى 300 متر على المنافذ 1 إلى 16 بدون ريبيتر إضافي، خاصية PoE Watchdog على المنافذ 1 إلى 16 تكتشف الكاميرا المتوقفة عن الاستجابة وتعيد تشغيلها تلقائيًا، خاصية Perpetual PoE تبقي الكاميرات مغذّاة بالكهرباء أثناء إعادة تشغيل السويتش نفسه، سعة تبديل 68 Gbps ومعدل تمرير حزم 50.59 Mpps، خصائص الإدارة: VLAN (802.1Q)، عزل المنافذ، QoS لتوزيع الباند، منع الحلقات (Loop)، تجميع الوصلات (LAG)، DHCP Snooping، حماية من الصاعق بمعدل 6 كيلو فولت على منافذ الشبكة، متابعة وإدارة عن بُعد عبر Hik-Partner Pro — سرعة المنافذ، استهلاك الباند، استهلاك قدرة PoE، الطوبولوجيا، الإنذارات، وإعادة التشغيل",
+      "featured": false,
+      "specs": [
+        "المنافذ: 16 منفذ PoE جيجابت، 2 منفذ RJ45 جيجابت، 2 منفذ ألياف ضوئية جيجابت",
+        "تغذية PoE على المنافذ 1 إلى 16، مطابقة لـ IEEE 802.3af، IEEE 802.3at",
+        "إجمالي قدرة PoE 125 واط، وحتى 30 واط للمنفذ الواحد",
+        "وضع المدى الطويل ينقل حتى 300 متر على المنافذ 1 إلى 16 بدون ريبيتر إضافي",
+        "خاصية PoE Watchdog على المنافذ 1 إلى 16 تكتشف الكاميرا المتوقفة عن الاستجابة وتعيد تشغيلها تلقائيًا",
+        "خاصية Perpetual PoE تبقي الكاميرات مغذّاة بالكهرباء أثناء إعادة تشغيل السويتش نفسه",
+        "سعة تبديل 68 Gbps ومعدل تمرير حزم 50.59 Mpps",
+        "خصائص الإدارة: VLAN (802.1Q)، عزل المنافذ، QoS لتوزيع الباند، منع الحلقات (Loop)، تجميع الوصلات (LAG)، DHCP Snooping",
+        "حماية من الصاعق بمعدل 6 كيلو فولت على منافذ الشبكة",
+        "متابعة وإدارة عن بُعد عبر Hik-Partner Pro — سرعة المنافذ، استهلاك الباند، استهلاك قدرة PoE، الطوبولوجيا، الإنذارات، وإعادة التشغيل"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5h2f36-c4078b",
+      "slug": "6-mp-smart-hybrid-light-fixed-dome-network-camera",
+      "categoryId": "cctv-ip",
+      "mainCategoryId": "cctv",
+      "brandId": "",
+      "name": "DS-2CD1163G2-LIU (2.8mm)",
+      "shortName": "6 MP Smart Hybrid Light Fixed Dome Network Camera",
+      "description": "Camera Mic ,، Camera Indoor، ,Smart Hyprid، Light ,Camera، 6M ,Line 1، ,IP Camera",
+      "image": "assets/images/uploads/1793999642067-1eebe081.webp",
+      "imageAlt": "DS-2CD1163G2-LIU (2.8mm)",
+      "specs": [
+        "Camera Mic ,",
+        "Camera Indoor",
+        ",Smart Hyprid",
+        "Light ,Camera",
+        "6M ,Line 1",
+        ",IP Camera"
+      ],
+      "price": 4225,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5gzpdz-bf676b",
+      "slug": "5",
+      "name": "Ezviz H9C 5M+5M",
+      "shortName": "كاميرا خارجية بعدستين وواي فاي بدقة 5 ميجا",
+      "mainCategoryId": "cctv",
+      "categoryId": "cctv-wifi",
+      "brandId": "brand-ezviz",
+      "price": 5735,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793999515441-cb220ce2.webp",
+      "imageAlt": "Ezviz H9C 5M+5M",
+      "description": "حساس الصورة: CMOS مقاس 1/2.7 بوصة بمسح تدريجي، أقصى دقة 2880 × 1620، ضغط الفيديو H.265 و H.264، واي فاي IEEE 802.11 b/g/n، تخزين على كارت microSD حتى 512 جيجابايت، تغذية DC 12 فولت / 1.5 أمبير",
+      "featured": false,
+      "specs": [
+        "حساس الصورة: CMOS مقاس 1/2.7 بوصة بمسح تدريجي",
+        "أقصى دقة 2880 × 1620",
+        "ضغط الفيديو H.265 و H.264",
+        "واي فاي IEEE 802.11 b/g/n",
+        "تخزين على كارت microSD حتى 512 جيجابايت",
+        "تغذية DC 12 فولت / 1.5 أمبير"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5gt0ia-ab4321",
+      "slug": "n300-wi-fi-extender",
+      "name": "DS-3WRE3N",
+      "shortName": "N300 Wi-Fi Extender",
+      "mainCategoryId": "networks",
+      "categoryId": "net-extenders",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 900,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793999203272-df42f68f.webp",
+      "imageAlt": "DS-3WRE3N",
+      "description": "موسّع نطاق واي فاي — يوسّع تغطية شبكة 2.4 جيجاهرتز القائمة بسرعة تصل لـ 300 ميجابت، يدعم معايير IEEE 802.11b و 802.11g و 802.11n على نطاق 2.4 جيجاهرتز، أنتينتين خارجيتين بكسب 3 dBi لكل واحدة، قدرة الإرسال أقل من 20 dBm، تشفير مدمج WPA-PSK / WPA2-PSK افتراضيًا، يتركّب مباشرة في بريزة 100–240 فولت عند 50/60 هرتز و 0.3 أمبير — بدون محول منفصل، استهلاك بسيط — أقصى استهلاك 3.8 واط، جسم صغير بمقاس 111 مم × 56 مم × 47.7 مم، الضبط من متصفّح الويب",
+      "featured": false,
+      "specs": [
+        "موسّع نطاق واي فاي — يوسّع تغطية شبكة 2.4 جيجاهرتز القائمة بسرعة تصل لـ 300 ميجابت",
+        "يدعم معايير IEEE 802.11b و 802.11g و 802.11n على نطاق 2.4 جيجاهرتز",
+        "أنتينتين خارجيتين بكسب 3 dBi لكل واحدة",
+        "قدرة الإرسال أقل من 20 dBm",
+        "تشفير مدمج WPA-PSK / WPA2-PSK افتراضيًا",
+        "يتركّب مباشرة في بريزة 100–240 فولت عند 50/60 هرتز و 0.3 أمبير — بدون محول منفصل",
+        "استهلاك بسيط — أقصى استهلاك 3.8 واط",
+        "جسم صغير بمقاس 111 مم × 56 مم × 47.7 مم",
+        "الضبط من متصفّح الويب"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5gpuna-cc7e4f",
+      "slug": "3k-colorvu-smart-hybrid-light-fixed-mini-bullet-camera",
+      "name": "DS-2CE10KF0T-LPFS (2.8mm)",
+      "shortName": "3K ColorVu Smart hybrid light Fixed Mini Bullet Camera",
+      "mainCategoryId": "cctv",
+      "categoryId": "cctv-hd",
+      "brandId": "brand-mw43andh-49dc5b",
+      "price": 2170,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793999055708-825ed5b1.webp",
+      "imageAlt": "DS-2CE10KF0T-LPFS (2.8mm)",
+      "description": "3K، 2.8mm، IP67، ميكروفون مدمج، خارجي، إضاءة بيضاء ColorVu",
+      "featured": false,
+      "specs": [
+        "3K",
+        "2.8mm",
+        "IP67",
+        "ميكروفون مدمج",
+        "خارجي",
+        "إضاءة بيضاء ColorVu"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5gntpq-9e8c87",
+      "slug": "8-ch-5-mp-1u-h-265-acusense-dvr",
+      "name": "iDS-7208HUHI-M2/XT",
+      "shortName": "8-ch 5 MP 1U H.265 AcuSense DVR",
+      "mainCategoryId": "cctv",
+      "categoryId": "cctv-recorders",
+      "brandId": "",
+      "price": 10000,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793998961190-6ba3c700.jpg",
+      "imageAlt": "iDS-7208HUHI-M2/XT",
+      "description": "8-ch DVR، 5 MP، H.265، 1U  AcuSense",
+      "featured": false,
+      "specs": [
+        "8-ch DVR",
+        "5 MP",
+        "H.265",
+        "1U  AcuSense"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5gjyf7-bd33ed",
+      "slug": "8-ch-5mp-1u-h-265-acusense-dvr",
+      "categoryId": "cctv-recorders",
+      "mainCategoryId": "cctv",
+      "brandId": "brand-mw43andh-49dc5b",
+      "name": "iDS-7208HUHI-M1/T",
+      "shortName": "8-ch 5MP 1U H.265 AcuSense DVR",
+      "description": "H.265+، 8 Channels، 4K (8MP)، 1 SATA، Smart Analytics",
+      "image": "assets/images/uploads/1793998799584-77b31ef4.webp",
+      "imageAlt": "iDS-7208HUHI-M1/T",
+      "specs": [
+        "H.265+",
+        "8 Channels",
+        "4K (8MP)",
+        "1 SATA",
+        "Smart Analytics"
+      ],
+      "price": 8665,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5gaxrc-559c3d",
+      "slug": "2-mp-colorvu-fixed-mini-bullet-camera",
+      "categoryId": "cctv-hd",
+      "mainCategoryId": "cctv",
+      "brandId": "brand-mw43andh-49dc5b",
+      "name": "DS-2CE10DF0T-PF (2.8mm)",
+      "shortName": "2 MP ColorVu Fixed Mini Bullet Camera",
+      "description": "IP67، colorvu، 2.8mm، إضاءة بيضاء ColorVu، smart",
+      "image": "assets/images/uploads/1793998359899-80fd679a.webp",
+      "imageAlt": "DS-2CE10DF0T-PF (2.8mm)",
+      "specs": [
+        "IP67",
+        "colorvu",
+        "2.8mm",
+        "إضاءة بيضاء ColorVu",
+        "smart"
+      ],
+      "price": 1460,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5g127h-f3f0d7",
+      "slug": "4-ch-1080p-1u-h-265-dvr",
+      "name": "DVR-104Q-M1/S",
+      "shortName": "4-ch 1080p  1U H.265 DVR",
+      "mainCategoryId": "cctv",
+      "categoryId": "cctv-recorders",
+      "brandId": "brand-mw5fz4fo-3da7df",
+      "price": 3535,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "image": "assets/images/uploads/1793997899117-5cdcf0d3.webp",
+      "imageAlt": "DVR-104Q-M1/S",
+      "description": "Hilook، 4CH، H+ 256، Sata 1",
+      "featured": false,
+      "specs": [
+        "Hilook",
+        "4CH",
+        "H+ 256",
+        "Sata 1"
+      ],
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5fwzh7-17039d",
+      "slug": "3k-smart-hybrid-light-audio-fixed-mini-bullet-camera",
+      "categoryId": "cctv-hd",
+      "mainCategoryId": "cctv",
+      "brandId": "brand-mw43andh-49dc5b",
+      "name": "DS-2CE16K0T-LPFS (2.8mm)",
+      "shortName": "3K Smart Hybrid Light Audio Fixed Mini Bullet Camera",
+      "description": "3.6 mm، light، hybrid، smart، audio، colour vu",
+      "image": "assets/images/uploads/1793998195709-733bf9e6.jpg",
+      "imageAlt": "DS-2CE16K0T-LPFS (2.8mm)",
+      "specs": [
+        "3.6 mm",
+        "light",
+        "hybrid",
+        "smart",
+        "audio",
+        "colour vu"
+      ],
+      "price": 2315,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": []
+    },
+    {
+      "id": "prod-mw5ft4qr-2654b7",
+      "slug": "3k-two-way-audio-fixed-mini-bullet-camera",
+      "categoryId": "cctv-hd",
+      "mainCategoryId": "cctv",
+      "brandId": "brand-mw43andh-49dc5b",
+      "name": "DS-2CE10KF0T-LPTS (3.6mm)",
+      "shortName": "3K Two Way Audio Fixed Mini Bullet Camera",
+      "description": "كاميرا خارجي، Camera Mic، ,Smart، Hyprid Light، ,ColorVu ,Camera، 3K ,Analog",
+      "image": "assets/images/uploads/1793997529137-e6a6fad0.webp",
+      "imageAlt": "DS-2CE10KF0T-LPTS (3.6mm)",
+      "specs": [
+        "كاميرا خارجي",
+        "Camera Mic",
+        ",Smart",
+        "Hyprid Light",
+        ",ColorVu ,Camera",
+        "3K ,Analog"
+      ],
+      "price": 2315,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": []
+    },
+    {
       "id": "prod-mw4vfgcg-6557d6",
       "slug": "3k-two-way-audio-fixed-turret",
       "categoryId": "cctv-hd",
@@ -636,11 +1075,12 @@
     {
       "id": "wp-smartlock-accesscontrol",
       "slug": "smartlock-accesscontrol",
-      "mainCategoryId": "access-control",
       "categoryId": "access-smartlock",
+      "mainCategoryId": "access-control",
+      "brandId": "",
       "name": "EZVIZ DL50FVS",
-      "shortName": "EZVIZ",
-      "description": "قفل باب ذكي متطور بتقنية التعرف على الوجه ثلاثية الأبعاد 3D وشاشة ملونة 4 بوصة، يدعم 7 طرق لفتح القفل والتحكم عبر تطبيق EZVIZ.",
+      "shortName": "EZVIZ – قفل ذكي – التحكم في الدخول",
+      "description": "شاشة ملونة IPS مدمجة مقاس 4 بوصات لرؤية الزائر بالصوت والصورة قبل الفتح، 7 طرق ذكية للفتح: التعرف على الوجه ثلاثي الأبعاد، بصمة الإصبع، الكود السري، كارت المرور، مفتاح ميكانيكي، تطبيق EZVIZ، ورموز مؤقتة للزوار، مستشعر ذكاء اصطناعي فائق السرعة يتعرف على الوجه خلال أقل من 1.5 ثانية، تغطية كشف ارتفاع ذكية من 1.2 متر إلى 2 متر لتمييز الأطفال والبالغين بسهولة، سعة تخزين واسعة: 50 مستخدم، 50 بصمة، 50 رمز سري، و50 بصمة وجه، بطارية ليثيوم قابلة لإعادة الشحن مع منفذ شحن طوارئ Type-C وإنذار ضد محاولات العبث",
       "image": "assets/images/uploads/1793907478718-7ef5eb7d.webp",
       "imageAlt": "EZVIZ DL50FVS Smart Lock",
       "specs": [
@@ -661,6 +1101,129 @@
         "اكسيس كنترول",
         "سمارت لوك",
         "EZVIZ"
+      ]
+    },
+    {
+      "id": "prod-reye-gigabit-switch",
+      "slug": "reye-gigabit-poe-switch",
+      "categoryId": "net-switches",
+      "mainCategoryId": "networks",
+      "name": "Reyee RG-ES205GC-P (Gigabit Smart PoE Switch)",
+      "shortName": "سويتش رويجي 5 منافذ PoE جيجابت",
+      "description": "سويتش شبكات ذكي 5 منافذ جيجابت بسرعة 1000 ميجابت مع 4 منافذ PoE بقدرة 54W وإدارة سحابية مجانية عبر الهاتف لتشغيل واستقرار الكاميرات.",
+      "image": "assets/images/uploads/1793917528169-b495e3b1.webp",
+      "imageAlt": "Reyee RG-ES205GC-P PoE Switch",
+      "specs": [
+        "5 منافذ جيجابت فائقة السرعة 10/100/1000 Mbps",
+        "4 منافذ PoE بقدرة إجمالية 54 وات لتشغيل الكاميرات",
+        "إدارة سحابية مجانية لحظية عبر تطبيق Ruijie Reyee",
+        "حماية مدمجة ضد الصواعق وتذبذب التيار حتى 4KV",
+        "دعم إعادة تشغيل المنفذ عن بعد دون الحاجة لإعادة تشغيل السويتش"
+      ],
+      "price": 1850,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": true,
+      "demo": false,
+      "keywords": [
+        "سويتش",
+        "شبكات",
+        "PoE",
+        "رويجي",
+        "Ruijie",
+        "Reyee"
+      ]
+    },
+    {
+      "id": "prod-hikvision-ip-intercom",
+      "slug": "hikvision-ip-video-intercom-kit",
+      "categoryId": "intercom-video",
+      "mainCategoryId": "intercom",
+      "name": "Hikvision DS-KIS603-P (IP Video Intercom Kit)",
+      "shortName": "طقم إنتركم فيديو هيكفجن واي فاي",
+      "description": "طقم إنتركم مرئي ذكي متكامل يشمل لوحة باب خارجية بكاميرا 2 ميجابكسل وشاشة لمس ملونة 7 بوصة مع إمكانية فتح الباب والمشاهدة من الموبايل عبر Hik-Connect.",
+      "image": "assets/images/uploads/1793917568416-c590483f.jpg",
+      "imageAlt": "Hikvision IP Video Intercom Kit DS-KIS603-P",
+      "specs": [
+        "شاشة لمس داخلية ملونة 7 بوصة بتصميم فخم ودعم الواي فاي",
+        "كاميرا خارجية بدقة 2 ميجابكسل وزاوية عريضة مع رؤية ليلية بالأشعة تحت الحمراء",
+        "الرد على الزائر والمشاهدة الحية وفتح الباب من الهاتف الذكي من أي مكان بالعالم",
+        "قارئ كروت مدمج لفتح الباب بسرعة وأمان",
+        "مقاومة للعوامل الجوية والأتربة والماء بمعيار IP65 القياسي"
+      ],
+      "price": 6490,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": true,
+      "demo": false,
+      "keywords": [
+        "انتركم",
+        "انتركم فيديو",
+        "هيكفجن",
+        "Hikvision",
+        "فتح الباب",
+        "إنتركم مرئي"
+      ]
+    },
+    {
+      "id": "prod-dsppa-ceiling-speaker",
+      "slug": "dsppa-ceiling-speaker-10w",
+      "categoryId": "audio-speakers",
+      "mainCategoryId": "audio",
+      "name": "DSPPA DSP5011 (Ceiling Speaker 10W)",
+      "shortName": "سماعة سقفية 10 وات DSPPA",
+      "description": "سماعة سقفية مدمجة فائقة النقاء بقدرة 10 وات وتوزيع صوتي واسع للمكاتب والمحلات والشركات والمنازل مع شبك معدني بدون حواف.",
+      "image": "assets/images/uploads/1793917648748-fdc97b50.webp",
+      "imageAlt": "DSPPA DSP5011 Ceiling Speaker",
+      "specs": [
+        "قدرة صوتية 10 وات بنقاء فائق وحساسية صوتية عالية",
+        "استجابة ترددية واسعة من 100Hz حتى 16kHz لتغطية موسيقية وإذاعية متكاملة",
+        "تصميم عصري بدون حواف Frameless يندمج مع الديكور",
+        "محول فولت داخلي متوافق مع أنظمة 70V / 100V",
+        "تثبيت سريع ومحكم في الأسقف الجبسية والمعلقة"
+      ],
+      "price": 720,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": false,
+      "demo": false,
+      "keywords": [
+        "صوتيات",
+        "سماعات",
+        "سماعة سقف",
+        "DSPPA",
+        "إذاعة داخلية"
+      ]
+    },
+    {
+      "id": "prod-dahua-22-monitor",
+      "slug": "dahua-22-cctv-monitor",
+      "categoryId": "screens-displays",
+      "mainCategoryId": "screens",
+      "name": "Dahua LM22-B200S (22 Inch Surveillance Monitor)",
+      "shortName": "شاشة مراقبة داهوا 22 بوصة FHD",
+      "description": "شاشة عرض ومراقبة احترافية مقاس 21.5 بوصة بدقة Full HD مصممة للعمل الشاق المتواصل 24/7 مع مداخل HDMI/VGA ومكبرات صوت مدمجة.",
+      "image": "assets/images/uploads/1793917711911-a7f5b3a6.jpg",
+      "imageAlt": "Dahua 22 Inch FHD Surveillance Monitor",
+      "specs": [
+        "دقة Full HD 1920×1080 بألوان نقية وزوايا رؤية عريضة 178°",
+        "تصميم شاشة فائق النحافة بدون حواف ثلاثية الجوانب",
+        "مخصصة ومعتمدة للتشغيل المتواصل طوال اليوم 24/7 دون توقف",
+        "مداخل HDMI وVGA ومكبرات صوت مدمجة لتشغيل الصوت مباشرة",
+        "حماية كاملة للعين بتقنية منع الوميض Anti-Flicker وفلترة الضوء الأزرق"
+      ],
+      "price": 3850,
+      "priceCurrency": "EGP",
+      "availability": "in_stock",
+      "featured": true,
+      "demo": false,
+      "keywords": [
+        "شاشات",
+        "شاشة مراقبة",
+        "داهوا",
+        "Dahua",
+        "FHD",
+        "شاشات CCTV"
       ]
     }
   ],
@@ -757,6 +1320,11 @@
       "id": "brand-mw43andh-49dc5b",
       "name": "Hikvision",
       "logo": "assets/images/uploads/1793916045268-ccbf5745.png"
+    },
+    {
+      "id": "brand-mw5fz4fo-3da7df",
+      "name": "Hilook",
+      "logo": "assets/images/uploads/1793997808680-e40a9359.png"
     }
   ],
   "banners": [
@@ -835,7 +1403,8 @@
           "sublabel": "مشاهدة الزائر وفتح الباب من الشاشة أو الموبايل",
           "categoryId": "intercom",
           "subcatId": "intercom-video",
-          "link": "#subcat:intercom:intercom-video"
+          "link": "#product:prod-hikvision-ip-intercom",
+          "productId": "prod-hikvision-ip-intercom"
         },
         {
           "x": 50,
@@ -844,7 +1413,8 @@
           "sublabel": "ربط جميع الكاميرات والأجهزة الذكية بسرعة فائقة",
           "categoryId": "networks",
           "subcatId": "net-routers",
-          "link": "#subcat:networks:net-routers"
+          "link": "#product:prod-reye-gigabit-switch",
+          "productId": "prod-reye-gigabit-switch"
         },
         {
           "x": 36.8,
@@ -862,7 +1432,8 @@
           "sublabel": "شاشات عالية الدقة لمتابعة الكاميرات",
           "categoryId": "screens",
           "subcatId": "screens-displays",
-          "link": "#cat:screens"
+          "link": "#product:prod-dahua-22-monitor",
+          "productId": "prod-dahua-22-monitor"
         },
         {
           "x": 37.2,
@@ -871,7 +1442,8 @@
           "sublabel": "توزيع صوتي نقي للمنازل والشركات",
           "categoryId": "audio",
           "subcatId": "audio-speakers",
-          "link": "#cat:audio"
+          "link": "#product:prod-dsppa-ceiling-speaker",
+          "productId": "prod-dsppa-ceiling-speaker"
         }
       ]
     },
@@ -915,5 +1487,6 @@
       "link": "#cat:cctv",
       "showOverlay": true
     }
-  ]
+  ],
+  "ticker": null
 }

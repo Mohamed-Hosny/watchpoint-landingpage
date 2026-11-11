@@ -29,7 +29,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
   <link rel="preload" href="../assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/style.css?v=1793992928910">
+  <link rel="stylesheet" href="../css/style.css?v=1794000774189">
   <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -69,7 +69,20 @@
       "mainEntity": {
         "@type": "ItemList",
         "name": "انتركم",
-        "itemListElement": []
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "item": {
+              "@type": "Product",
+              "name": "DS-KIS611-S",
+              "description": "SIP / H.264",
+              "image": "../assets/images/uploads/1793999869380-8c8557b8.jpg",
+              "url": "./intercom.html#product",
+              "category": "انتركم"
+            }
+          }
+        ]
       }
     },
     {
@@ -215,19 +228,19 @@
         <h2>تصفح فئات انتركم</h2>
         <div class="related-grid">
           
-                <a class="related-card" href="#subcategory-intercom-video">
+                <a class="related-card" href="#subcategory-intercom-video" data-sub-filter="intercom-video">
                   <strong>انتركم فيديو</strong>
-                  <span>0 منتج</span>
+                  <span>2 منتج</span>
                 </a>
-                <a class="related-card" href="#subcategory-intercom-audio">
+                <a class="related-card" href="#subcategory-intercom-audio" data-sub-filter="intercom-audio">
                   <strong>انتركم صوتي</strong>
                   <span>0 منتج</span>
                 </a>
-                <a class="related-card" href="#subcategory-intercom-ap">
+                <a class="related-card" href="#subcategory-intercom-ap" data-sub-filter="intercom-ap">
                   <strong>اكسيس بوينت</strong>
                   <span>0 منتج</span>
                 </a>
-                <a class="related-card" href="#subcategory-intercom-accessories">
+                <a class="related-card" href="#subcategory-intercom-accessories" data-sub-filter="intercom-accessories">
                   <strong>ملحقات انتركم</strong>
                   <span>0 منتج</span>
                 </a>
@@ -237,20 +250,96 @@
           
 
           
+    <section class="cat-filter" id="category-products" aria-labelledby="cat-filter-title">
+      <span class="scroll-target" id="subcategory-intercom-video" aria-hidden="true"></span>
+      <span class="scroll-target" id="subcategory-intercom-audio" aria-hidden="true"></span>
+      <span class="scroll-target" id="subcategory-intercom-ap" aria-hidden="true"></span>
+      <span class="scroll-target" id="subcategory-intercom-accessories" aria-hidden="true"></span>
+      <div class="cat-filter-head">
+        <h2 id="cat-filter-title">منتجات انتركم</h2>
+        <p class="cat-filter-count" id="cat-filter-count" role="status" aria-live="polite">منتجان معروضان</p>
+      </div>
+      <div class="cat-filter-panel">
+            
+        <fieldset class="cat-filter-group">
+          <legend>الفئة / النوعية</legend>
+          <div class="cat-chips">
+            
+            <label class="cat-chip">
+              <input type="checkbox" data-filter="subcategory" value="intercom-video">
+              <span>انتركم فيديو</span>
+              <em>2</em>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="cat-filter-group">
+          <legend>نطاق السعر</legend>
+          <div class="cat-chips">
+            
+            <label class="cat-chip">
+              <input type="checkbox" data-filter="price" value="2000-10000">
+              <span>من 2,000 إلى 10,000 ج.م</span>
+              <em>1</em>
+            </label>
+            <label class="cat-chip">
+              <input type="checkbox" data-filter="price" value="gt-10000">
+              <span>أكثر من 10,000 ج.م</span>
+              <em>1</em>
+            </label>
+          </div>
+        </fieldset>
+        <fieldset class="cat-filter-group">
+          <legend>العلامة التجارية</legend>
+          <div class="cat-chips">
+            
+            <label class="cat-chip">
+              <input type="checkbox" data-filter="brand" value="brand-mw43andh-49dc5b">
+              <span>Hikvision</span>
+              <em>1</em>
+            </label>
+          </div>
+        </fieldset>
+        <div class="cat-filter-group cat-filter-sort">
+          <label for="cat-sort">ترتيب النتائج</label>
+          <div class="cat-filter-sort-row">
+            <select id="cat-sort">
+              <option value="default">الترتيب الافتراضي</option>
+              <option value="price-asc">السعر: من الأقل إلى الأعلى</option>
+              <option value="price-desc">السعر: من الأعلى إلى الأقل</option>
+              <option value="name-asc">الاسم (أبجدي)</option>
+            </select>
+            <button type="button" class="cat-filter-reset" id="cat-filter-reset">مسح الفلاتر</button>
+          </div>
+        </div>
+      </div>
+      <div class="cat-products-grid" id="cat-products-grid">
+        
+            <a class="fp-card" href="./product-ip-video-intercom-kit.html" data-filter-item data-order="0" data-subcategory="intercom-video" data-price="14560" data-brand="brand-mw43andh-49dc5b" data-name="DS-KIS611-S">
+              <span class="fp-card-media">
+                <img src="../assets/images/uploads/1793999869380-8c8557b8.jpg" alt="DS-KIS611-S" width="600" height="450" loading="lazy" decoding="async">
+                
+              </span>
+              <span class="fp-card-body">
+                <span class="fp-card-title">DS-KIS611-S</span>
+                <span class="fp-card-desc">IP Video Intercom Kit</span>
+                <span class="fp-card-price">١٤٬٥٦٠ ج.م</span>
+              </span>
+            </a>
 
-          <section class="related-categories" id="subcategory-intercom-video">
-        <h2>انتركم فيديو</h2>
-        <p class="muted">ستُضاف المنتجات المتاحة في هذه الفئة قريبًا.</p>
-      </section><section class="related-categories" id="subcategory-intercom-audio">
-        <h2>انتركم صوتي</h2>
-        <p class="muted">ستُضاف المنتجات المتاحة في هذه الفئة قريبًا.</p>
-      </section><section class="related-categories" id="subcategory-intercom-ap">
-        <h2>اكسيس بوينت</h2>
-        <p class="muted">ستُضاف المنتجات المتاحة في هذه الفئة قريبًا.</p>
-      </section><section class="related-categories" id="subcategory-intercom-accessories">
-        <h2>ملحقات انتركم</h2>
-        <p class="muted">ستُضاف المنتجات المتاحة في هذه الفئة قريبًا.</p>
-      </section>
+            <a class="fp-card" href="./product-hikvision-ip-video-intercom-kit.html" data-filter-item data-order="1" data-subcategory="intercom-video" data-price="6490" data-brand="" data-name="Hikvision DS-KIS603-P (IP Video Intercom Kit)">
+              <span class="fp-card-media">
+                <img src="../assets/images/uploads/1793917568416-c590483f.jpg" alt="Hikvision IP Video Intercom Kit DS-KIS603-P" width="600" height="450" loading="lazy" decoding="async">
+                
+              </span>
+              <span class="fp-card-body">
+                <span class="fp-card-title">Hikvision DS-KIS603-P (IP Video Intercom Kit)</span>
+                <span class="fp-card-desc">طقم إنتركم فيديو هيكفجن واي فاي</span>
+                <span class="fp-card-price">٦٬٤٩٠ ج.م</span>
+              </span>
+            </a>
+      </div>
+      <p class="cat-no-results" id="cat-no-results" hidden>لا توجد منتجات مطابقة لهذه الفلاتر. جرّب إزالة بعض الاختيارات.</p>
+    </section>
 
           <h2>دليل اختيار انتركم</h2>
           
@@ -422,7 +511,149 @@
     <button class="btn btn--ghost btn--sm" id="consent-decline" type="button">رفض</button>
   </div>
 </div>
-<script src="../js/config.js?v=1793992928910"></script>
-<script src="../js/main.js?v=1793992928910" defer></script>
+<script src="../js/config.js?v=1794000774189"></script>
+<script src="../js/main.js?v=1794000774189" defer></script>
+  
+<script>
+(function () {
+  var section = document.getElementById("category-products");
+  if (!section) return;
+  var items = Array.prototype.slice.call(document.querySelectorAll("[data-filter-item]"));
+  var grid = document.getElementById("cat-products-grid");
+  var countEl = document.getElementById("cat-filter-count");
+  var noResults = document.getElementById("cat-no-results");
+  var sortEl = document.getElementById("cat-sort");
+  var resetBtn = document.getElementById("cat-filter-reset");
+
+  function bucketOf(raw) {
+    var price = parseFloat(raw);
+    if (!isFinite(price)) return "quote";
+    if (price < 2000) return "lt-2000";
+    if (price <= 10000) return "2000-10000";
+    return "gt-10000";
+  }
+
+  function inputs(name) {
+    return Array.prototype.slice.call(section.querySelectorAll('input[data-filter="' + name + '"]'));
+  }
+
+  function checkedValues(name) {
+    return inputs(name)
+      .filter(function (input) { return input.checked; })
+      .map(function (input) { return input.value; });
+  }
+
+  function chipFor(id) {
+    return inputs("subcategory").filter(function (input) { return input.value === id; })[0] || null;
+  }
+
+  function syncChip(input) {
+    var chip = input.closest ? input.closest(".cat-chip") : null;
+    if (chip) chip.classList.toggle("is-on", input.checked);
+  }
+
+  function apply() {
+    var subs = checkedValues("subcategory");
+    var prices = checkedValues("price");
+    var brandList = checkedValues("brand");
+    var visible = 0;
+    items.forEach(function (item) {
+      var ok = true;
+      if (subs.length && subs.indexOf(item.getAttribute("data-subcategory")) === -1) ok = false;
+      if (ok && prices.length && prices.indexOf(bucketOf(item.getAttribute("data-price"))) === -1) ok = false;
+      if (ok && brandList.length && brandList.indexOf(item.getAttribute("data-brand")) === -1) ok = false;
+      item.hidden = !ok;
+      if (ok) visible += 1;
+    });
+    if (countEl) {
+      countEl.textContent =
+        visible === 1 ? "منتج واحد معروض" :
+        visible === 2 ? "منتجان معروضان" :
+        visible + " منتج معروض";
+    }
+    if (noResults) noResults.hidden = visible !== 0;
+  }
+
+  function sortGrid() {
+    if (!grid || !sortEl) return;
+    var mode = sortEl.value;
+    var cards = Array.prototype.slice.call(grid.children);
+    cards.sort(function (a, b) {
+      if (mode === "price-asc" || mode === "price-desc") {
+        var pa = parseFloat(a.getAttribute("data-price"));
+        var pb = parseFloat(b.getAttribute("data-price"));
+        var na = isFinite(pa);
+        var nb = isFinite(pb);
+        if (!na && !nb) return 0;
+        if (!na) return 1;
+        if (!nb) return -1;
+        return mode === "price-asc" ? pa - pb : pb - pa;
+      }
+      if (mode === "name-asc") {
+        return String(a.getAttribute("data-name") || "").localeCompare(String(b.getAttribute("data-name") || ""), "ar");
+      }
+      return (
+        parseInt(a.getAttribute("data-order") || "0", 10) -
+        parseInt(b.getAttribute("data-order") || "0", 10)
+      );
+    });
+    cards.forEach(function (card) { grid.appendChild(card); });
+  }
+
+  function selectSubcategory(id) {
+    inputs("subcategory").forEach(function (input) {
+      input.checked = input.value === id;
+      syncChip(input);
+    });
+  }
+
+  section.addEventListener("change", function (event) {
+    var input = event.target;
+    if (input && input.hasAttribute && input.hasAttribute("data-filter")) {
+      syncChip(input);
+      apply();
+    }
+  });
+
+  if (sortEl) sortEl.addEventListener("change", sortGrid);
+
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      inputs("subcategory").concat(inputs("price"), inputs("brand")).forEach(function (input) {
+        input.checked = false;
+        syncChip(input);
+      });
+      if (sortEl) sortEl.value = "default";
+      sortGrid();
+      apply();
+    });
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll("a[data-sub-filter]"), function (link) {
+    link.addEventListener("click", function (event) {
+      var id = link.getAttribute("data-sub-filter");
+      if (!chipFor(id)) return;
+      event.preventDefault();
+      selectSubcategory(id);
+      apply();
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
+  function applyHash() {
+    var hash = window.location.hash || "";
+    if (hash.indexOf("#subcategory-") !== 0) return;
+    var id = hash.slice("#subcategory-".length);
+    if (chipFor(id)) {
+      selectSubcategory(id);
+      apply();
+    }
+  }
+
+  applyHash();
+  window.addEventListener("hashchange", applyHash);
+  apply();
+})();
+</script>
 </body>
 </html>

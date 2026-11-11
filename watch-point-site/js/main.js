@@ -21,7 +21,9 @@
     toastTimer: null,
     gaLoaded: false,
     selectedItem: null,
-    consent: null
+    consent: null,
+    wishlist: [],
+    compareList: []
   };
 
   const reducedMotion =
@@ -150,33 +152,22 @@
   function renderPriceBox(rawPrice, currency, isPackage) {
     if (rawPrice !== null && rawPrice !== undefined && rawPrice !== "" && Number.isFinite(Number(rawPrice))) {
       const num = Number(rawPrice);
-      const formattedNum = num.toLocaleString("ar-EG");
+      const formattedNum = num.toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+      const currLabel = currency === "USD" ? "USD" : "ج.م";
       return `
-        <div class="price-box price-box--numeric">
-          <div class="price-top">
-            <span class="price-label">السعر:</span>
-            <span class="price-badge-stock">متاح للتوريد والتركيب</span>
-          </div>
-          <div class="price-main">
-            <span class="price-amount">${escapeHtml(formattedNum)}</span>
-            <span class="price-unit">${escapeHtml(currency === "USD" ? "$" : "ج.م")}</span>
-          </div>
-          <span class="price-subtext">${isPackage ? "سعر الباقة يشمل التوريد والتركيب والبرمجة" : "شامل التوريد والضمان الفني المعتمد"}</span>
+        <div class="price-clean">
+          <span class="price-clean-amount">${escapeHtml(formattedNum)}</span>
+          <span class="price-clean-unit">${escapeHtml(currLabel)}</span>
         </div>
       `;
     }
 
     return `
-      <div class="price-box price-box--quote">
-        <div class="price-top">
-          <span class="price-label">${isPackage ? "سعر الباقة:" : "عرض السعر:"}</span>
-          <span class="price-badge-quote">أفضل سعر جملة</span>
-        </div>
-        <div class="price-main">
-          <span class="price-quote-text">اطلب آخر سعر</span>
-          <svg class="icon price-quote-icon" aria-hidden="true"><use href="#icon-clipboard"/></svg>
-        </div>
-        <span class="price-subtext">السعر يُحدد بدقة بعد المعاينة الفنية مجانًا</span>
+      <div class="price-clean price-clean--quote">
+        <span class="price-clean-quote">${isPackage ? "يُحدد بعد المعاينة" : "اطلب السعر"}</span>
       </div>
     `;
   }
@@ -637,6 +628,16 @@
       .join("");
   }
 
+  function productShortDesc(product) {
+    if (!product) return "";
+    const shortText = String(product.shortName || "").trim();
+    if (shortText && shortText !== product.name) return shortText;
+    const descText = String(product.description || "").trim();
+    if (descText) return descText;
+    if (Array.isArray(product.specs) && product.specs.length) return product.specs[0];
+    return categoryName(product.categoryId);
+  }
+
   function renderProductCard(product) {
     const category = categoryName(product.categoryId);
     const waMessage = [
@@ -655,49 +656,57 @@
       .replace(/-+/g, "-")
       .replace(/^-|-$/g, "");
     const detailsUrl = cleanSlug ? "catalog/product-" + cleanSlug + ".html" : "product.html?id=" + encodeURIComponent(product.id);
-    const allSpecs = Array.isArray(product.specs) ? product.specs : [];
-    const topSpecs = allSpecs.slice(0, 3);
-    const extraSpecsCount = Math.max(0, allSpecs.length - 3);
+    const isWishlisted = state.wishlist.includes(product.id);
+    const isCompared = state.compareList.includes(product.id);
+    const shortSubtitle = productShortDesc(product);
 
     return `
       <article class="product-card product-card--luxury" data-product-id="${escapeHtml(product.id)}" data-url="${escapeHtml(detailsUrl)}">
         <div class="product-media-wrap">
-          <span class="product-cat">${escapeHtml(category)}</span>
-          <button type="button" class="product-qv-trigger" data-quick-view="${escapeHtml(product.id)}" aria-label="معاينة سريعة لـ ${escapeHtml(product.name)}">
-            <span>👁️ معاينة سريعة</span>
-          </button>
+          <div class="product-card-tools" aria-label="أدوات المنتج">
+            <button type="button"
+              class="card-tool-btn ${isWishlisted ? "is-active" : ""}"
+              data-card-tool="wishlist"
+              data-product-id="${escapeHtml(product.id)}"
+              data-tooltip="${isWishlisted ? "إزالة من المفضلة" : "أضف للمفضلة"}"
+              aria-label="${isWishlisted ? "إزالة من المفضلة" : "أضف للمفضلة"}"
+              aria-pressed="${isWishlisted ? "true" : "false"}">
+              <svg class="icon" aria-hidden="true"><use href="#icon-heart-fill"/></svg>
+            </button>
+            <button type="button"
+              class="card-tool-btn ${isCompared ? "is-active" : ""}"
+              data-card-tool="compare"
+              data-product-id="${escapeHtml(product.id)}"
+              data-tooltip="${isCompared ? "مضاف للمقارنة" : "قارن المنتج"}"
+              aria-label="قارن هذا المنتج"
+              aria-pressed="${isCompared ? "true" : "false"}">
+              <svg class="icon" aria-hidden="true"><use href="#icon-compare"/></svg>
+            </button>
+            <button type="button"
+              class="card-tool-btn"
+              data-card-tool="similar"
+              data-product-id="${escapeHtml(product.id)}"
+              data-tooltip="منتجات مشابهة"
+              aria-label="عرض منتجات مشابهة">
+              <svg class="icon" aria-hidden="true"><use href="#icon-similar"/></svg>
+            </button>
+          </div>
           <a class="product-media" href="${escapeHtml(detailsUrl)}" aria-label="عرض تفاصيل ${escapeHtml(product.name)}">
             <img src="${escapeHtml(resolveImage(product.image))}"
               alt="${escapeHtml(product.imageAlt || product.name)}"
-              width="800" height="600" loading="lazy" decoding="async">
+              width="600" height="450" loading="lazy" decoding="async">
           </a>
         </div>
         <div class="product-body">
           <h3 class="product-title">
             <a href="${escapeHtml(detailsUrl)}">${escapeHtml(product.name)}</a>
           </h3>
-          <p class="product-desc">${escapeHtml(product.description || "")}</p>
-          <ul class="spec-list spec-list--compact" aria-label="أبرز مواصفات المنتج">
-            ${topSpecs
-              .map(
-                (spec) => `
-                  <li>
-                    <svg class="icon spec-icon" aria-hidden="true"><use href="#icon-check-circle"/></svg>
-                    <span>${escapeHtml(spec)}</span>
-                  </li>`
-              )
-              .join("")}
-          </ul>
-          ${
-            extraSpecsCount > 0
-              ? `<button type="button" class="spec-more-hint" data-quick-view="${escapeHtml(product.id)}">+ ${extraSpecsCount} مواصفات إضافية (اضغط للمعاينة)</button>`
-              : ""
-          }
+          <p class="product-desc">${escapeHtml(shortSubtitle)}</p>
           <div class="product-foot">
             <div class="price-row">
               ${renderPriceBox(product.price, product.priceCurrency, false)}
             </div>
-            <div class="product-actions product-actions--luxury">
+            <div class="product-actions">
               <a class="btn btn--primary btn--card"
                 href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer"
                 data-wa-message="${escapeHtml(waMessage)}"
@@ -705,11 +714,8 @@
                 data-analytics="product_quote"
                 aria-label="اطلب عرض سعر ${escapeHtml(product.name)}">
                 <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
-                اطلب عرض سعر
+                <span>اطلب عرض سعر</span>
               </a>
-              <button type="button" class="btn--qv" data-quick-view="${escapeHtml(product.id)}">
-                <span>معاينة سريعة</span>
-              </button>
             </div>
           </div>
         </div>
@@ -1045,6 +1051,19 @@
           }
           return;
         }
+      }
+
+      // If clicking one of the 3 product card tools (Wishlist, Compare, Similar)
+      const toolBtn = event.target.closest("[data-card-tool]");
+      if (toolBtn) {
+        event.preventDefault();
+        event.stopPropagation();
+        const action = toolBtn.dataset.cardTool;
+        const pid = toolBtn.dataset.productId;
+        if (action === "wishlist") toggleWishlist(pid, toolBtn);
+        else if (action === "compare") toggleCompare(pid, toolBtn);
+        else if (action === "similar") openSimilarDrawer(pid);
+        return;
       }
 
       // If clicking Quick View button inside a product card
@@ -1416,11 +1435,29 @@
     const phonePending = $("#contact-phone-pending");
     const phoneValue = $("#contact-phone-value");
 
-    if (phoneItem && phonePending && phone) {
-      phoneItem.hidden = false;
-      phonePending.hidden = true;
-      phoneItem.href = "tel:" + phone.replace(/[^\d+]/g, "");
-      if (phoneValue) phoneValue.textContent = contact.phoneDisplay || phone;
+    const topBarCallBtn = $("#top-bar-call-btn");
+    const topBarPhoneVal = $("#top-bar-phone-val");
+    const headerPhoneBtn = $("#header-phone-btn");
+    const headerPhoneText = $("#header-phone-text");
+
+    if (phone) {
+      const telHref = "tel:" + phone.replace(/[^\d+]/g, "");
+      const displayVal = contact.phoneDisplay || phone;
+
+      if (topBarCallBtn) topBarCallBtn.href = telHref;
+      if (topBarPhoneVal) topBarPhoneVal.textContent = displayVal;
+      if (headerPhoneBtn) headerPhoneBtn.href = telHref;
+      if (headerPhoneText) headerPhoneText.textContent = displayVal;
+
+      if (phoneItem && phonePending) {
+        phoneItem.hidden = false;
+        phonePending.hidden = true;
+        phoneItem.href = telHref;
+        if (phoneValue) phoneValue.textContent = displayVal;
+      }
+    } else {
+      if (topBarPhoneVal) topBarPhoneVal.textContent = "طلب اتصال هاتفي";
+      if (headerPhoneText) headerPhoneText.textContent = "اتصال مباشر";
     }
 
     const emailItem = $("#contact-email-item");
@@ -1723,13 +1760,17 @@
         if (!state.catalog.banners || !state.catalog.banners.length) {
           state.catalog.banners = window.WP_BANNERS || [];
         }
+        if (!state.catalog.ticker) {
+          state.catalog.ticker = window.WP_TICKER || null;
+        }
       } else {
         state.catalog = {
           categories: window.WP_CATEGORIES || [],
           products: window.WP_PRODUCTS || [],
           packages: window.WP_PACKAGES || [],
           brands: window.WP_BRANDS || [],
-          banners: window.WP_BANNERS || []
+          banners: window.WP_BANNERS || [],
+          ticker: window.WP_TICKER || null
         };
       }
     } catch (error) {
@@ -1739,18 +1780,649 @@
         products: window.WP_PRODUCTS || [],
         packages: window.WP_PACKAGES || [],
         brands: window.WP_BRANDS || [],
-        banners: window.WP_BANNERS || []
+        banners: window.WP_BANNERS || [],
+        ticker: window.WP_TICKER || null
       };
     }
 
+    renderTopTicker();
+    loadSavedToolsState();
     renderPromoBanners();
     initProductTools();
+    initProductCardActions();
+    initProjectsFilter();
     initStickyCategoryBar();
     initQuickViewModal();
     initMobileActionDock();
     renderPackages();
     renderBrands();
     initQuoteForm();
+  }
+
+  /* -------- Product Card 3 Tools: Wishlist, Compare, Similar Drawer ------- */
+
+  function renderTopTicker() {
+    const bar = $("#top-promo-bar");
+    const track = $("#top-ticker-track");
+    const badgeTextEl = $("#top-ticker-badge-text");
+    if (!bar || !track) return;
+
+    const ticker = (state.catalog && state.catalog.ticker) || window.WP_TICKER || {
+      enabled: true,
+      badgeText: "Watch Point",
+      speedSeconds: 36,
+      items: [
+        "دعم فني",
+        "خدمة 24/7",
+        "اسألنا عن أي حاجة عاوز تفهمها",
+        "موردين لجميع الماركات المعتمدة",
+        "منذ 2012",
+        "خبرة على أعلى مستوى",
+        "عقود صيانة دائمة",
+        "نوفر لك كل احتياجاتك",
+        "IOT",
+        "Smart Homes",
+        "Green Houses"
+      ]
+    };
+
+    if (ticker.enabled === false) {
+      bar.hidden = true;
+      return;
+    }
+
+    bar.hidden = false;
+    if (badgeTextEl && ticker.badgeText) {
+      badgeTextEl.textContent = ticker.badgeText;
+    }
+
+    const items = Array.isArray(ticker.items) && ticker.items.length ? ticker.items : [];
+    if (!items.length) return;
+
+    const duration = Number(ticker.speedSeconds) > 8 ? Number(ticker.speedSeconds) : 36;
+    track.style.setProperty("--ticker-duration", duration + "s");
+
+    const buildGroupHtml = (isClone) =>
+      `<div class="top-ticker-group"${isClone ? ' aria-hidden="true"' : ""}>` +
+      items
+        .map(
+          (phrase) =>
+            `<span class="top-ticker-item">${escapeHtml(phrase)}</span><span class="top-ticker-sep" aria-hidden="true">✦</span>`
+        )
+        .join("") +
+      `</div>`;
+
+    track.innerHTML = buildGroupHtml(false) + buildGroupHtml(true);
+  }
+
+  function loadSavedToolsState() {
+    try {
+      const savedWish = JSON.parse(localStorage.getItem("wp_wishlist_v1") || "[]");
+      if (Array.isArray(savedWish)) state.wishlist = savedWish.filter(Boolean);
+    } catch (e) {
+      state.wishlist = [];
+    }
+    try {
+      const savedComp = JSON.parse(localStorage.getItem("wp_compare_v1") || "[]");
+      if (Array.isArray(savedComp)) state.compareList = savedComp.filter(Boolean);
+    } catch (e) {
+      state.compareList = [];
+    }
+    syncToolsBadgesAndButtons();
+  }
+
+  function saveToolsState() {
+    try {
+      localStorage.setItem("wp_wishlist_v1", JSON.stringify(state.wishlist));
+      localStorage.setItem("wp_compare_v1", JSON.stringify(state.compareList));
+    } catch (e) {
+      /* ignore storage errors */
+    }
+  }
+
+  function formatCleanCardPrice(rawPrice, currency) {
+    if (rawPrice !== null && rawPrice !== undefined && rawPrice !== "" && Number.isFinite(Number(rawPrice))) {
+      const formatted = Number(rawPrice).toLocaleString("en-US", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      });
+      return (currency === "USD" ? "USD " : "LE ") + formatted;
+    }
+    return "اطلب السعر";
+  }
+
+  function syncToolsBadgesAndButtons() {
+    const wishBadge = $("#wishlist-count-badge");
+    if (wishBadge) {
+      wishBadge.textContent = String(state.wishlist.length);
+      wishBadge.hidden = state.wishlist.length === 0;
+    }
+
+    const compBadge = $("#compare-count-badge");
+    if (compBadge) {
+      compBadge.textContent = String(state.compareList.length);
+      compBadge.hidden = state.compareList.length === 0;
+    }
+
+    $$('[data-card-tool="wishlist"]').forEach((btn) => {
+      const pid = btn.dataset.productId;
+      const active = state.wishlist.includes(pid);
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+      btn.setAttribute("data-tooltip", active ? "إزالة من المفضلة" : "أضف للمفضلة");
+    });
+
+    $$('[data-card-tool="compare"]').forEach((btn) => {
+      const pid = btn.dataset.productId;
+      const active = state.compareList.includes(pid);
+      btn.classList.toggle("is-active", active);
+      btn.setAttribute("aria-pressed", active ? "true" : "false");
+      btn.setAttribute("data-tooltip", active ? "مضاف للمقارنة" : "قارن المنتج");
+    });
+
+    renderCompareFloatBar();
+  }
+
+  function toggleWishlist(productId) {
+    if (!productId) return;
+    const product = (state.catalog.products || []).find((p) => p.id === productId);
+    const idx = state.wishlist.indexOf(productId);
+    if (idx > -1) {
+      state.wishlist.splice(idx, 1);
+      showToast("تمت إزالة المنتج من سلة المفضلة");
+    } else {
+      state.wishlist.push(productId);
+      showToast("تمت إضافة «" + (product ? product.name : "المنتج") + "» إلى سلة المفضلة ♥");
+    }
+    saveToolsState();
+    syncToolsBadgesAndButtons();
+    const drawer = $("#wishlist-drawer");
+    if (drawer && !drawer.hidden) {
+      renderWishlistDrawer();
+    }
+    trackEvent("wishlist_toggle", { product_id: productId, count: state.wishlist.length });
+  }
+
+  function openWishlistDrawer() {
+    const drawer = $("#wishlist-drawer");
+    if (!drawer) return;
+    closeSimilarDrawer();
+    renderWishlistDrawer();
+    drawer.hidden = false;
+    doc.body.style.overflow = "hidden";
+  }
+
+  function closeWishlistDrawer() {
+    const drawer = $("#wishlist-drawer");
+    if (!drawer || drawer.hidden) return;
+    drawer.hidden = true;
+    doc.body.style.overflow = "";
+  }
+
+  function renderWishlistDrawer() {
+    const listEl = $("#wishlist-drawer-list");
+    const footEl = $("#wishlist-drawer-foot");
+    const waBtn = $("#wishlist-wa-btn");
+    const subEl = $("#wishlist-drawer-subtitle");
+    if (!listEl) return;
+
+    const allProducts = state.catalog.products || [];
+    const items = state.wishlist
+      .map((id) => allProducts.find((p) => p.id === id))
+      .filter(Boolean);
+
+    if (subEl) {
+      subEl.textContent = items.length
+        ? items.length + " منتج محفوظ في سلة المفضلة"
+        : "المنتجات المحفوظة للمراجعة وطلب السعر";
+    }
+
+    if (!items.length) {
+      if (footEl) footEl.hidden = true;
+      listEl.innerHTML = `
+        <div class="drawer-empty-state">
+          <span class="drawer-empty-icon"><svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg></span>
+          <h4>سلة المفضلة فارغة حاليًا</h4>
+          <p>اضغط على رمز القلب (♥) أعلى أي منتج لحفظه هنا ومراجعته أو طلب عرض سعر مجمع في أي وقت.</p>
+        </div>
+      `;
+      return;
+    }
+
+    if (footEl) footEl.hidden = false;
+    if (waBtn) {
+      const msgLines = [
+        "مرحبًا Watch Point، أرغب في طلب عرض سعر للمنتجات المحفوظة في سلة المفضلة:",
+        "",
+        ...items.map((p, i) => `${i + 1}) ${p.name} (${categoryName(p.categoryId)})`),
+        "",
+        "أرسلت من موقع Watch Point."
+      ];
+      waBtn.href = buildWhatsAppUrl(msgLines.join("\n"));
+    }
+
+    listEl.innerHTML = items
+      .map((item) => {
+        const catLabel = categoryName(item.categoryId);
+        const priceText = formatCleanCardPrice(item.price, item.priceCurrency);
+        const url = getProductDetailsUrl(item);
+        return `
+          <div class="similar-item-card wishlist-item-card" data-drawer-product="${escapeHtml(item.id)}" data-url="${escapeHtml(url)}">
+            <button type="button" class="wishlist-remove-item" data-wishlist-remove="${escapeHtml(item.id)}" title="إزالة من المفضلة" aria-label="إزالة ${escapeHtml(item.name)} من المفضلة">
+              <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+            </button>
+            <div class="similar-item-info">
+              <span class="similar-item-cat">${escapeHtml(catLabel)}</span>
+              <h4 class="similar-item-title">${escapeHtml(item.name)}</h4>
+              <span class="similar-item-price" dir="ltr">${escapeHtml(priceText)}</span>
+            </div>
+            <div class="similar-item-thumb">
+              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="72" height="72" loading="lazy">
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+  }
+
+  function openSimilarDrawer(productId) {
+    const drawer = $("#similar-drawer");
+    const listEl = $("#similar-drawer-list");
+    const sourceBanner = $("#similar-source-banner");
+    if (!drawer || !listEl) return;
+
+    closeWishlistDrawer();
+
+    const allProducts = state.catalog.products || [];
+    const current = allProducts.find((p) => p.id === productId) || allProducts[0];
+    if (!current) return;
+
+    // 1. Exact same subcategory
+    const sameSub = allProducts.filter(
+      (p) => p.id !== current.id && p.categoryId === current.categoryId
+    );
+    // 2. Same main category
+    const sameMain = allProducts.filter(
+      (p) =>
+        p.id !== current.id &&
+        p.categoryId !== current.categoryId &&
+        p.mainCategoryId &&
+        p.mainCategoryId === current.mainCategoryId
+    );
+    // 3. Closely related products from other categories so list is always rich
+    const others = allProducts.filter(
+      (p) =>
+        p.id !== current.id &&
+        !sameSub.includes(p) &&
+        !sameMain.includes(p)
+    );
+
+    const similarItems = [...sameSub, ...sameMain, ...others].slice(0, 8);
+
+    if (sourceBanner) {
+      sourceBanner.innerHTML = `
+        <div class="similar-source-inner">
+          <span class="similar-source-label">منتجات مرتبطة ومشابهة لـ:</span>
+          <strong class="similar-source-name">${escapeHtml(current.name)}</strong>
+        </div>
+      `;
+    }
+
+    listEl.innerHTML = similarItems
+      .map((item) => {
+        const subcatLabel = categoryName(item.categoryId);
+        const specBadge =
+          Array.isArray(item.specs) && item.specs.length
+            ? item.specs[0].split(" ").slice(0, 3).join(" ")
+            : subcatLabel;
+        const topLabel = subcatLabel || specBadge;
+        const priceText = formatCleanCardPrice(item.price, item.priceCurrency);
+        const url = getProductDetailsUrl(item);
+
+        return `
+          <a href="${escapeHtml(url)}" class="similar-item-card" data-drawer-product="${escapeHtml(item.id)}" data-url="${escapeHtml(url)}">
+            <div class="similar-item-info">
+              <span class="similar-item-cat">${escapeHtml(topLabel)}</span>
+              <h4 class="similar-item-title">${escapeHtml(item.name)}</h4>
+              <span class="similar-item-price" dir="ltr">${escapeHtml(priceText)}</span>
+            </div>
+            <div class="similar-item-thumb">
+              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="72" height="72" loading="lazy">
+            </div>
+          </a>
+        `;
+      })
+      .join("");
+
+    drawer.hidden = false;
+    doc.body.style.overflow = "hidden";
+    trackEvent("open_similar_drawer", { product_id: current.id });
+  }
+
+  function closeSimilarDrawer() {
+    const drawer = $("#similar-drawer");
+    if (!drawer || drawer.hidden) return;
+    drawer.hidden = true;
+    doc.body.style.overflow = "";
+  }
+
+  function toggleCompare(productId) {
+    if (!productId) return;
+    const product = (state.catalog.products || []).find((p) => p.id === productId);
+    const idx = state.compareList.indexOf(productId);
+    if (idx > -1) {
+      state.compareList.splice(idx, 1);
+      showToast("تمت إزالة المنتج من قائمة المقارنة");
+    } else {
+      if (state.compareList.length >= 4) {
+        showToast("يمكنك مقارنة حتى 4 منتجات في نفس الوقت — قم بإزالة منتج أولاً");
+        openCompareModal();
+        return;
+      }
+      state.compareList.push(productId);
+      if (state.compareList.length >= 2) {
+        showToast("تمت إضافة «" + (product ? product.name : "المنتج") + "» للمقارنة — يمكنك فتح جدول المقارنة الآن");
+      } else {
+        showToast("تمت إضافة «" + (product ? product.name : "المنتج") + "» للمقارنة — اختر منتجًا آخر للمقارنة بينهما");
+      }
+    }
+    saveToolsState();
+    syncToolsBadgesAndButtons();
+    const modal = $("#compare-modal");
+    if (modal && !modal.hidden) {
+      renderCompareModalTable();
+    }
+    trackEvent("compare_toggle", { product_id: productId, count: state.compareList.length });
+  }
+
+  function renderCompareFloatBar() {
+    const bar = $("#compare-float-bar");
+    const countEl = $("#compare-bar-count");
+    const thumbsEl = $("#compare-float-thumbs");
+    if (!bar) return;
+
+    const allProducts = state.catalog.products || [];
+    const items = state.compareList
+      .map((id) => allProducts.find((p) => p.id === id))
+      .filter(Boolean);
+
+    if (!items.length) {
+      bar.hidden = true;
+      return;
+    }
+
+    bar.hidden = false;
+    if (countEl) countEl.textContent = String(items.length);
+    if (thumbsEl) {
+      thumbsEl.innerHTML = items
+        .map(
+          (item) => `
+            <div class="compare-thumb-pill" title="${escapeHtml(item.name)}">
+              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="34" height="34">
+              <span>${escapeHtml(item.shortName || item.name)}</span>
+              <button type="button" data-compare-remove="${escapeHtml(item.id)}" aria-label="إزالة">×</button>
+            </div>
+          `
+        )
+        .join("");
+    }
+  }
+
+  function openCompareModal() {
+    const modal = $("#compare-modal");
+    if (!modal) return;
+    renderCompareModalTable();
+    modal.hidden = false;
+    doc.body.style.overflow = "hidden";
+  }
+
+  function closeCompareModal() {
+    const modal = $("#compare-modal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    doc.body.style.overflow = "";
+  }
+
+  function renderCompareModalTable() {
+    const wrap = $("#compare-table-wrap");
+    if (!wrap) return;
+
+    const allProducts = state.catalog.products || [];
+    const items = state.compareList
+      .map((id) => allProducts.find((p) => p.id === id))
+      .filter(Boolean);
+
+    if (!items.length) {
+      wrap.innerHTML = `
+        <div class="drawer-empty-state" style="padding:3rem 1rem;">
+          <span class="drawer-empty-icon"><svg class="icon" aria-hidden="true"><use href="#icon-compare"/></svg></span>
+          <h4>لا توجد منتجات مضافة للمقارنة</h4>
+          <p>اضغط على رمز المقارنة (⇄) أعلى أي منتج لإضافته هنا ومقارنة المواصفات والأسعار جنبًا إلى جنب.</p>
+        </div>
+      `;
+      return;
+    }
+
+    wrap.innerHTML = `
+      <div class="compare-grid" style="--compare-cols: ${items.length};">
+        ${items
+          .map((item) => {
+            const cat = categoryName(item.categoryId);
+            const priceText = formatCleanCardPrice(item.price, item.priceCurrency);
+            const specs = Array.isArray(item.specs) ? item.specs : [];
+            const waMessage = [
+              "مرحبًا Watch Point، أرغب في طلب عرض سعر لهذا المنتج:",
+              "المنتج: " + item.name,
+              "الفئة: " + cat
+            ].join("\n");
+            const waUrl = buildWhatsAppUrl(waMessage);
+            const detailsUrl = getProductDetailsUrl(item);
+
+            return `
+              <div class="compare-col">
+                <button type="button" class="compare-col-remove" data-compare-remove="${escapeHtml(item.id)}" title="إزالة من المقارنة">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+                </button>
+                <a href="${escapeHtml(detailsUrl)}" class="compare-col-img" data-compare-nav="${escapeHtml(item.id)}">
+                  <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="160" height="120">
+                </a>
+                <span class="compare-col-cat">${escapeHtml(cat)}</span>
+                <h4 class="compare-col-title">${escapeHtml(item.name)}</h4>
+                <div class="compare-col-price" dir="ltr">${escapeHtml(priceText)}</div>
+                <p class="compare-col-desc">${escapeHtml(productShortDesc(item))}</p>
+                <div class="compare-col-specs">
+                  <strong>المواصفات الفنية:</strong>
+                  <ul>
+                    ${
+                      specs.length
+                        ? specs.map((s) => `<li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg><span>${escapeHtml(s)}</span></li>`).join("")
+                        : `<li><span>تُحدد المواصفات التفصيلية في عرض السعر</span></li>`
+                    }
+                  </ul>
+                </div>
+                <a href="${escapeHtml(waUrl)}" target="_blank" rel="noopener noreferrer" class="btn btn--primary btn--sm btn--block compare-col-cta">
+                  <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                  <span>اطلب عرض سعر</span>
+                </a>
+              </div>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+  }
+
+  function initProductCardActions() {
+    const headerWishBtn = $("#header-wishlist-btn");
+    if (headerWishBtn) {
+      headerWishBtn.addEventListener("click", () => openWishlistDrawer());
+    }
+
+    const headerCompBtn = $("#header-compare-btn");
+    if (headerCompBtn) {
+      headerCompBtn.addEventListener("click", () => openCompareModal());
+    }
+
+    const simDrawer = $("#similar-drawer");
+    if (simDrawer) {
+      simDrawer.addEventListener("click", (event) => {
+        if (event.target.closest("[data-similar-close]")) {
+          event.preventDefault();
+          closeSimilarDrawer();
+          return;
+        }
+        const card = event.target.closest("[data-drawer-product]");
+        if (card) {
+          event.preventDefault();
+          const pid = card.dataset.drawerProduct;
+          const prod = (state.catalog.products || []).find((p) => p.id === pid);
+          closeSimilarDrawer();
+          if (prod) navigateToProductPage(prod, event);
+        }
+      });
+    }
+
+    const wishDrawer = $("#wishlist-drawer");
+    if (wishDrawer) {
+      wishDrawer.addEventListener("click", (event) => {
+        if (event.target.closest("[data-wishlist-close]")) {
+          event.preventDefault();
+          closeWishlistDrawer();
+          return;
+        }
+        const rmBtn = event.target.closest("[data-wishlist-remove]");
+        if (rmBtn) {
+          event.preventDefault();
+          event.stopPropagation();
+          toggleWishlist(rmBtn.dataset.wishlistRemove);
+          return;
+        }
+        const card = event.target.closest("[data-drawer-product]");
+        if (card) {
+          event.preventDefault();
+          const pid = card.dataset.drawerProduct;
+          const prod = (state.catalog.products || []).find((p) => p.id === pid);
+          closeWishlistDrawer();
+          if (prod) navigateToProductPage(prod, event);
+        }
+      });
+    }
+
+    const wishClearBtn = $("#wishlist-clear-btn");
+    if (wishClearBtn) {
+      wishClearBtn.addEventListener("click", () => {
+        state.wishlist = [];
+        saveToolsState();
+        syncToolsBadgesAndButtons();
+        renderWishlistDrawer();
+        showToast("تم إفراغ سلة المفضلة");
+      });
+    }
+
+    const compFloatBar = $("#compare-float-bar");
+    if (compFloatBar) {
+      compFloatBar.addEventListener("click", (event) => {
+        const rmBtn = event.target.closest("[data-compare-remove]");
+        if (rmBtn) {
+          event.preventDefault();
+          toggleCompare(rmBtn.dataset.compareRemove);
+          return;
+        }
+      });
+    }
+
+    const compOpenBtn = $("#compare-open-modal-btn");
+    if (compOpenBtn) {
+      compOpenBtn.addEventListener("click", () => openCompareModal());
+    }
+
+    const compClearBtn = $("#compare-clear-btn");
+    if (compClearBtn) {
+      compClearBtn.addEventListener("click", () => {
+        state.compareList = [];
+        saveToolsState();
+        syncToolsBadgesAndButtons();
+        showToast("تم مسح قائمة المقارنة");
+      });
+    }
+
+    const compModal = $("#compare-modal");
+    if (compModal) {
+      compModal.addEventListener("click", (event) => {
+        if (event.target.closest("[data-compare-close]")) {
+          event.preventDefault();
+          closeCompareModal();
+          return;
+        }
+        const rmBtn = event.target.closest("[data-compare-remove]");
+        if (rmBtn) {
+          event.preventDefault();
+          toggleCompare(rmBtn.dataset.compareRemove);
+          return;
+        }
+        const navLink = event.target.closest("[data-compare-nav]");
+        if (navLink) {
+          event.preventDefault();
+          const pid = navLink.dataset.compareNav;
+          const prod = (state.catalog.products || []).find((p) => p.id === pid);
+          closeCompareModal();
+          if (prod) navigateToProductPage(prod, event);
+        }
+      });
+    }
+
+    const compModalClear = $("#compare-modal-clear");
+    if (compModalClear) {
+      compModalClear.addEventListener("click", () => {
+        state.compareList = [];
+        saveToolsState();
+        syncToolsBadgesAndButtons();
+        renderCompareModalTable();
+      });
+    }
+
+    doc.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        closeSimilarDrawer();
+        closeWishlistDrawer();
+        closeCompareModal();
+      }
+    });
+  }
+
+  function initProjectsFilter() {
+    const bar = $(".projects-filter-bar");
+    const grid = $("#projects-grid");
+    if (!bar || !grid) return;
+
+    bar.addEventListener("click", (event) => {
+      const btn = event.target.closest("[data-project-filter]");
+      if (!btn) return;
+      const filter = btn.dataset.projectFilter;
+      $$(".project-filter-btn", bar).forEach((b) => b.classList.remove("is-active"));
+      btn.classList.add("is-active");
+
+      const cards = $$(".project-card", grid);
+      cards.forEach((card) => {
+        const cat = card.dataset.projectCat;
+        if (filter === "all" || cat === filter) {
+          card.classList.remove("is-hidden");
+        } else {
+          card.classList.add("is-hidden");
+        }
+      });
+      trackEvent("filter_projects", { filter });
+    });
+
+    grid.addEventListener("click", (event) => {
+      const quoteBtn = event.target.closest("[data-project-quote]");
+      if (!quoteBtn) return;
+      const projName = quoteBtn.dataset.projectQuote;
+      const notesEl = $("#quote-notes");
+      if (notesEl && projName) {
+        notesEl.value = "طلب دراسة ومعاينة لمشروع مماثل: " + projName;
+      }
+    });
   }
 
   function initStickyCategoryBar() {
@@ -1828,7 +2500,7 @@
             ${escapeHtml(category)}
           </span>
           <h2 class="qv-title" id="qv-title">${escapeHtml(product.name)}</h2>
-          <p class="qv-desc">${escapeHtml(product.description || "")}</p>
+          <p class="qv-desc">${escapeHtml(productShortDesc(product))}</p>
           ${
             (product.specs || []).length
               ? `<h4 class="qv-specs-title">المواصفات الفنية الكاملة:</h4>
@@ -2069,9 +2741,9 @@
             const priceFormatted = formatPrice(prod.price, prod.priceCurrency);
             const specsList = Array.isArray(prod.specs) ? prod.specs.slice(0, 2) : [];
             const descText =
-              prod.description && prod.description !== prod.name
-                ? prod.description
-                : specsList.join(" · ") || "توريد وتركيب معتمد بضمان Watch Point";
+              productShortDesc(prod) ||
+              specsList.join(" · ") ||
+              "توريد وتركيب معتمد بضمان Watch Point";
 
             return `
               <div class="promo-slide${idx === 0 ? " is-active" : ""}" data-slide-index="${idx}">

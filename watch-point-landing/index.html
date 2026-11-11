@@ -46,7 +46,7 @@
   <link rel="preload" href="assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/Dubai-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-showcase.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="css/style.css?v=1793992928910">
+  <link rel="stylesheet" href="css/style.css?v=1794000774189">
 
   <script type="application/ld+json">
   {
@@ -330,9 +330,60 @@
     <symbol id="icon-star" viewBox="0 0 24 24">
       <path d="m12 3 2.7 5.5 6 .9-4.35 4.2 1.05 5.95L12 16.75 6.6 19.55l1.05-5.95L3.3 9.4l6-.9L12 3Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
     </symbol>
+    <symbol id="icon-heart" viewBox="0 0 24 24">
+      <path d="M12 20.5s-7.5-4.6-9.3-9C1.5 8.3 3.4 4.5 7 4.5c2.1 0 3.7 1.1 5 2.8 1.3-1.7 2.9-2.8 5-2.8 3.6 0 5.5 3.8 4.3 7-1.8 4.4-9.3 9-9.3 9Z" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-heart-fill" viewBox="0 0 24 24">
+      <path d="M12 20.5s-7.5-4.6-9.3-9C1.5 8.3 3.4 4.5 7 4.5c2.1 0 3.7 1.1 5 2.8 1.3-1.7 2.9-2.8 5-2.8 3.6 0 5.5 3.8 4.3 7-1.8 4.4-9.3 9-9.3 9Z" fill="currentColor" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-compare" viewBox="0 0 24 24">
+      <path d="M4 8h15m-3.5-3.5L19 8l-3.5 3.5M20 16H5m3.5-3.5L5 16l3.5 3.5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="icon-similar" viewBox="0 0 24 24">
+      <rect x="8" y="8" width="12" height="12" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.85"/>
+      <path d="M16 8V6.2A2.2 2.2 0 0 0 13.8 4H6.2A2.2 2.2 0 0 0 4 6.2v7.6A2.2 2.2 0 0 0 6.2 16H8" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24">
+      <path d="M4 7h16M9 7V4.8c0-.5.3-.8.8-.8h4.4c.5 0 .8.3.8.8V7M6.5 7l.9 12.2a1.8 1.8 0 0 0 1.8 1.8h5.6a1.8 1.8 0 0 0 1.8-1.8L17.5 7" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </symbol>
   </svg>
 
   <header class="site-header" id="site-header">
+    <!-- Top Moving News-Ticker Announcement Bar (Managed from Admin) -->
+    <aside class="top-promo-bar" id="top-promo-bar" aria-label="شريط أخبار وخدمات Watch Point">
+      <div class="container top-promo-inner">
+        <span class="top-promo-flash" id="top-ticker-badge">
+          <span class="top-promo-dot" aria-hidden="true"></span>
+          <span id="top-ticker-badge-text">Watch Point</span>
+        </span>
+        <div class="top-ticker-viewport" aria-live="off">
+          <div class="top-ticker-track" id="top-ticker-track">
+            <span class="top-ticker-item">دعم فني</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">خدمة 24/7</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">اسألنا عن أي حاجة عاوز تفهمها</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">موردين لجميع الماركات المعتمدة</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">منذ 2012</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">خبرة على أعلى مستوى</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">عقود صيانة دائمة</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">نوفر لك كل احتياجاتك</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">IOT</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">Smart Homes</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+            <span class="top-ticker-item">Green Houses</span><span class="top-ticker-sep" aria-hidden="true">✦</span>
+          </div>
+        </div>
+        <div class="top-promo-actions">
+          <a class="top-promo-call" id="top-bar-call-btn" href="#contact" title="اتصال هاتفي مباشر">
+            <svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>
+            <span id="top-bar-phone-val">اتصال مباشر</span>
+          </a>
+          <a class="top-promo-link" href="#contact">
+            <span>احجز معاينتك</span>
+            <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+          </a>
+        </div>
+      </div>
+    </aside>
+
     <div class="container header-inner">
       <a class="brand" href="#home" aria-label="Watch Point — الصفحة الرئيسية">
         <img class="brand-mark" src="assets/images/brand-mark.webp" alt="Watch Point" width="48" height="48" decoding="async">
@@ -347,7 +398,7 @@
           <li><a href="#store" data-nav="store">المتجر والأقسام</a></li>
           <li><a href="#packages" data-nav="packages">الباقات</a></li>
           <li><a href="#services" data-nav="services">خدماتنا ومن نحن</a></li>
-          <li><a href="#steps" data-nav="steps">طريقة العمل</a></li>
+          <li><a href="#projects" data-nav="projects">سابقة الأعمال</a></li>
           <li><a href="#brands" data-nav="brands">العلامات التجارية</a></li>
           <li><a href="#faq" data-nav="faq">الأسئلة</a></li>
           <li><a href="#contact" data-nav="contact">تواصل معنا</a></li>
@@ -355,6 +406,18 @@
       </nav>
 
       <div class="header-actions">
+        <button type="button" class="header-tool-btn" id="header-wishlist-btn" aria-label="سلة المفضلة" title="سلة المفضلة">
+          <svg class="icon" aria-hidden="true"><use href="#icon-heart"/></svg>
+          <span class="header-tool-badge" id="wishlist-count-badge" hidden>0</span>
+        </button>
+        <button type="button" class="header-tool-btn" id="header-compare-btn" aria-label="مقارنة المنتجات" title="مقارنة المنتجات">
+          <svg class="icon" aria-hidden="true"><use href="#icon-compare"/></svg>
+          <span class="header-tool-badge" id="compare-count-badge" hidden>0</span>
+        </button>
+        <a class="btn btn--phone-header btn--sm" id="header-phone-btn" href="#contact" title="اتصال هاتفي مباشر">
+          <svg class="icon" aria-hidden="true"><use href="#icon-phone"/></svg>
+          <span id="header-phone-text">اتصال مباشر</span>
+        </a>
         <a class="btn btn--primary btn--sm header-cta" href="#contact" data-analytics="header_quote">
           اطلب عرض سعر
           <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
@@ -370,9 +433,8 @@
       <nav class="mobile-nav" aria-label="التنقل على الموبايل">
         <a href="#store"><span>المتجر</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#packages"><span>الباقات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-        <a href="#services"><span>الخدمات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-        <a href="#about"><span>من نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-        <a href="#steps"><span>طريقة العمل</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+        <a href="#services"><span>الخدمات ومن نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+        <a href="#projects"><span>سابقة الأعمال المنفذة</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#brands"><span>العلامات التجارية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#faq"><span>الأسئلة الشائعة</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#contact"><span>تواصل معنا</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
@@ -668,6 +730,156 @@
               </div>
             </li>
           </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real Projects and Technical Installations Gallery (#projects) -->
+    <section class="section section--projects" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section-head">
+          <div class="section-head-copy">
+            <p class="eyebrow">سابقة الأعمال والمشاريع المنفذة</p>
+            <h2 id="projects-title">تركيبات هندسية <span class="text-brand">بأعلى المعايير</span></h2>
+            <p class="section-lead">
+              نماذج من مشاريع التوريد والتنفيذ الهندسي لأنظمة المراقبة والشبكات وغرف التحكم المنفذة للمنازل والشركات والمؤسسات.
+            </p>
+          </div>
+          <div class="section-head-aside">
+            <span class="section-note">تنظيم كامل للكابلات، تشغيل مستقر 24/7، وضمان رسمي معتمد.</span>
+          </div>
+        </div>
+
+        <!-- Project Filter Buttons -->
+        <div class="projects-filter-bar" role="tablist" aria-label="تصنيفات سابقة الأعمال">
+          <button type="button" class="project-filter-btn is-active" data-project-filter="all">جميع المشاريع (6)</button>
+          <button type="button" class="project-filter-btn" data-project-filter="control">غرف تحكم وشاشات</button>
+          <button type="button" class="project-filter-btn" data-project-filter="networks">شبكات وراكات PoE</button>
+          <button type="button" class="project-filter-btn" data-project-filter="cctv">كاميرات وفيلات</button>
+          <button type="button" class="project-filter-btn" data-project-filter="access">إنتركم وأكسيس</button>
+        </div>
+
+        <!-- Projects Grid -->
+        <div class="projects-grid" id="projects-grid">
+          <article class="project-card reveal" data-project-cat="control">
+            <div class="project-media">
+              <img src="assets/images/projects/project-control-room.webp" alt="غرفة تحكم ومراقبة مركزية" width="800" height="550" loading="lazy" decoding="async">
+              <span class="project-tag">غرف تحكم ومراقبة</span>
+            </div>
+            <div class="project-body">
+              <span class="project-location"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> القرية الذكية — 6 أكتوبر</span>
+              <h3 class="project-name">غرفة تحكم ومراقبة مركزية متعددة الشاشات</h3>
+              <p class="project-desc">تجهيز جدار شاشات Video Wall بدقة 4K مع ربط 64 كاميرا مراقبة وسيرفرات NVR مركزية للتشغيل والتحكم على مدار الساعة.</p>
+              <ul class="project-highlights">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> متابعة حية 24/7 دون انقطاع</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> سيرفرات NVR وسعة تخزين عملاقة</li>
+              </ul>
+              <a class="btn btn--outline btn--sm btn--block" href="#contact" data-project-quote="غرفة تحكم ومراقبة مركزية">
+                طلب معاينة ودراسة مماثلة
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-project-cat="networks">
+            <div class="project-media">
+              <img src="assets/images/projects/project-rack-network.webp" alt="بنية تحتية وراك شبكات متكامل" width="800" height="550" loading="lazy" decoding="async">
+              <span class="project-tag">بنية تحتية وشبكات PoE</span>
+            </div>
+            <div class="project-body">
+              <span class="project-location"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> مبنى إداري — التجمع الخامس</span>
+              <h3 class="project-name">تنظيم وتمديد راك شبكات وسيرفرات PoE</h3>
+              <p class="project-desc">تصميم وتركيب راك شبكة احترافي 42U مع سويتشات جيجابت PoE وباتش بانل منظم بالكامل يخدم 80 نقطة شبكة وكاميرا.</p>
+              <ul class="project-highlights">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> كابلات Cat6 معتمدة وترقيم منظم</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> حماية من انقطاع التيار بـ UPS</li>
+              </ul>
+              <a class="btn btn--outline btn--sm btn--block" href="#contact" data-project-quote="تنظيم راك شبكات وسيرفرات">
+                طلب معاينة ودراسة مماثلة
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-project-cat="cctv">
+            <div class="project-media">
+              <img src="assets/images/projects/project-villa-outdoor.webp" alt="تأمين محيط فيلا سكنية فاخرة" width="800" height="550" loading="lazy" decoding="async">
+              <span class="project-tag">فيلات ومحيط خارجي</span>
+            </div>
+            <div class="project-body">
+              <span class="project-location"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> كومباوند بالشيخ زايد</span>
+              <h3 class="project-name">تأمين محيط وسور فيلا سكنية فاخرة</h3>
+              <p class="project-desc">تركيب كاميرات خارجية PTZ ذكية بخاصية التتبع التلقائي بالأشعة تحت الحمراء والإضاءة الملونة لتغطية كافة المداخل والأسوار.</p>
+              <ul class="project-highlights">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> إنذار ذكي وكشف حركة الأشخاص والسيارات</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> ربط كامل بتطبيق الموبايل للعائلة</li>
+              </ul>
+              <a class="btn btn--outline btn--sm btn--block" href="#contact" data-project-quote="تأمين فيلا سكنية">
+                طلب معاينة ودراسة مماثلة
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-project-cat="cctv">
+            <div class="project-media">
+              <img src="assets/images/projects/project-indoor-colorvu.webp" alt="مراقبة داخلية ملونة 24/7" width="800" height="550" loading="lazy" decoding="async">
+              <span class="project-tag">شركات ومعارض</span>
+            </div>
+            <div class="project-body">
+              <span class="project-location"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> مقر شركة استثمار — المعادي</span>
+              <h3 class="project-name">نظام مراقبة داخلي بتقنية ColorVu الملونة</h3>
+              <p class="project-desc">تغطية قاعات الاجتماعات والمكاتب والمداخل بكاميرات توريت مدمجة بصوت ثنائي الاتجاه وتصوير ملون فائق الدقة طوال اليوم.</p>
+              <ul class="project-highlights">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> ميكروفونات مدمجة عالية الحساسية</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> تركيب ديكوري مخفي للكابلات</li>
+              </ul>
+              <a class="btn btn--outline btn--sm btn--block" href="#contact" data-project-quote="مراقبة داخلية للشركات">
+                طلب معاينة ودراسة مماثلة
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-project-cat="access">
+            <div class="project-media">
+              <img src="assets/images/projects/project-smart-access.webp" alt="تحكم بالدخول وإنتركم ذكي" width="800" height="550" loading="lazy" decoding="async">
+              <span class="project-tag">أقفال وإنتركم مرئي</span>
+            </div>
+            <div class="project-body">
+              <span class="project-location"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> فيلا خاصة — الشروق</span>
+              <h3 class="project-name">منظومة أكسيس كنترول وقفل ذكي ببصمة الوجه</h3>
+              <p class="project-desc">تركيب قفل ذكي للباب الرئيسي يتعرف على الوجه ثلاثي الأبعاد مع إنتركم فيديو يتيح التحدث مع الزوار وفتح الباب من الهاتف.</p>
+              <ul class="project-highlights">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> 7 طرق أمان لفتح الباب</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> تسجيل لحظي لصور وتوقيتات الدخول</li>
+              </ul>
+              <a class="btn btn--outline btn--sm btn--block" href="#contact" data-project-quote="أقفال ذكية وإنتركم">
+                طلب معاينة ودراسة مماثلة
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+            </div>
+          </article>
+
+          <article class="project-card reveal" data-project-cat="control">
+            <div class="project-media">
+              <img src="assets/images/projects/project-sound-system.webp" alt="نظام صوتيات وإذاعة داخلية" width="800" height="550" loading="lazy" decoding="async">
+              <span class="project-tag">صوتيات وإذاعة داخلية</span>
+            </div>
+            <div class="project-body">
+              <span class="project-location"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> مجمع تجاري — مدينة نصر</span>
+              <h3 class="project-name">نظام صوتيات وإذاعة داخلية متعدد الزونات</h3>
+              <p class="project-desc">توزيع متوازن لسماعات سقفية مدمجة مع أمبليفيرات تحكم مستقلة لكل طابق لدعم الإعلانات الداخلية والموسيقى الهادئة.</p>
+              <ul class="project-highlights">
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> تحكم منفصل في صوت كل منطقة (Multi-Zone)</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> نقاء صوتي بدون صدى أو تشويش</li>
+              </ul>
+              <a class="btn btn--outline btn--sm btn--block" href="#contact" data-project-quote="نظام صوتيات وإذاعة">
+                طلب معاينة ودراسة مماثلة
+                <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+              </a>
+            </div>
+          </article>
         </div>
       </div>
     </section>
@@ -987,6 +1199,108 @@
     </div>
   </div>
 
+  <!-- 1) Similar Products Slide-Out Left Drawer (Matches reference screenshot) -->
+  <div class="side-drawer side-drawer--left" id="similar-drawer" role="dialog" aria-modal="true" aria-labelledby="similar-drawer-title" hidden>
+    <div class="side-drawer-backdrop" data-similar-close></div>
+    <aside class="side-drawer-panel">
+      <header class="side-drawer-head">
+        <button type="button" class="side-drawer-close" data-similar-close aria-label="إغلاق قائمة المنتجات المشابهة">
+          <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+        </button>
+        <div class="side-drawer-title-wrap">
+          <div class="side-drawer-titles">
+            <h3 id="similar-drawer-title">منتجات مشابهة</h3>
+            <span class="side-drawer-sub-en" lang="en">Similar Products</span>
+          </div>
+          <span class="side-drawer-head-icon">
+            <svg class="icon" aria-hidden="true"><use href="#icon-similar"/></svg>
+          </span>
+        </div>
+      </header>
+      <div class="similar-source-banner" id="similar-source-banner"></div>
+      <div class="side-drawer-body" id="similar-drawer-list"></div>
+    </aside>
+  </div>
+
+  <!-- 2) Wishlist / Favorites Basket Drawer (سلة المفضلة) -->
+  <div class="side-drawer side-drawer--left" id="wishlist-drawer" role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title" hidden>
+    <div class="side-drawer-backdrop" data-wishlist-close></div>
+    <aside class="side-drawer-panel">
+      <header class="side-drawer-head">
+        <button type="button" class="side-drawer-close" data-wishlist-close aria-label="إغلاق سلة المفضلة">
+          <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+        </button>
+        <div class="side-drawer-title-wrap">
+          <div class="side-drawer-titles">
+            <h3 id="wishlist-drawer-title">سلة المفضلة</h3>
+            <span class="side-drawer-sub-en" id="wishlist-drawer-subtitle">المنتجات المحفوظة للمراجعة وطلب السعر</span>
+          </div>
+          <span class="side-drawer-head-icon side-drawer-head-icon--heart">
+            <svg class="icon" aria-hidden="true"><use href="#icon-heart-fill"/></svg>
+          </span>
+        </div>
+      </header>
+      <div class="side-drawer-body" id="wishlist-drawer-list"></div>
+      <footer class="side-drawer-foot" id="wishlist-drawer-foot" hidden>
+        <a href="#contact" class="btn btn--primary btn--block" id="wishlist-wa-btn" target="_blank" rel="noopener noreferrer">
+          <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+          <span>اطلب عرض سعر لكل المفضلة</span>
+        </a>
+        <button type="button" class="btn btn--ghost btn--sm btn--block" id="wishlist-clear-btn">
+          <svg class="icon" aria-hidden="true"><use href="#icon-trash"/></svg>
+          <span>إفراغ سلة المفضلة</span>
+        </button>
+      </footer>
+    </aside>
+  </div>
+
+  <!-- 3) Product Comparison Floating Bar & Side-by-Side Modal -->
+  <div class="compare-float-bar" id="compare-float-bar" role="region" aria-label="شريط مقارنة المنتجات" hidden>
+    <div class="compare-float-inner">
+      <div class="compare-float-info">
+        <span class="compare-float-icon"><svg class="icon" aria-hidden="true"><use href="#icon-compare"/></svg></span>
+        <div>
+          <strong>مقارنة المنتجات (<span id="compare-bar-count">0</span>)</strong>
+          <small>اختر منتجين أو أكثر للمقارنة بين المواصفات والأسعار</small>
+        </div>
+      </div>
+      <div class="compare-float-thumbs" id="compare-float-thumbs"></div>
+      <div class="compare-float-actions">
+        <button type="button" class="btn btn--primary btn--sm" id="compare-open-modal-btn">
+          قارن الآن
+        </button>
+        <button type="button" class="compare-clear-btn" id="compare-clear-btn" title="مسح قائمة المقارنة">
+          <svg class="icon" aria-hidden="true"><use href="#icon-trash"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="qv-modal compare-modal" id="compare-modal" role="dialog" aria-modal="true" aria-labelledby="compare-modal-title" hidden>
+    <div class="qv-backdrop" data-compare-close></div>
+    <div class="qv-dialog compare-dialog">
+      <div class="compare-modal-head">
+        <div class="compare-modal-title-group">
+          <span class="compare-modal-badge"><svg class="icon" aria-hidden="true"><use href="#icon-compare"/></svg></span>
+          <div>
+            <h2 id="compare-modal-title">جدول مقارنة المنتجات</h2>
+            <p>مقارنة تفصيلية للموديلات والأسعار والمواصفات الفنية جنبًا إلى جنب</p>
+          </div>
+        </div>
+        <div class="compare-modal-head-actions">
+          <button type="button" class="btn btn--ghost btn--sm" id="compare-modal-clear">
+            <svg class="icon" aria-hidden="true"><use href="#icon-trash"/></svg>
+            مسح الكل
+          </button>
+          <button type="button" class="qv-close compare-close-btn" data-compare-close aria-label="إغلاق نافذة المقارنة">
+            <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="compare-table-wrap" id="compare-table-wrap"></div>
+    </div>
+  </div>
+
   <!-- Smart Mobile Bottom Action Bar -->
   <nav class="mobile-action-dock" id="mobile-action-dock" aria-label="شريط الوصول السريع للموبايل">
     <a href="#store" class="dock-item" data-dock-action="cats">
@@ -1048,8 +1362,8 @@
     </div>
   </noscript>
 
-  <script src="js/config.js?v=1793992928910"></script>
-  <script src="js/data.js?v=1793992928910"></script>
-  <script src="js/main.js?v=1793992928910" defer></script>
+  <script src="js/config.js?v=1794000774189"></script>
+  <script src="js/data.js?v=1794000774189"></script>
+  <script src="js/main.js?v=1794000774189" defer></script>
 </body>
 </html>

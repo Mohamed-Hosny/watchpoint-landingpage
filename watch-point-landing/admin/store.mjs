@@ -227,6 +227,25 @@ const DEFAULT_BANNERS = [
   }
 ];
 
+export const DEFAULT_TICKER = {
+  enabled: true,
+  badgeText: "Watch Point",
+  speedSeconds: 36,
+  items: [
+    "دعم فني",
+    "خدمة 24/7",
+    "اسألنا عن أي حاجة عاوز تفهمها",
+    "موردين لجميع الماركات المعتمدة",
+    "منذ 2012",
+    "خبرة على أعلى مستوى",
+    "عقود صيانة دائمة",
+    "نوفر لك كل احتياجاتك",
+    "IOT",
+    "Smart Homes",
+    "Green Houses"
+  ]
+};
+
 export function getStore() {
   ensureDirs();
   if (!fs.existsSync(STORE_FILE)) {
@@ -241,7 +260,8 @@ export function getStore() {
       categories: source.categories,
       products: source.products,
       packages: source.packages,
-      banners: DEFAULT_BANNERS
+      banners: DEFAULT_BANNERS,
+      ticker: DEFAULT_TICKER
     };
     writeJsonAtomic(STORE_FILE, store);
     return store;
@@ -260,6 +280,9 @@ export function getStore() {
       mainBanner.hotspots = DEFAULT_BANNERS[0].hotspots;
       mainBanner.image = DEFAULT_BANNERS[0].image;
     }
+  }
+  if (!raw.ticker || !Array.isArray(raw.ticker.items) || !raw.ticker.items.length) {
+    raw.ticker = DEFAULT_TICKER;
   }
   raw.settings = raw.settings || {};
   return raw;
@@ -341,6 +364,8 @@ window.WP_PACKAGES = ${JSON.stringify(store.packages, null, 2)};
 window.WP_BRANDS = ${JSON.stringify(store.brands || [], null, 2)};
 
 window.WP_BANNERS = ${JSON.stringify(store.banners || [], null, 2)};
+
+window.WP_TICKER = ${JSON.stringify(store.ticker || DEFAULT_TICKER, null, 2)};
 `;
 }
 
