@@ -574,7 +574,8 @@ function buildProduct(fields, store, existing, imagePath) {
     featured: fields.featured === "1",
     demo: existing ? Boolean(existing.demo) : false,
     /* الكلمات المفتاحية تيجي من الفئة (القسم) — مش من المنتج. */
-    keywords: existing?.keywords || []
+    keywords: existing?.keywords || [],
+    ...(existing?.supplierMeta ? { supplierMeta: existing.supplierMeta } : {})
   };
 
   return { product, errors };

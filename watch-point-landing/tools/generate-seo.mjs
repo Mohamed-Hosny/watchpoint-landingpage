@@ -64,6 +64,7 @@ function publicUrl(relative, fallback = relative) {
 
 function publicImage(prefix, relative) {
   const clean = String(relative || "").replace(/^\.?\//, "");
+  if (/^(https?:)?\/\//i.test(clean)) return clean;
   return SITE_URL ? SITE_URL + "/" + clean : prefix + clean;
 }
 
@@ -573,7 +574,7 @@ function filterProductCard(item, order) {
   return `
             <a class="fp-card" href="./${esc(productPageFile(item))}" data-filter-item data-order="${order}" data-subcategory="${esc(item.categoryId || "")}" data-price="${esc(priceAttr(item))}" data-brand="${esc(item.brandId || "")}" data-name="${esc(item.name)}">
               <span class="fp-card-media">
-                <img src="${prefixImage("../", item.image)}" alt="${esc(item.imageAlt || item.name)}" width="600" height="450" loading="lazy" decoding="async">
+                <img src="${prefixImage("../", item.image)}" alt="${esc(item.imageAlt || item.name)}" width="600" height="450" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='../assets/images/brand-mark.webp'">
                 ${item.demo ? '<span class="demo-pill">بيانات تجريبية</span>' : ""}
               </span>
               <span class="fp-card-body">
@@ -1205,7 +1206,7 @@ function productPage(product, category) {
 
           <div class="category-product">
             <div class="category-product-media">
-              <img src="${prefixImage("../", product.image)}" alt="${esc(product.imageAlt || product.name)}" width="800" height="600" loading="eager" decoding="async">
+              <img src="${prefixImage("../", product.image)}" alt="${esc(product.imageAlt || product.name)}" width="800" height="600" loading="eager" decoding="async" onerror="this.onerror=null;this.src='../assets/images/brand-mark.webp'">
             </div>
             <div class="category-product-body">
               ${product.demo ? '<span class="demo-pill"><svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg> بيانات تجريبية</span>' : ""}
@@ -1275,12 +1276,13 @@ function productPage(product, category) {
             <h2>${esc(category.name)}</h2>
             <ul class="sidebar-list">
               ${productsInCategory(category)
+                .slice(0, 12)
                 .map(
                   (item) => `
                     <li><a href="./${esc(productPageFile(item))}">${esc(item.name)}<svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a></li>`
                 )
                 .join("")}
-              <li><a href="${categoryUrl}">صفحة الفئة<svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a></li>
+              <li><a href="${categoryUrl}">عرض كل منتجات الفئة (${productsInCategory(category).length})<svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a></li>
             </ul>
           </div>
         </aside>
@@ -1588,7 +1590,7 @@ function dynamicProductPage() {
         '</div></section>' +
         '<section class="page-body"><div class="container page-layout"><article class="prose">' +
           '<div class="category-product">' +
-            '<div class="category-product-media"><img src="' + escHtml(imgPath) + '" alt="' + escHtml(product.imageAlt || product.name) + '" width="800" height="600" loading="eager"></div>' +
+            '<div class="category-product-media"><img src="' + escHtml(imgPath) + '" alt="' + escHtml(product.imageAlt || product.name) + '" width="800" height="600" loading="eager" onerror="this.onerror=null;this.src=\'assets/images/brand-mark.webp\'"></div>' +
             '<div class="category-product-body">' +
               '<h3>' + escHtml(product.name) + '</h3>' +
               '<p>' + escHtml(shortDesc) + '</p>' +

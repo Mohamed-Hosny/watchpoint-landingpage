@@ -346,7 +346,15 @@ function writeTextAtomic(file, content) {
   fs.renameSync(tmp, file);
 }
 
+function sanitizePublicProducts(products) {
+  return (Array.isArray(products) ? products : []).map((p) => {
+    const { supplierMeta, supplierPrice, supplierUrl, supplierSku, ...publicFields } = p;
+    return publicFields;
+  });
+}
+
 function buildDataJs(store) {
+  const publicProducts = sanitizePublicProducts(store.products);
   return `/* ==========================================================================
    Watch Point — بيانات الكتالوج
    --------------------------------------------------------------------------
@@ -357,7 +365,7 @@ function buildDataJs(store) {
 
 window.WP_CATEGORIES = ${JSON.stringify(store.categories, null, 2)};
 
-window.WP_PRODUCTS = ${JSON.stringify(store.products, null, 2)};
+window.WP_PRODUCTS = ${JSON.stringify(publicProducts, null, 2)};
 
 window.WP_PACKAGES = ${JSON.stringify(store.packages, null, 2)};
 

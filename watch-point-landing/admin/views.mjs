@@ -514,12 +514,17 @@ export function productsPage({ store, q, category = "", csrf, pending, flash }) 
       const catName = categoryLabel(store, product.categoryId);
 
       const price = formatPrice(product.price, product.priceCurrency);
+      const supPrice =
+        product.supplierMeta && product.supplierMeta.supplierPrice != null
+          ? formatPrice(product.supplierMeta.supplierPrice, product.supplierMeta.supplierCurrency || "EGP")
+          : null;
       return `<tr>
         <td>
           <div class="product-cell">
-            <img src="${attr(imgSrc(product.image))}" alt="" loading="lazy">
+            <img src="${attr(imgSrc(product.image))}" alt="" loading="lazy" onerror="this.onerror=null;this.src='/assets/images/brand-mark.webp'">
             <div>
               <strong>${escapeHtml(product.name)}</strong>
+              ${product.shortName ? `<small class="muted" style="display:block;">${escapeHtml(product.shortName)}</small>` : ""}
               <small class="muted" dir="ltr">/${escapeHtml(product.slug || product.id)}</small>
             </div>
           </div>
@@ -529,10 +534,22 @@ export function productsPage({ store, q, category = "", csrf, pending, flash }) 
             ${escapeHtml(catName)}
           </a>
         </td>
-        <td>${price ? `<span class="price">${escapeHtml(price)}</span>` : '<span class="muted">اطلب آخر سعر</span>'}</td>
+        <td>
+          ${price ? `<span class="price">${escapeHtml(price)}</span>` : '<span class="muted">عرض سعر (اطلب السعر)</span>'}
+          ${
+            supPrice
+              ? `<small class="muted" style="display:block;margin-top:0.2rem;color:#b45309;font-size:0.74rem;" title="سعر المورد المرجعي محفوظ داخلياً ولا يظهر للعميل">مرجع المورد: ${escapeHtml(supPrice)}</small>`
+              : ""
+          }
+        </td>
         <td>
           ${product.demo ? '<span class="badge">تجريبي</span>' : '<span class="badge badge-ok">حقيقي</span>'}
           ${product.featured ? '<span class="badge badge-star">مميز</span>' : ""}
+          ${
+            product.supplierMeta && product.supplierMeta.supplierUrl
+              ? `<a class="badge" href="${attr(product.supplierMeta.supplierUrl)}" target="_blank" rel="noopener noreferrer" style="background:#eff6ff;color:#1d4ed8;text-decoration:none;" title="فتح صفحة المنتج لدى المورد">المصدر ↗</a>`
+              : ""
+          }
         </td>
         <td class="row-actions">
           <a class="btn btn-ghost btn-sm" href="/admin/products/${encodeURIComponent(product.id)}/edit">تعديل</a>
@@ -684,9 +701,26 @@ export function productFormPage({ store, product, isNew: isNewOverride, errors =
         </label>
         <label class="field">
           <span>وصف مختصر</span>
-          <input type="text" name="shortName" value="${attr(item.shortName || "")}" maxlength="80">
+          <input type="text" name="shortName" value="${attr(item.shortName || "")}" maxlength="180">
         </label>
       </div>
+
+      ${
+        item.supplierMeta
+          ? `<div class="info-note" style="background:#fffbeb;border-color:#fde68a;color:#92400e;">
+              <strong>🔒 بيانات المورد المرجعية (خاصة بالأدمن فقط — لا تظهر للعملاء نهائياً)</strong>
+              <p style="margin-top:0.35rem;">
+                المورد: <strong>${escapeHtml(item.supplierMeta.supplierName || "FastEgy")}</strong> ·
+                سعر المورد الاسترشادي: <strong>${escapeHtml(formatPrice(item.supplierMeta.supplierPrice, item.supplierMeta.supplierCurrency || "EGP") || "غير محدد")}</strong> ·
+                ${
+                  item.supplierMeta.supplierUrl
+                    ? `<a href="${attr(item.supplierMeta.supplierUrl)}" target="_blank" rel="noopener noreferrer" style="color:#b45309;font-weight:700;text-decoration:underline;">فتح رابط المنتج الأصلي لدى المورد ↗</a>`
+                    : ""
+                }
+              </p>
+            </div>`
+          : ""
+      }
 
       <div class="grid-2">
         <label class="field">

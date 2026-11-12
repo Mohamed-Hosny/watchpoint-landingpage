@@ -23,7 +23,8 @@
     selectedItem: null,
     consent: null,
     wishlist: [],
-    compareList: []
+    compareList: [],
+    shelfLimits: {}
   };
 
   const reducedMotion =
@@ -132,6 +133,26 @@
       return src;
     }
     return src;
+  }
+
+  function productFallbackImage(product) {
+    if (product && product.mainCategoryId) {
+      const cat = (state.catalog.categories || []).find((c) => c.id === product.mainCategoryId);
+      if (cat && cat.image) return resolveImage(cat.image);
+    }
+    return "assets/images/brand-mark.webp";
+  }
+
+  function sortProductsForDisplay(list) {
+    return list.slice().sort((a, b) => {
+      const aFeat = a.featured ? 1 : 0;
+      const bFeat = b.featured ? 1 : 0;
+      if (aFeat !== bFeat) return bFeat - aFeat;
+      const aPriced = a.price !== null && a.price !== undefined && a.price !== "" ? 1 : 0;
+      const bPriced = b.price !== null && b.price !== undefined && b.price !== "" ? 1 : 0;
+      if (aPriced !== bPriced) return bPriced - aPriced;
+      return 0;
+    });
   }
 
   function formatPrice(price, currency) {
@@ -694,7 +715,8 @@
           <a class="product-media" href="${escapeHtml(detailsUrl)}" aria-label="عرض تفاصيل ${escapeHtml(product.name)}">
             <img src="${escapeHtml(resolveImage(product.image))}"
               alt="${escapeHtml(product.imageAlt || product.name)}"
-              width="600" height="450" loading="lazy" decoding="async">
+              width="600" height="450" loading="lazy" decoding="async"
+              onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(product))}'">
           </a>
         </div>
         <div class="product-body">
@@ -732,8 +754,10 @@
 
     // Case 1: Active search query
     if (state.query) {
-      const filtered = state.catalog.products.filter((product) =>
-        productMatches(product, state.query, state.activeCategory, state.activeSubcategory)
+      const filtered = sortProductsForDisplay(
+        state.catalog.products.filter((product) =>
+          productMatches(product, state.query, state.activeCategory, state.activeSubcategory)
+        )
       );
 
       if (!filtered.length) {
@@ -748,6 +772,11 @@
       grid.hidden = false;
       if (noResults) noResults.hidden = true;
       if (countEl) countEl.textContent = filtered.length + " نتيجة بحث لـ «" + state.query + "»";
+
+      const searchShelfKey = "__search__";
+      const searchLimit = state.shelfLimits[searchShelfKey] || 36;
+      const visibleSearch = filtered.slice(0, searchLimit);
+      const remainingSearch = Math.max(0, filtered.length - visibleSearch.length);
 
       grid.innerHTML = `
         <div class="category-shelf">
@@ -765,8 +794,17 @@
             </div>
           </div>
           <div class="product-grid">
-            ${filtered.map(renderProductCard).join("")}
+            ${visibleSearch.map(renderProductCard).join("")}
           </div>
+          ${
+            remainingSearch > 0
+              ? `<div class="shelf-load-more-bar">
+                   <button type="button" class="btn btn--soft shelf-load-more-btn" data-load-more="${searchShelfKey}" data-load-step="36">
+                     <span>عرض المزيد من نتائج البحث (${remainingSearch} متبقي)</span>
+                   </button>
+                 </div>`
+              : ""
+          }
         </div>`;
       return;
     }
@@ -774,9 +812,11 @@
     // Case 2: Specific category selected
     if (state.activeCategory !== "all") {
       const cat = state.catalog.categories.find((c) => c.id === state.activeCategory);
-      const catProducts = state.activeSubcategory
-        ? state.catalog.products.filter((product) => product.categoryId === state.activeSubcategory)
-        : productsForCategory(state.activeCategory);
+      const catProducts = sortProductsForDisplay(
+        state.activeSubcategory
+          ? state.catalog.products.filter((product) => product.categoryId === state.activeSubcategory)
+          : productsForCategory(state.activeCategory)
+      );
       const selectedSubcategory = cat && (cat.subcategories || []).find(
         (item) => item.id === state.activeSubcategory
       );
@@ -842,6 +882,11 @@
         ? `<img src="${escapeHtml(resolveImage(cat.image))}" alt="" width="28" height="28">`
         : `<svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>`;
 
+      const shelfKey = "cat:" + state.activeCategory + ":" + (state.activeSubcategory || "all");
+      const limit = state.shelfLimits[shelfKey] || 24;
+      const visibleProducts = catProducts.slice(0, limit);
+      const remaining = Math.max(0, catProducts.length - visibleProducts.length);
+
       grid.innerHTML = `
         <div class="category-shelf" data-shelf-cat="${escapeHtml(state.activeCategory)}">
           <div class="category-shelf-head">
@@ -865,8 +910,20 @@
             }
           </div>
           <div class="product-grid">
-            ${catProducts.map(renderProductCard).join("")}
+            ${visibleProducts.map(renderProductCard).join("")}
           </div>
+          ${
+            remaining > 0
+              ? `<div class="shelf-load-more-bar">
+                   <button type="button" class="btn btn--primary shelf-load-more-btn" data-load-more="${escapeHtml(shelfKey)}" data-load-step="24">
+                     <span>عرض المزيد من المنتجات (+${Math.min(24, remaining)} من ${remaining} متبقي)</span>
+                   </button>
+                   <button type="button" class="btn btn--soft shelf-load-all-btn" data-load-all="${escapeHtml(shelfKey)}" data-load-total="${catProducts.length}">
+                     <span>عرض كل منتجات القسم (${catProducts.length})</span>
+                   </button>
+                 </div>`
+              : ""
+          }
         </div>`;
       return;
     }
@@ -881,13 +938,18 @@
 
     // Render shelves for categories with products
     state.catalog.categories.forEach((cat) => {
-      const catProducts = productsForCategory(cat.id);
+      const catProducts = sortProductsForDisplay(productsForCategory(cat.id));
       if (!catProducts.length) return;
 
       populatedCategoryIds.add(cat.id);
       const imageHtml = cat.image
         ? `<img src="${escapeHtml(resolveImage(cat.image))}" alt="" width="28" height="28">`
         : `<svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>`;
+
+      const shelfKey = "all:" + cat.id;
+      const limit = state.shelfLimits[shelfKey] || 15;
+      const visibleProducts = catProducts.slice(0, limit);
+      const remaining = Math.max(0, catProducts.length - visibleProducts.length);
 
       shelvesHtml.push(`
         <div class="category-shelf" data-shelf-cat="${escapeHtml(cat.id)}">
@@ -912,8 +974,20 @@
             }
           </div>
           <div class="product-grid">
-            ${catProducts.map(renderProductCard).join("")}
+            ${visibleProducts.map(renderProductCard).join("")}
           </div>
+          ${
+            remaining > 0
+              ? `<div class="shelf-load-more-bar">
+                   <button type="button" class="btn btn--soft shelf-load-more-btn" data-load-more="${escapeHtml(shelfKey)}" data-load-step="15">
+                     <span>عرض المزيد في ${escapeHtml(cat.name)} (+${Math.min(15, remaining)} من ${remaining} متبقي)</span>
+                   </button>
+                   <button type="button" class="btn btn--outline shelf-select-cat-btn" data-select-cat-shelf="${escapeHtml(cat.id)}">
+                     <span>تصفح قسم ${escapeHtml(cat.name)} بالكامل (${catProducts.length}) ←</span>
+                   </button>
+                 </div>`
+              : ""
+          }
         </div>
       `);
     });
@@ -962,44 +1036,134 @@
     if (!grid) return;
 
     grid.innerHTML = state.catalog.packages
-      .map((pack) => {
-        const price = formatPrice(pack.price, pack.priceCurrency);
+      .map((pack, idx) => {
         const featuredClass = pack.featured ? " package-card--featured" : "";
+        const includesList = Array.isArray(pack.includes) ? pack.includes : [];
+
+        // Split bilingual title if separated by – or -
+        const rawName = String(pack.name || "").trim();
+        let enTitle = "";
+        let arTitle = rawName;
+        const dashMatch = rawName.match(/^([A-Za-z0-9\s&/+.]+?)\s*[–—-]\s*(.+)$/);
+        if (dashMatch) {
+          enTitle = dashMatch[1].trim();
+          arTitle = dashMatch[2].trim();
+        } else {
+          const reverseMatch = rawName.match(/^(.+?)\s*[–—-]\s*([A-Za-z0-9\s&/+.]+)$/);
+          if (reverseMatch) {
+            arTitle = reverseMatch[1].trim();
+            enTitle = reverseMatch[2].trim();
+          }
+        }
+
+        const waMsg = [
+          "مرحبًا Watch Point، أرغب في الاستفسار وطلب عرض سعر لـ:",
+          "الباقة: " + rawName,
+          includesList.length ? "المكونات: " + includesList.slice(0, 4).join(" + ") : ""
+        ]
+          .filter(Boolean)
+          .join("\n");
+        const waHref = buildWhatsAppUrl(waMsg);
 
         return `
           <article class="package-card${featuredClass}" data-package-id="${escapeHtml(pack.id)}">
-            ${pack.featured ? '<span class="package-badge">باقة مرنة</span>' : ""}
-            <div class="package-media">
-              <img src="${escapeHtml(resolveImage(pack.image))}"
-                alt="${escapeHtml(pack.imageAlt || pack.name)}"
-                width="800" height="500" loading="lazy" decoding="async">
+            <div class="package-media-stage">
+              <div class="package-media-top">
+                <span class="package-badge${pack.featured ? " package-badge--featured" : ""}">
+                  ${pack.featured ? "★ الباقة الأكثر طلباً" : `الباقة 0${idx + 1}`}
+                </span>
+                ${
+                  includesList.length
+                    ? `<span class="package-count-pill">${includesList.length} مكونات أساسية</span>`
+                    : ""
+                }
+              </div>
+              <div class="package-media">
+                <img src="${escapeHtml(resolveImage(pack.image))}"
+                  alt="${escapeHtml(pack.imageAlt || pack.name)}"
+                  width="800" height="600" loading="lazy" decoding="async">
+              </div>
             </div>
+
             <div class="package-body">
-              <span class="package-audience">${escapeHtml(pack.audience || "باقة قابلة للتخصيص")}</span>
-              <h3 class="package-title">${escapeHtml(pack.name)}</h3>
-              <p class="package-desc">${escapeHtml(pack.description)}</p>
-              <ul class="package-includes">
-                ${(pack.includes || [])
-                  .map(
-                    (item) => `
-                      <li>
-                        <svg class="icon" aria-hidden="true"><use href="#icon-check"/></svg>
-                        <span>${escapeHtml(item)}</span>
-                      </li>`
-                  )
-                  .join("")}
-              </ul>
-              <p class="package-note">${escapeHtml(pack.note || "")}</p>
+              <div class="package-head-block">
+                ${
+                  enTitle
+                    ? `<span class="package-en-kicker" lang="en">${escapeHtml(enTitle)}</span>`
+                    : `<span class="package-en-kicker">حلول متكاملة قابلة للتخصيص</span>`
+                }
+                <h3 class="package-title">${escapeHtml(arTitle)}</h3>
+              </div>
+
+              ${
+                pack.audience
+                  ? `<div class="package-audience">
+                      <svg class="icon" aria-hidden="true"><use href="#icon-shield"/></svg>
+                      <span><strong>مناسبة لـ:</strong> ${escapeHtml(pack.audience)}</span>
+                    </div>`
+                  : ""
+              }
+
+              ${pack.description ? `<p class="package-desc">${escapeHtml(pack.description)}</p>` : ""}
+
+              ${
+                includesList.length
+                  ? `<div class="package-includes-box">
+                      <div class="package-includes-head">
+                        <span>مشتملات ومكونات الباقة</span>
+                        <span class="package-includes-tag">شامل التركيب والبرمجة</span>
+                      </div>
+                      <ul class="package-includes">
+                        ${includesList
+                          .map(
+                            (item) => `
+                              <li>
+                                <span class="package-check-icon" aria-hidden="true">
+                                  <svg class="icon"><use href="#icon-check"/></svg>
+                                </span>
+                                <span>${escapeHtml(item)}</span>
+                              </li>`
+                          )
+                          .join("")}
+                      </ul>
+                    </div>`
+                  : ""
+              }
+
+              ${
+                pack.note
+                  ? `<p class="package-note">
+                      <svg class="icon" aria-hidden="true"><use href="#icon-check-circle"/></svg>
+                      <span>${escapeHtml(pack.note)}</span>
+                    </p>`
+                  : ""
+              }
+
               <div class="package-foot">
-                <div class="price-row">
-                  ${renderPriceBox(pack.price, pack.priceCurrency, true)}
+                <div class="package-price-bar">
+                  <span class="package-price-label">تكلفة الباقة:</span>
+                  <div class="price-row">
+                    ${renderPriceBox(pack.price, pack.priceCurrency, true)}
+                  </div>
                 </div>
-                <a class="btn btn--primary btn--block btn--card"
-                  href="#contact" data-select-package="${escapeHtml(pack.id)}"
-                  data-analytics="package_quote">
-                  اطلب عرض سعر للباقة
-                  <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
-                </a>
+                <div class="package-actions-row">
+                  <a class="btn btn--primary btn--card package-cta-main"
+                    href="#contact" data-select-package="${escapeHtml(pack.id)}"
+                    data-analytics="package_quote">
+                    <span>اطلب عرض سعر للباقة</span>
+                    <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+                  </a>
+                  <a class="btn btn--whatsapp package-cta-wa"
+                    href="${escapeHtml(waHref)}"
+                    target="_blank" rel="noopener noreferrer"
+                    data-wa-message="${escapeHtml(waMsg)}"
+                    data-wa-item="${escapeHtml(rawName)}"
+                    data-wa-placement="package_card"
+                    title="استفسر عن الباقة عبر واتساب">
+                    <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+                    <span>واتساب</span>
+                  </a>
+                </div>
               </div>
             </div>
           </article>`;
@@ -1033,6 +1197,49 @@
     }
 
     grid.addEventListener("click", (event) => {
+      // Load more products in a shelf
+      const loadMoreBtn = event.target.closest("[data-load-more]");
+      if (loadMoreBtn) {
+        event.preventDefault();
+        const shelfKey = loadMoreBtn.dataset.loadMore;
+        const step = Number(loadMoreBtn.dataset.loadStep) || 24;
+        const defaultStart = shelfKey.startsWith("all:") ? 15 : shelfKey === "__search__" ? 36 : 24;
+        state.shelfLimits[shelfKey] = (state.shelfLimits[shelfKey] || defaultStart) + step;
+        renderProducts();
+        return;
+      }
+
+      // Load all products in a category shelf
+      const loadAllBtn = event.target.closest("[data-load-all]");
+      if (loadAllBtn) {
+        event.preventDefault();
+        const shelfKey = loadAllBtn.dataset.loadAll;
+        const total = Number(loadAllBtn.dataset.loadTotal) || 999;
+        state.shelfLimits[shelfKey] = total;
+        renderProducts();
+        return;
+      }
+
+      // Switch to single category view from "All categories" shelf button
+      const selectCatShelfBtn = event.target.closest("[data-select-cat-shelf]");
+      if (selectCatShelfBtn) {
+        event.preventDefault();
+        const catId = selectCatShelfBtn.dataset.selectCatShelf;
+        if (catId) {
+          state.activeCategory = catId;
+          state.activeSubcategory = "";
+          renderFesCats();
+          renderFesSubcats();
+          renderChips();
+          renderProducts();
+          const storeSec = document.getElementById("store");
+          if (storeSec) {
+            storeSec.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
+        return;
+      }
+
       // If clicking inside a showcase category card
       const showcaseCard = event.target.closest(".cat-showcase-card[data-category]");
       if (showcaseCard) {
@@ -2017,7 +2224,7 @@
               <span class="similar-item-price" dir="ltr">${escapeHtml(priceText)}</span>
             </div>
             <div class="similar-item-thumb">
-              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="72" height="72" loading="lazy">
+              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="72" height="72" loading="lazy" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(item))}'">
             </div>
           </div>
         `;
@@ -2057,7 +2264,7 @@
         !sameMain.includes(p)
     );
 
-    const similarItems = [...sameSub, ...sameMain, ...others].slice(0, 8);
+    const similarItems = [...sameSub, ...sameMain, ...others].slice(0, 12);
 
     if (sourceBanner) {
       sourceBanner.innerHTML = `
@@ -2087,7 +2294,7 @@
               <span class="similar-item-price" dir="ltr">${escapeHtml(priceText)}</span>
             </div>
             <div class="similar-item-thumb">
-              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="72" height="72" loading="lazy">
+              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="72" height="72" loading="lazy" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(item))}'">
             </div>
           </a>
         `;
@@ -2158,7 +2365,7 @@
         .map(
           (item) => `
             <div class="compare-thumb-pill" title="${escapeHtml(item.name)}">
-              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="34" height="34">
+              <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="34" height="34" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(item))}'">
               <span>${escapeHtml(item.shortName || item.name)}</span>
               <button type="button" data-compare-remove="${escapeHtml(item.id)}" aria-label="إزالة">×</button>
             </div>
@@ -2224,7 +2431,7 @@
                   <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
                 </button>
                 <a href="${escapeHtml(detailsUrl)}" class="compare-col-img" data-compare-nav="${escapeHtml(item.id)}">
-                  <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="160" height="120">
+                  <img src="${escapeHtml(resolveImage(item.image))}" alt="${escapeHtml(item.name)}" width="160" height="120" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(item))}'">
                 </a>
                 <span class="compare-col-cat">${escapeHtml(cat)}</span>
                 <h4 class="compare-col-title">${escapeHtml(item.name)}</h4>
@@ -2492,7 +2699,7 @@
     content.innerHTML = `
       <div class="qv-grid">
         <div class="qv-media-box">
-          <img src="${escapeHtml(resolveImage(product.image))}" alt="${escapeHtml(product.imageAlt || product.name)}" width="600" height="450">
+          <img src="${escapeHtml(resolveImage(product.image))}" alt="${escapeHtml(product.imageAlt || product.name)}" width="600" height="450" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(product))}'">
         </div>
         <div class="qv-info">
           <span class="qv-cat-badge">
@@ -2726,19 +2933,20 @@
       const slotEl = grid.querySelector(`[data-promo-slot="${slotKey}"]`);
       if (!slotEl) return;
 
-      // Side slots (right & left): Sequentially showcase ALL products on the page
+      // Side slots (right & left): Sequentially showcase curated products across categories
       if ((slotKey === "right" || slotKey === "left") && allProducts.length > 0) {
         slotEl.hidden = false;
-        const offset = slotKey === "left" ? Math.max(1, Math.floor(allProducts.length / 2)) : 0;
-        const orderedProducts = allProducts.map(
-          (_, idx) => allProducts[(idx + offset) % allProducts.length]
+        const showcasePool = sortProductsForDisplay(allProducts).slice(0, 30);
+        const offset = slotKey === "left" ? Math.max(1, Math.floor(showcasePool.length / 2)) : 0;
+        const orderedProducts = showcasePool.map(
+          (_, idx) => showcasePool[(idx + offset) % showcasePool.length]
         );
 
         const slidesHtml = orderedProducts
           .map((prod, idx) => {
             const catLabel = categoryName(prod.categoryId);
             const detailsUrl = getProductDetailsUrl(prod);
-            const priceFormatted = formatPrice(prod.price, prod.priceCurrency);
+            const priceFormatted = formatCleanCardPrice(prod.price, prod.priceCurrency);
             const specsList = Array.isArray(prod.specs) ? prod.specs.slice(0, 2) : [];
             const descText =
               productShortDesc(prod) ||
@@ -2754,7 +2962,7 @@
                   </div>
                   <div class="promo-prod-body">
                     <div class="promo-prod-media">
-                      <img src="${escapeHtml(resolveImage(prod.image))}" alt="${escapeHtml(prod.imageAlt || prod.name)}" loading="${idx === 0 ? "eager" : "lazy"}" decoding="async">
+                      <img src="${escapeHtml(resolveImage(prod.image))}" alt="${escapeHtml(prod.imageAlt || prod.name)}" loading="${idx === 0 ? "eager" : "lazy"}" decoding="async" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(prod))}'">
                     </div>
                     <div class="promo-prod-info">
                       <div>
@@ -2771,11 +2979,7 @@
                         }
                       </div>
                       <div class="promo-prod-foot">
-                        <span class="promo-prod-price">${
-                          priceFormatted
-                            ? `${escapeHtml(priceFormatted.amount)}<span class="promo-prod-PriceUnit">${escapeHtml(priceFormatted.currency)}</span>`
-                            : "اطلب السعر"
-                        }</span>
+                        <span class="promo-prod-price" dir="ltr">${escapeHtml(priceFormatted)}</span>
                         <span class="promo-prod-cta">عرض القطعة ←</span>
                       </div>
                     </div>
@@ -2787,6 +2991,7 @@
           .join("");
 
         const hasMultiple = orderedProducts.length > 1;
+        const dotItems = orderedProducts.slice(0, 12);
         const controlsHtml = hasMultiple
           ? `
             <button type="button" class="promo-arrow promo-arrow--prev" data-promo-dir="-1" aria-label="المنتج السابق">
@@ -2796,7 +3001,7 @@
               <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
             </button>
             <div class="promo-dots" role="tablist" aria-label="منتجات المعرض">
-              ${orderedProducts
+              ${dotItems
                 .map(
                   (_, idx) =>
                     `<button type="button" class="promo-dot${idx === 0 ? " is-active" : ""}" data-promo-dot="${idx}" aria-label="منتج ${idx + 1}"></button>`
@@ -2933,7 +3138,7 @@
                         ? getProductDetailsUrl(matchedProduct)
                         : hsBannerLink;
                       const priceInfo = matchedProduct
-                        ? formatPrice(matchedProduct.price, matchedProduct.priceCurrency)
+                        ? formatCleanCardPrice(matchedProduct.price, matchedProduct.priceCurrency)
                         : null;
 
                       return `
@@ -2942,7 +3147,7 @@
                           <span class="promo-hotspot-tooltip">
                             ${
                               matchedProduct && matchedProduct.image
-                                ? `<img class="hs-thumb" src="${escapeHtml(resolveImage(matchedProduct.image))}" alt="" width="44" height="44">`
+                                ? `<img class="hs-thumb" src="${escapeHtml(resolveImage(matchedProduct.image))}" alt="" width="44" height="44" onerror="this.onerror=null;this.src='${escapeHtml(productFallbackImage(matchedProduct))}'">`
                                 : ""
                             }
                             <span class="hs-info">
@@ -2951,7 +3156,7 @@
                               <span class="hs-foot">
                                 ${
                                   priceInfo
-                                    ? `<span class="hs-price">${escapeHtml(priceInfo.amount)} ${escapeHtml(priceInfo.currency)}</span>`
+                                    ? `<span class="hs-price" dir="ltr">${escapeHtml(priceInfo)}</span>`
                                     : ""
                                 }
                                 <span class="promo-hotspot-cta">${matchedProduct ? "افتح القطعة ←" : "تصفح القسم ←"}</span>
