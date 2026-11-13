@@ -1,0 +1,96 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 820" role="img" aria-labelledby="title desc">
+<title id="title">Watch Point — حلول أمنية متكاملة</title>
+<desc id="desc">درع رقمي يحتوي على كاميرا مراقبة وإشارة اتصال، رسم توضيحي بهوية Watch Point.</desc>
+
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#F8FBFF"/>
+      <stop offset=".58" stop-color="#EAF2FF"/>
+      <stop offset="1" stop-color="#D7E6FD"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="44%" r="55%">
+      <stop offset="0" stop-color="#3B82F6" stop-opacity=".28"/>
+      <stop offset=".62" stop-color="#3B82F6" stop-opacity=".08"/>
+      <stop offset="1" stop-color="#3B82F6" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#20334F"/>
+      <stop offset=".48" stop-color="#0B1B33"/>
+      <stop offset="1" stop-color="#071426"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#60A5FA"/>
+      <stop offset=".45" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#0B3FA8"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".55" stop-color="#E8EEF7"/>
+      <stop offset="1" stop-color="#B9C7D9"/>
+    </linearGradient>
+    <linearGradient id="steelDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#64748B"/>
+      <stop offset=".5" stop-color="#334155"/>
+      <stop offset="1" stop-color="#111E32"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0A1B35"/>
+      <stop offset=".5" stop-color="#173A69"/>
+      <stop offset="1" stop-color="#06101F"/>
+    </linearGradient>
+    <radialGradient id="lens" cx="38%" cy="32%" r="70%">
+      <stop offset="0" stop-color="#DBEAFE"/>
+      <stop offset=".18" stop-color="#60A5FA"/>
+      <stop offset=".48" stop-color="#1D4ED8"/>
+      <stop offset=".8" stop-color="#0B1B33"/>
+      <stop offset="1" stop-color="#020617"/>
+    </radialGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#2563EB" stroke-opacity=".10" stroke-width="1"/>
+    </pattern>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="180%">
+      <feDropShadow dx="0" dy="18" stdDeviation="18" flood-color="#081A33" flood-opacity=".24"/>
+    </filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="14"/>
+    </filter>
+  </defs>
+
+<g opacity=".4" fill="none" stroke="#3B82F6" stroke-width="1.5">
+  <circle cx="380" cy="400" r="340" stroke-dasharray="3 12"/>
+  <circle cx="380" cy="400" r="292" stroke-dasharray="2 16"/>
+</g>
+<g fill="#3B82F6" opacity=".55">
+  <circle cx="82" cy="192" r="5"/><circle cx="680" cy="258" r="4"/><circle cx="120" cy="636" r="4"/><circle cx="646" cy="650" r="5"/><circle cx="380" cy="56" r="3"/>
+</g>
+<g filter="url(#shadow)">
+  <path d="M380 78L610 158v240c0 150-96 268-230 336C246 666 150 548 150 398V158z" fill="url(#navy)" stroke="url(#blue)" stroke-width="8"/>
+  <path d="M380 106L584 176v220c0 132-82 236-204 300-122-64-204-168-204-300V176z" fill="#0A1A31" stroke="#3B82F6" stroke-opacity=".28" stroke-width="2"/>
+  <g opacity=".4" stroke="#60A5FA" stroke-width="1.5" fill="none">
+    <path d="M220 250h320M220 330h320M220 410h320M220 490h320M280 180v340M360 180v340M440 180v340M520 180v340"/>
+  </g>
+  <g transform="translate(240 254)">
+    <path d="M158 32c46-30 118-30 164 0" fill="none" stroke="#60A5FA" stroke-width="12" stroke-linecap="round" opacity=".25"/>
+    <path d="M178 66c38-22 92-22 130 0" fill="none" stroke="#60A5FA" stroke-width="12" stroke-linecap="round" opacity=".45"/>
+    <path d="M198 100c30-14 62-14 92 0" fill="none" stroke="#60A5FA" stroke-width="12" stroke-linecap="round" opacity=".7"/>
+    <g transform="translate(42 158)">
+      <rect x="0" y="0" width="252" height="100" rx="50" fill="url(#navy)" stroke="#3B82F6" stroke-opacity=".35" stroke-width="2"/>
+      <rect x="20" y="16" width="190" height="28" rx="14" fill="#FFFFFF" opacity=".08"/>
+      <circle cx="206" cy="50" r="52" fill="#061426" stroke="#2563EB" stroke-opacity=".55" stroke-width="4"/>
+      <circle cx="206" cy="50" r="38" fill="url(#lens)"/>
+      <circle cx="194" cy="38" r="10" fill="#FFFFFF" opacity=".5"/>
+      <g fill="#60A5FA"><circle cx="174" cy="18" r="3"/><circle cx="238" cy="18" r="3"/><circle cx="174" cy="82" r="3"/><circle cx="238" cy="82" r="3"/></g>
+      <rect x="34" y="34" width="70" height="32" rx="8" fill="#0F2A4D"/>
+      <circle cx="50" cy="50" r="4" fill="#22C55E"/>
+      <rect x="60" y="46" width="32" height="6" rx="3" fill="#3B82F6" opacity=".6"/>
+    </g>
+    <path d="M158 258v34" stroke="#334155" stroke-width="10" stroke-linecap="round"/>
+    <rect x="112" y="286" width="92" height="20" rx="10" fill="url(#steel)"/>
+  </g>
+  <g transform="translate(262 624)">
+    <rect x="0" y="0" width="236" height="52" rx="26" fill="#0B1728" stroke="#3B82F6" stroke-opacity=".35"/>
+    <circle cx="30" cy="26" r="6" fill="#22C55E"/>
+    <text x="48" y="33" font-family="Arial, sans-serif" font-size="16" fill="#BFDBFE" letter-spacing=".5">WATCH POINT · SECURITY</text>
+  </g>
+</g>
+</svg>

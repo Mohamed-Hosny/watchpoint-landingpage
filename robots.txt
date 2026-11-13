@@ -1,0 +1,25 @@
+# Watch Point — robots.txt
+# استبدل https://watchpoint.example.com بالنطاق الفعلي قبل النشر.
+User-agent: *
+Allow: /
+Disallow: /tools/
+
+# AI / answer engines are welcome to read public pages.
+User-agent: GPTBot
+Allow: /
+User-agent: OAI-SearchBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-SearchBot
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Bingbot
+Allow: /
+
+Sitemap: https://watchpoint.example.com/sitemap.xml

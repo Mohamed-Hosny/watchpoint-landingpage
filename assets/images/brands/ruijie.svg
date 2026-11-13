@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <rect width="240" height="70" rx="10" fill="#ffffff"/>
+  <text x="120" y="44" font-family="'Segoe UI', 'Montserrat', Arial, sans-serif" font-weight="900" font-size="26" fill="#2563eb" text-anchor="middle" letter-spacing="2">
+    Ruijie | <tspan fill="#f59e0b">Reyee</tspan>
+  </text>
+  <text x="120" y="58" font-family="'Segoe UI', Arial, sans-serif" font-weight="600" font-size="8.5" fill="#64748b" text-anchor="middle" letter-spacing="2">
+    ENTERPRISE CLOUD NETWORKS
+  </text>
+</svg>
