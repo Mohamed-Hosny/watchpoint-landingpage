@@ -82,12 +82,9 @@ if errorlevel 1 (
 
 rem ---- Defense-in-depth safety check: ensure NO local-admin/sensitive file is staged ----
 set "LEAK_FOUND=0"
-for /f "delims=" %%F in ('git diff --cached --name-only') do (
-  echo %%F | findstr /I /R "^local-admin/ auth\.json$ store\.json$ backups/" >nul
-  if not errorlevel 1 (
-    echo [SECURITY BLOCK] Sensitive file detected in staging: %%F
-    set "LEAK_FOUND=1"
-  )
+for /f "delims=" %%F in ('git diff --cached --name-only ^| findstr /I /R "^local-admin/ auth\.json$ store\.json$ backups/"') do (
+  echo [SECURITY BLOCK] Sensitive file detected in staging: %%F
+  set "LEAK_FOUND=1"
 )
 if "!LEAK_FOUND!"=="1" (
   git reset >nul 2>nul
