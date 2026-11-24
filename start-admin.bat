@@ -1,19 +1,20 @@
 @echo off
 setlocal EnableExtensions
 chcp 65001 >nul
-title Watch Point - Admin Server
+title Watch Point - Local Admin Server
 
 rem ============================================================
-rem  Watch Point - admin panel + website server
+rem  Watch Point - local admin panel + public-site preview server
 rem  Usage:
-rem    start-admin.bat                 -> open the admin panel
+rem    start-admin.bat                 -> open the local admin panel
 rem    start-admin.bat 8080            -> custom port
 rem    start-admin.bat --no-browser    -> server only
 rem  Stop: CTRL+C or close this window.
 rem ============================================================
 
 set "ROOT=%~dp0"
-set "SITE=%ROOT%watch-point-landing"
+set "ADMIN=%ROOT%local-admin"
+set "SITE=%ROOT%public-site"
 set "PORT=8123"
 set "OPEN=1"
 
@@ -23,8 +24,16 @@ if not "%~1"=="" if /i not "%~1"=="--no-browser" if /i not "%~1"=="-n" set "PORT
 if /i "%~2"=="--no-browser" set "OPEN=0"
 if /i "%~2"=="-n" set "OPEN=0"
 
-if not exist "%SITE%\admin\server.mjs" (
-  echo [ERROR] admin\server.mjs not found in:
+if not exist "%ADMIN%\server.mjs" (
+  echo [ERROR] local-admin\server.mjs not found in:
+  echo         %ADMIN%
+  echo.
+  pause
+  exit /b 1
+)
+
+if not exist "%SITE%\index.html" (
+  echo [ERROR] public-site\index.html not found in:
   echo         %SITE%
   echo.
   pause
@@ -45,7 +54,7 @@ set "RUNNING_PORT="
 for /f "usebackq delims=" %%P in (`powershell -NoProfile -Command "try { $r = Invoke-WebRequest 'http://127.0.0.1:%PORT%/admin/login' -UseBasicParsing -TimeoutSec 2; if ($r.StatusCode -lt 500) { %PORT% } } catch { if ($_.Exception.Response -and $_.Exception.Response.StatusCode.value__ -in 200,301,302,400,401,403) { %PORT% } }"`) do set "RUNNING_PORT=%%P"
 if defined RUNNING_PORT (
   echo ============================================================
-  echo   Watch Point admin is already running on port %RUNNING_PORT%
+  echo   Watch Point local admin is already running on port %RUNNING_PORT%
   echo   Opening: http://127.0.0.1:%RUNNING_PORT%/admin
   echo ============================================================
   echo.
@@ -72,15 +81,16 @@ set "ADMIN_URL=http://127.0.0.1:%PORT%/admin"
 set "SITE_URL=http://127.0.0.1:%PORT%/"
 
 echo ============================================================
-echo   Watch Point - Admin Panel
+echo   Watch Point - Local Admin Panel (Static Site + Local Admin)
 echo ------------------------------------------------------------
-echo   Site   : %SITE_URL%
-echo   Admin  : %ADMIN_URL%
+echo   Site   : %SITE_URL%  (public-site)
+echo   Admin  : %ADMIN_URL%  (local-admin)
+echo   Data   : local-admin\data\store.json
 echo   Stop   : CTRL+C  (or close this window)
 echo ============================================================
 echo.
-echo   On first run you will be asked to create an admin password.
-echo   Your data is stored in: admin\data\store.json
+echo   Changes made in Admin automatically update public-site\.
+echo   Run "git push" when ready to publish online via Cloudflare Pages.
 echo.
 
 if "%OPEN%"=="1" (
@@ -89,7 +99,7 @@ if "%OPEN%"=="1" (
   echo.
 )
 
-cd /d "%SITE%\admin"
+cd /d "%ADMIN%"
 node server.mjs --port=%PORT%
 
 echo.

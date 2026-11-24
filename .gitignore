@@ -1,0 +1,31 @@
+# ==========================================================================
+# Watch Point — Git Ignore Rules (Static Site + Local Admin Architecture)
+# ==========================================================================
+
+# Local Admin & Backend — runs locally ONLY, never pushed to GitHub
+local-admin/
+
+# Sensitive admin credentials, data stores, and backups (defense-in-depth)
+auth.json
+store.json
+backups/
+*.bak
+*.tmp-*
+
+# Local scratch/helper files
+project_structure.txt
+.env
+.env.*
+*.log
+
+# OS & editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Keep public-site/ and uploaded product/brand images tracked in Git
+!public-site/
+!public-site/assets/
+!public-site/assets/images/
+!public-site/assets/images/uploads/
+!public-site/assets/images/uploads/**

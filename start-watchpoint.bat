@@ -1,10 +1,10 @@
 @echo off
 setlocal EnableExtensions
 chcp 65001 >nul
-title Watch Point - Local Server
+title Watch Point - Public Site Local Preview
 
 rem ============================================================
-rem  Watch Point landing page - local static server launcher
+rem  Watch Point public-site - local static preview server
 rem  Usage:
 rem    start-watchpoint.bat                -> port 8123 + browser
 rem    start-watchpoint.bat 8080           -> custom port + browser
@@ -13,7 +13,7 @@ rem  Close this window or press CTRL+C to stop the server.
 rem ============================================================
 
 set "ROOT=%~dp0"
-set "SITE=%ROOT%watch-point-landing"
+set "SITE=%ROOT%public-site"
 set "PORT=8123"
 set "OPEN=1"
 
@@ -49,7 +49,7 @@ goto :findport
 set "URL=http://127.0.0.1:%PORT%/"
 
 echo ============================================================
-echo   Watch Point - Landing Page
+echo   Watch Point - Public Site Preview
 echo ------------------------------------------------------------
 echo   Folder : %SITE%
 echo   URL    : %URL%

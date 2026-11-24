@@ -1,46 +1,56 @@
-# Watch Point — Landing Page
+# Watch Point — Static Site + Local Admin (Cloudflare Pages Ready)
 
-هذا المجلد يحتوي على نسختين من موقع Watch Point الثابت (HTML/CSS/JS بدون خادم خلفي):
+مشروع موقع **Watch Point** للأنظمة الأمنية وكاميرات المراقبة، مُقسّم إلى مجلدين مستقلين وفق بنية **(Static Site + Local Admin)**:
 
-- **`watch-point-landing/`** — النسخة الحالية والأحدث، وبها لوحة التحكم. **استخدم هذه.**
-- **`watch-point-site/`** — نسخة قديمة مكررة، يمكن الاحتفاظ بها كنسخة احتياطية أو حذفها لاحقًا.
+- **`public-site/`** — الموقع العام الثابت فقط (HTML/CSS/JS، الكتالوج `catalog/`، الصور والخطوط `assets/` بما فيها `assets/images/uploads/`، ملفات SEO، `404.html`، و`_headers`). هذا هو المجلد الوحيد الذي يُنشر على **Cloudflare Pages**.
+- **`local-admin/`** — لوحة التحكم والباك إند المحلي (`server.mjs`, `auth.mjs`, `store.mjs`, `views.mjs`, `data/`, `backups/`, `public/`, `tools/`). تعمل محليًا على جهازك فقط ومستبعدة تمامًا من Git عبر `.gitignore`.
 
-## التشغيل السريع
+---
+
+## دورة العمل اليومية (Workflow)
+
+1. شغّل لوحة التحكم محليًا بدبل كليك على:
+   ```text
+   start-admin.bat
+   ```
+   (أو من الطرفية: `node local-admin/server.mjs --port=8123`)
+2. افتح `http://127.0.0.1:8123/admin` وأضف/عدّل المنتجات والصور والباقات والإعدادات.
+3. تقوم لوحة التحكم تلقائيًا (وعند الضغط على **«نشر التغييرات»**) بتحديث ملفات `public-site/` محليًا (`js/data.js`, `js/config.js`, `catalog/*.html`, `catalog/catalog.json`, `assets/images/uploads/`, `sitemap.xml`, `robots.txt`, `llms.txt`, `404.html`).
+4. عاين الموقع محليًا على `http://127.0.0.1:8123/` (أو عبر `start-watchpoint.bat`).
+5. ارفع التحديثات إلى GitHub لتُنشر تلقائيًا على Cloudflare Pages:
+   ```bash
+   git add .
+   git commit -m "Update catalog"
+   git push
+   ```
+
+---
+
+## ملفات التشغيل السريع
 
 | الملف | الوظيفة |
 | --- | --- |
-| `start-admin.bat` | يشغّل الموقع + لوحة التحكم (Node.js) ويفتح المتصفح على `/admin` |
-| `start-watchpoint.bat` | يشغّل الموقع فقط كملفات ثابتة (Python) ويفتح الصفحة الرئيسية |
+| `start-admin.bat` | يشغّل لوحة التحكم (`local-admin/`) + معاينة `public-site/` عبر Node.js ويفتح `/admin` |
+| `start-watchpoint.bat` | يشغّل معاينة ثابتة لمجلد `public-site/` فقط (Python أو `npx serve`) |
 
-### لوحة التحكم (الموصى بها)
+---
 
-اعمل دبل كليك على:
+## إعدادات النشر على Cloudflare Pages
 
-```text
-start-admin.bat
-```
+عند ربط المستودع (GitHub Repository) بـ **Cloudflare Pages**:
 
-- أول مرة: أنشئ كلمة مرور من الصفحة التي ستفتح.
-- أضف/عدّل المنتجات والأسعار والصور والباقات وبيانات التواصل.
-- اضغط **«نشر التغييرات»** لتحديث الموقع وصفحات SEO.
-- بياناتك في `watch-point-landing/admin/data/store.json` — انسخها كنسخة احتياطية.
+| الإعداد | القيمة |
+| --- | --- |
+| **Framework preset** | `None` |
+| **Build command** | *(اتركه فارغًا)* |
+| **Build output directory** | `public-site` |
+| **Root directory** | *(اتركه فارغًا — جذر المستودع)* |
 
-### تشغيل يدوي
+> **مهم بعد أول إطلاق:** بعد الحصول على رابط موقعك من Cloudflare Pages (أو ربط نطاقك الخاص)، افتح لوحة التحكم المحلية ← **بيانات الموقع** ← ضع الرابط الكامل في **رابط الموقع** (مثل `https://watchpoint.pages.dev` أو دومينك الخاص) ثم اضغط **«نشر التغييرات»** وارفعه بـ `git push` لتحديث `sitemap.xml` و`robots.txt` و`llms.txt` وروابط Canonical تلقائيًا.
 
-```bash
-cd "watch-point-landing"
-node admin/server.mjs --port=8123
-```
+---
 
-ثم افتح `http://127.0.0.1:8123/admin`
+## النسخ الاحتياطي والأمان
 
-### الموقع فقط بدون لوحة التحكم
-
-```bash
-cd "watch-point-landing"
-python -m http.server 8123 --bind 127.0.0.1
-```
-
-ثم افتح `http://127.0.0.1:8123/`
-
-راجع `watch-point-landing/README.md` للتفاصيل الكاملة (الإعدادات، SEO، النشر، وبنية المشروع).
+- بيانات لوحة التحكم كلها داخل `local-admin/data/` (`store.json`, `auth.json`, `backups/`) — احتفظ بنسخة احتياطية منها محليًا لأنها غير مرفوعة إلى GitHub لحماية خصوصيتك وأمانك.
+- ملف `.gitignore` يمنع رفع `local-admin/` وأي ملفات `auth.json` أو `store.json` أو `backups/`، بينما يبقي `public-site/` وداخله `public-site/assets/images/uploads/` متتبَّعة في Git.
