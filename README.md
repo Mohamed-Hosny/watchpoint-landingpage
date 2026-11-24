@@ -17,12 +17,11 @@
 2. افتح `http://127.0.0.1:8123/admin` وأضف/عدّل المنتجات والصور والباقات والإعدادات.
 3. تقوم لوحة التحكم تلقائيًا (وعند الضغط على **«نشر التغييرات»**) بتحديث ملفات `public-site/` محليًا (`js/data.js`, `js/config.js`, `catalog/*.html`, `catalog/catalog.json`, `assets/images/uploads/`, `sitemap.xml`, `robots.txt`, `llms.txt`, `404.html`).
 4. عاين الموقع محليًا على `http://127.0.0.1:8123/` (أو عبر `start-watchpoint.bat`).
-5. ارفع التحديثات إلى GitHub لتُنشر تلقائيًا على Cloudflare Pages:
-   ```bash
-   git add .
-   git commit -m "Update catalog"
-   git push
+5. ارفع التحديثات إلى GitHub لتُنشر تلقائيًا على Cloudflare Pages بدبل كليك على:
+   ```text
+   publish-online.bat
    ```
+   *(أو يدويًا عبر `git add public-site && git commit -m "Update catalog" && git push`).*
 
 ---
 
@@ -31,6 +30,7 @@
 | الملف | الوظيفة |
 | --- | --- |
 | `start-admin.bat` | يشغّل لوحة التحكم (`local-admin/`) + معاينة `public-site/` عبر Node.js ويفتح `/admin` |
+| `publish-online.bat` | يرفع تعديلات `public-site/` إلى GitHub بضغطة واحدة لتتحدث تلقائيًا على Cloudflare Pages |
 | `start-watchpoint.bat` | يشغّل معاينة ثابتة لمجلد `public-site/` فقط (Python أو `npx serve`) |
 
 ---
