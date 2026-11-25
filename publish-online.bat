@@ -92,11 +92,23 @@ if "!LEAK_FOUND!"=="1" (
   goto :fail
 )
 
-rem ---- Count staged files ----
+rem ---- Count staged files & show compact diff preview ----
 set "FILE_COUNT=0"
-for /f "delims=" %%F in ('git diff --cached --name-only') do (
+set "SHOWN_COUNT=0"
+echo.
+echo Changed files in public-site\ (only these will be pushed):
+for /f "tokens=1,* delims=	" %%S in ('git diff --cached --name-status') do (
   set /a FILE_COUNT+=1
+  if !SHOWN_COUNT! LSS 15 (
+    echo   [%%S] %%T
+    set /a SHOWN_COUNT+=1
+  )
 )
+if !FILE_COUNT! GTR 15 (
+  set /a MORE_COUNT=!FILE_COUNT!-15
+  echo   ... and !MORE_COUNT! more file^(s^).
+)
+echo.
 
 if "!FILE_COUNT!"=="0" (
   echo [INFO] No staged changes to commit.
