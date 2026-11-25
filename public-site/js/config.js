@@ -22,7 +22,7 @@ window.WP_CONFIG = {
   site: {
     // ضع النطاق النهائي قبل النشر، مثال: "https://watchpoint.com".
     // عند تركه فارغًا تعمل الصفحة محليًا وتُستخدم روابط نسبية.
-    url: "",
+    url: "https://watchpoint-67s.pages.dev",
     locale: "ar_EG",
     lang: "ar",
     direction: "rtl",
@@ -36,10 +36,10 @@ window.WP_CONFIG = {
     // رقم واتساب بصيغة دولية بدون + أو مسافات، مثال: "2010xxxxxxxx".
     // اتركه فارغًا حتى تعتمد الرقم الرسمي. عند تركه فارغًا سيتم نسخ رسالة
     // الطلب وفتح واتساب كرسالة مشاركة بدلًا من إرسالها إلى رقم وهمي.
-    whatsappNumber: "",
+    whatsappNumber: "01098450441",
 
     // رقم الهاتف الظاهر في قسم التواصل والتذييل.
-    phone: "",
+    phone: "01098450441",
     phoneDisplay: "",
 
     email: "watchpoint2026@gmail.com",

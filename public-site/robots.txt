@@ -1,5 +1,5 @@
 # Watch Point — robots.txt
-# استبدل https://watchpoint.example.com بالنطاق الفعلي قبل النشر.
+# استبدل https://watchpoint-67s.pages.dev بالنطاق الفعلي قبل النشر.
 User-agent: *
 Allow: /
 
@@ -21,4 +21,4 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
-Sitemap: https://watchpoint.example.com/sitemap.xml
+Sitemap: https://watchpoint-67s.pages.dev/sitemap.xml

@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-11-25",
-  "source": "local",
+  "source": "https://watchpoint-67s.pages.dev",
   "note": "بيانات تجريبية. يمكن استبدالها بـ Django REST API عبر js/config.js → data.source = 'api'.",
   "categories": [
     {
