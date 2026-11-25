@@ -17,11 +17,12 @@
 /css/*
   Cache-Control: public, max-age=3600, must-revalidate
 
-/js/config.js
-  Cache-Control: public, max-age=60, must-revalidate
-
 /js/*
   Cache-Control: public, max-age=3600, must-revalidate
+
+/js/config.js
+  ! Cache-Control
+  Cache-Control: no-cache, must-revalidate
 
 /catalog/catalog.json
   Cache-Control: public, max-age=300, stale-while-revalidate=600

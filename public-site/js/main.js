@@ -60,7 +60,26 @@
         else output += char;
       });
 
-    return output.replace(/[^\d]/g, "");
+    let digits = output.replace(/[^\d]/g, "");
+    if (!digits) return "";
+
+    // Strip international exit prefix (e.g. 002010... -> 2010...)
+    digits = digits.replace(/^00+/, "");
+
+    // Fix accidental extra zero after Egypt country code (20010... -> 2010...)
+    if (/^2001[0125]\d{8}$/.test(digits)) {
+      digits = "20" + digits.slice(3);
+    }
+
+    // Auto-add Egypt country code for local Egyptian mobile numbers
+    if (/^01[0125]\d{8}$/.test(digits)) {
+      digits = "2" + digits;
+    } else if (/^1[0125]\d{8}$/.test(digits)) {
+      digits = "20" + digits;
+    }
+
+    // Remove any remaining accidental leading zeros
+    return digits.replace(/^0+/, "");
   }
 
   function normaliseSearch(value) {
@@ -96,10 +115,10 @@
   }
 
   function buildWhatsAppUrl(message) {
-    const encoded = encodeURIComponent(message);
+    const encoded = encodeURIComponent(message || "");
     return whatsappNumber
-      ? "https://wa.me/" + whatsappNumber + "?text=" + encoded
-      : "https://wa.me/?text=" + encoded;
+      ? "https://api.whatsapp.com/send?phone=" + whatsappNumber + "&text=" + encoded
+      : "https://api.whatsapp.com/send?text=" + encoded;
   }
 
   function defaultWhatsAppMessage() {
@@ -1811,6 +1830,12 @@
       if (!link) return;
 
       const message = link.dataset.waMessage || defaultWhatsAppMessage();
+      const freshUrl = buildWhatsAppUrl(message);
+      if (link.getAttribute("href") !== freshUrl) {
+        link.href = freshUrl;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+      }
       const item = link.dataset.waItem || "general";
       const placement = link.dataset.waPlacement || "whatsapp_link";
 
