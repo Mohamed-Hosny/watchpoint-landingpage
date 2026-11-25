@@ -300,6 +300,13 @@
       }
     });
 
+    doc.addEventListener("click", (event) => {
+      if (toggle.getAttribute("aria-expanded") !== "true") return;
+      if (!menu.contains(event.target) && !toggle.contains(event.target)) {
+        setOpen(false, false);
+      }
+    });
+
     window.addEventListener("resize", () => {
       if (window.innerWidth > 1080) setOpen(false, false);
     });
@@ -601,25 +608,35 @@
     bar.hidden = false;
     const options = [
       { id: "", name: "كل منتجات القسم", count: productsForCategory(category.id).length },
-      ...subcategories.map((subcategory) => ({
-        id: subcategory.id,
-        name: subcategory.name,
-        count: state.catalog.products.filter((product) => product.categoryId === subcategory.id).length
-      }))
+      ...subcategories
+        .map((subcategory) => ({
+          id: subcategory.id,
+          name: subcategory.name,
+          count: state.catalog.products.filter((product) => product.categoryId === subcategory.id).length
+        }))
+        .filter((item) => item.count > 0)
     ];
 
-    bar.innerHTML = '<span class="subcat-label">الفئات:</span>' + options
-      .map((item) => {
-        const isActive = state.activeSubcategory === item.id;
-        return `
-          <button class="subcat-pill${isActive ? " is-active" : ""}" type="button"
-            data-subcategory="${escapeHtml(item.id)}" role="tab"
-            aria-selected="${isActive ? "true" : "false"}">
-            <span>${escapeHtml(item.name)}</span>
-            <span class="subcat-count">${item.count}</span>
-          </button>`;
-      })
-      .join("");
+    const catLinkHtml = category.slug
+      ? `<a class="subcat-page-link" href="catalog/${escapeHtml(category.slug)}.html">صفحة القسم ←</a>`
+      : "";
+
+    bar.innerHTML =
+      `<div class="subcat-bar-head"><span class="subcat-label">الأقسام الفرعية في ${escapeHtml(category.name)}:</span>${catLinkHtml}</div>` +
+      `<div class="subcat-pills-wrap">` +
+      options
+        .map((item) => {
+          const isActive = state.activeSubcategory === item.id;
+          return `
+            <button class="subcat-pill${isActive ? " is-active" : ""}" type="button"
+              data-subcategory="${escapeHtml(item.id)}" role="tab"
+              aria-selected="${isActive ? "true" : "false"}">
+              <span>${escapeHtml(item.name)}</span>
+              <span class="subcat-count">${item.count}</span>
+            </button>`;
+        })
+        .join("") +
+      `</div>`;
   }
 
   function renderCategoryGrid() {
@@ -951,6 +968,23 @@
       const visibleProducts = catProducts.slice(0, limit);
       const remaining = Math.max(0, catProducts.length - visibleProducts.length);
 
+      const subChips = (cat.subcategories || [])
+        .map((sub) => ({
+          id: sub.id,
+          name: sub.name,
+          count: state.catalog.products.filter((p) => p.categoryId === sub.id).length
+        }))
+        .filter((sub) => sub.count > 0);
+      const subChipsHtml = subChips.length
+        ? `<div class="shelf-subcats-row" aria-label="الأقسام الفرعية في ${escapeHtml(cat.name)}">
+            ${subChips
+              .map(
+                (sub) => `<button type="button" class="shelf-subcat-chip" data-jump-subcat="${escapeHtml(cat.id)}:${escapeHtml(sub.id)}">${escapeHtml(sub.name)} <span>${sub.count}</span></button>`
+              )
+              .join("")}
+          </div>`
+        : "";
+
       shelvesHtml.push(`
         <div class="category-shelf" data-shelf-cat="${escapeHtml(cat.id)}">
           <div class="category-shelf-head">
@@ -973,6 +1007,7 @@
                 : ""
             }
           </div>
+          ${subChipsHtml}
           <div class="product-grid">
             ${visibleProducts.map(renderProductCard).join("")}
           </div>
@@ -1181,6 +1216,32 @@
     renderChips();
     renderProducts();
 
+    // Mobile/Tablet 2-col vs 3-col grid density switcher
+    const densityWrap = $("#grid-density-toggle");
+    if (densityWrap) {
+      const applyCols = (cols) => {
+        const use3 = String(cols) === "3";
+        grid.classList.toggle("product-grid--cols-3", use3);
+        $$(".density-btn", densityWrap).forEach((btn) => {
+          const active = btn.dataset.gridCols === (use3 ? "3" : "2");
+          btn.classList.toggle("is-active", active);
+          btn.setAttribute("aria-pressed", String(active));
+        });
+        try {
+          sessionStorage.setItem("wp_grid_cols", use3 ? "3" : "2");
+        } catch {}
+      };
+      try {
+        const saved = sessionStorage.getItem("wp_grid_cols");
+        if (saved === "3") applyCols("3");
+      } catch {}
+      densityWrap.addEventListener("click", (event) => {
+        const btn = event.target.closest("[data-grid-cols]");
+        if (!btn) return;
+        applyCols(btn.dataset.gridCols);
+      });
+    }
+
     const fesGrid = $("#fes-cats-grid");
     if (fesGrid) {
       fesGrid.addEventListener("click", (event) => {
@@ -1217,6 +1278,24 @@
         const total = Number(loadAllBtn.dataset.loadTotal) || 999;
         state.shelfLimits[shelfKey] = total;
         renderProducts();
+        return;
+      }
+
+      // Jump straight to a subcategory from shelf quick-chips
+      const jumpSubBtn = event.target.closest("[data-jump-subcat]");
+      if (jumpSubBtn) {
+        event.preventDefault();
+        const [catId, subId] = String(jumpSubBtn.dataset.jumpSubcat || "").split(":");
+        if (catId) {
+          state.activeCategory = catId;
+          state.activeSubcategory = subId || "";
+          renderFesCats();
+          renderFesSubcats();
+          renderChips();
+          renderProducts();
+          const subBar = document.getElementById("fes-subcats-bar") || document.getElementById("store");
+          if (subBar) subBar.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
         return;
       }
 
@@ -2815,16 +2894,16 @@
       const action = actionEl.dataset.dockAction;
 
       if (action === "search") {
-        event.preventDefault();
-        const searchInput = $("#product-search");
+        const searchInput = $("#product-search") || $("#store-dir-search");
         if (searchInput) {
+          event.preventDefault();
           searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-          window.setTimeout(() => searchInput.focus(), 380);
+          window.setTimeout(() => searchInput.focus(), 360);
         }
       } else if (action === "cats") {
-        event.preventDefault();
         const storeEl = $("#store");
         if (storeEl) {
+          event.preventDefault();
           storeEl.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       }

@@ -29,7 +29,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
   <link rel="preload" href="../assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/style.css?v=77e031666b">
+  <link rel="stylesheet" href="../css/style.css?v=80252033d2">
   <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -104,6 +104,10 @@
   <symbol id="icon-send" viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2.5-7.5L3 11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10.5 13.5 21 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v10h14V10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-shop" viewBox="0 0 24 24"><path d="M4 9h16v11H4zM3 9l2-5h14l2 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16.5 16.5 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="icon-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 4V2.8h6V4M9 9h6M9 13h6M9 17h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
 </svg>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
 <header class="site-header" id="site-header">
@@ -117,7 +121,7 @@
     </a>
     <nav class="desktop-nav" aria-label="التنقل الرئيسي">
       <ul>
-        <li><a href="../index.html#products">المنتجات</a></li>
+        <li><a href="../catalog/index.html">المتجر والأقسام</a></li>
         <li><a href="../index.html#packages">الباقات</a></li>
         <li><a href="../index.html#services">الخدمات</a></li>
         <li><a href="../index.html#about">من نحن</a></li>
@@ -138,17 +142,22 @@
     </div>
   </div>
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+    <div class="mobile-menu-store-cta">
+      <a class="btn btn--primary btn--block" href="../catalog/index.html">
+        <span>المتجر — جميع الأقسام والفرعيات</span>
+        <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+      </a>
+    </div>
     <nav class="mobile-nav" aria-label="التنقل على الموبايل">
-      <a href="../index.html#products"><span>المنتجات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+      <a href="../index.html"><span>الصفحة الرئيسية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+      <a href="../catalog/index.html"><span>المتجر والأقسام الفرعية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       <a href="../index.html#packages"><span>الباقات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-      <a href="../index.html#services"><span>الخدمات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-      <a href="../index.html#about"><span>من نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-      <a href="../index.html#steps"><span>طريقة العمل</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+      <a href="../index.html#services"><span>الخدمات ومن نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       <a href="../index.html#faq"><span>الأسئلة الشائعة</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       <a href="../index.html#contact"><span>تواصل معنا</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
     </nav>
     <div class="mobile-menu-footer">
-      <a class="btn btn--primary btn--block" href="../index.html#contact">اطلب عرض سعر</a>
+      <a class="btn btn--outline btn--block" href="../index.html#contact">اطلب عرض سعر</a>
       <a class="btn btn--whatsapp btn--block" href="../index.html#contact" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن أنظمة المراقبة.">
         <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
         تواصل عبر واتساب
@@ -347,7 +356,29 @@
     </div>
   </div>
 </footer>
-  <a class="wa-fab" id="wa-fab" href="../index.html#contact" aria-label="التواصل عبر واتساب" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
+  <nav class="mobile-action-dock" id="mobile-action-dock" aria-label="شريط الوصول السريع للموبايل">
+  <a href="../index.html" class="dock-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>
+    <span>الرئيسية</span>
+  </a>
+  <a href="../catalog/index.html" class="dock-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shop"/></svg>
+    <span>المتجر</span>
+  </a>
+  <a href="../index.html#store" class="dock-item" data-dock-action="search">
+    <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
+    <span>بحث</span>
+  </a>
+  <a href="../index.html#contact" class="dock-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg>
+    <span>عرض سعر</span>
+  </a>
+  <a href="../index.html#contact" class="dock-item dock-item--wa" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
+    <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+    <span>واتساب</span>
+  </a>
+</nav>
+<a class="wa-fab" id="wa-fab" href="../index.html#contact" aria-label="التواصل عبر واتساب" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
   <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
 </a>
 <button class="scroll-progress-fab" id="scroll-progress-fab" type="button" aria-label="العودة لأعلى الصفحة" title="العودة لأعلى الصفحة" hidden>
@@ -374,6 +405,6 @@
   </div>
 </div>
 <script src="../js/config.js?v=f8f31bd332"></script>
-<script src="../js/main.js?v=fea3c96d70" defer></script>
+<script src="../js/main.js?v=4fbe816235" defer></script>
 </body>
 </html>

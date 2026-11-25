@@ -29,7 +29,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="../assets/images/icon-192.png">
   <link rel="apple-touch-icon" href="../assets/images/apple-touch-icon.png">
   <link rel="preload" href="../assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../css/style.css?v=77e031666b">
+  <link rel="stylesheet" href="../css/style.css?v=80252033d2">
   <script type="application/ld+json">{
   "@context": "https://schema.org",
   "@graph": [
@@ -128,6 +128,10 @@
   <symbol id="icon-send" viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2.5-7.5L3 11Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10.5 13.5 21 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
   <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M8 9h8M8 12h5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
   <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8M5 10v10h14V10" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="icon-shop" viewBox="0 0 24 24"><path d="M4 9h16v11H4zM3 9l2-5h14l2 5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 20v-6h6v6" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+  <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m16.5 16.5 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="icon-clipboard" viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M9 4V2.8h6V4M9 9h6M9 13h6M9 17h3" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
 </svg>
 <a class="skip-link" href="#main-content">تجاوز إلى المحتوى الرئيسي</a>
 <header class="site-header" id="site-header">
@@ -141,7 +145,7 @@
     </a>
     <nav class="desktop-nav" aria-label="التنقل الرئيسي">
       <ul>
-        <li><a href="../index.html#products">المنتجات</a></li>
+        <li><a href="../catalog/index.html">المتجر والأقسام</a></li>
         <li><a href="../index.html#packages">الباقات</a></li>
         <li><a href="../index.html#services">الخدمات</a></li>
         <li><a href="../index.html#about">من نحن</a></li>
@@ -162,17 +166,22 @@
     </div>
   </div>
   <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+    <div class="mobile-menu-store-cta">
+      <a class="btn btn--primary btn--block" href="../catalog/index.html">
+        <span>المتجر — جميع الأقسام والفرعيات</span>
+        <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+      </a>
+    </div>
     <nav class="mobile-nav" aria-label="التنقل على الموبايل">
-      <a href="../index.html#products"><span>المنتجات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+      <a href="../index.html"><span>الصفحة الرئيسية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+      <a href="../catalog/index.html"><span>المتجر والأقسام الفرعية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       <a href="../index.html#packages"><span>الباقات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-      <a href="../index.html#services"><span>الخدمات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-      <a href="../index.html#about"><span>من نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
-      <a href="../index.html#steps"><span>طريقة العمل</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+      <a href="../index.html#services"><span>الخدمات ومن نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       <a href="../index.html#faq"><span>الأسئلة الشائعة</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       <a href="../index.html#contact"><span>تواصل معنا</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
     </nav>
     <div class="mobile-menu-footer">
-      <a class="btn btn--primary btn--block" href="../index.html#contact">اطلب عرض سعر</a>
+      <a class="btn btn--outline btn--block" href="../index.html#contact">اطلب عرض سعر</a>
       <a class="btn btn--whatsapp btn--block" href="../index.html#contact" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن أنظمة المراقبة.">
         <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
         تواصل عبر واتساب
@@ -224,34 +233,41 @@
             <p>المنتجات والأسعار المعروضة تجريبية وقابلة للتعديل. تُحدد الموديلات والمواصفات والسعر النهائي في عرض السعر بعد المعاينة.</p>
           </div>
 
-          <section class="related-categories">
-        <h2>تصفح فئات شبكات</h2>
-        <div class="related-grid">
+          <section class="cat-subcards-section" aria-label="الأقسام الفرعية في شبكات">
+        <div class="cat-subcards-head">
+          <h2>الأقسام الفرعية في شبكات</h2>
+          <a class="cat-subcards-back" href="index.html">كل الأقسام الرئيسية ←</a>
+        </div>
+        <div class="cat-subcards-grid">
+          <button type="button" class="cat-subcard is-active" data-subcard-filter="" aria-pressed="true">
+            <strong>الكل</strong>
+            <span>121 منتج</span>
+          </button>
           
-                <a class="related-card" href="#subcategory-net-switches" data-sub-filter="net-switches">
+                <button type="button" class="cat-subcard" data-subcard-filter="net-switches" aria-pressed="false">
                   <strong>سويتشات</strong>
                   <span>69 منتج</span>
-                </a>
-                <a class="related-card" href="#subcategory-net-access-point" data-sub-filter="net-access-point">
+                </button>
+                <button type="button" class="cat-subcard" data-subcard-filter="net-access-point" aria-pressed="false">
                   <strong>اكسيس بوينت</strong>
                   <span>3 منتج</span>
-                </a>
-                <a class="related-card" href="#subcategory-net-routers" data-sub-filter="net-routers">
+                </button>
+                <button type="button" class="cat-subcard" data-subcard-filter="net-routers" aria-pressed="false">
                   <strong>راوتر واي فاي</strong>
                   <span>5 منتج</span>
-                </a>
-                <a class="related-card" href="#subcategory-net-extenders" data-sub-filter="net-extenders">
+                </button>
+                <button type="button" class="cat-subcard" data-subcard-filter="net-extenders" aria-pressed="false">
                   <strong>مقوي واي فاي</strong>
                   <span>2 منتج</span>
-                </a>
-                <a class="related-card" href="#subcategory-net-adapters" data-sub-filter="net-adapters">
+                </button>
+                <button type="button" class="cat-subcard" data-subcard-filter="net-adapters" aria-pressed="false">
                   <strong>ادابتر واي فاي</strong>
                   <span>2 منتج</span>
-                </a>
-                <a class="related-card" href="#subcategory-net-cables" data-sub-filter="net-cables">
+                </button>
+                <button type="button" class="cat-subcard" data-subcard-filter="net-cables" aria-pressed="false">
                   <strong>كابلات</strong>
                   <span>40 منتج</span>
-                </a>
+                </button>
         </div>
       </section>
 
@@ -266,10 +282,27 @@
       <span class="scroll-target" id="subcategory-net-adapters" aria-hidden="true"></span>
       <span class="scroll-target" id="subcategory-net-cables" aria-hidden="true"></span>
       <div class="cat-filter-head">
-        <h2 id="cat-filter-title">منتجات شبكات</h2>
-        <p class="cat-filter-count" id="cat-filter-count" role="status" aria-live="polite">121 منتج معروض</p>
+        <div>
+          <h2 id="cat-filter-title">منتجات شبكات</h2>
+          <p class="cat-filter-count" id="cat-filter-count" role="status" aria-live="polite">121 منتج معروض</p>
+        </div>
+        <div class="grid-density-toggle" id="cat-grid-density" role="group" aria-label="عدد المنتجات في الصف">
+          <button type="button" class="density-btn is-active" data-cat-cols="2" aria-pressed="true" title="منتجان في الصف">
+            <span class="density-squares density-squares--2" aria-hidden="true"><i></i><i></i></span>
+            <span>2</span>
+          </button>
+          <button type="button" class="density-btn" data-cat-cols="3" aria-pressed="false" title="3 منتجات في الصف">
+            <span class="density-squares density-squares--3" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span>3</span>
+          </button>
+        </div>
       </div>
-      <div class="cat-filter-panel">
+      <details class="cat-adv-filters" id="cat-adv-filters" open>
+        <summary class="cat-adv-summary">
+          <span>تصفية وترتيب المنتجات (النوعية · السعر · الماركة)</span>
+          <svg class="icon" aria-hidden="true"><use href="#icon-chevron-down"/></svg>
+        </summary>
+        <div class="cat-filter-panel">
             
         <fieldset class="cat-filter-group">
           <legend>الفئة / النوعية</legend>
@@ -352,6 +385,7 @@
           </div>
         </div>
       </div>
+      </details>
       <div class="cat-products-grid" id="cat-products-grid">
         
             <a class="fp-card" href="./product-ac1200-wireless-router.html" data-filter-item data-order="0" data-subcategory="net-routers" data-price="1200" data-brand="brand-mw43andh-49dc5b" data-name="DS-3WR12C-E">
@@ -1953,7 +1987,29 @@
     </div>
   </div>
 </footer>
-  <a class="wa-fab" id="wa-fab" href="../index.html#contact" aria-label="التواصل عبر واتساب" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
+  <nav class="mobile-action-dock" id="mobile-action-dock" aria-label="شريط الوصول السريع للموبايل">
+  <a href="../index.html" class="dock-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>
+    <span>الرئيسية</span>
+  </a>
+  <a href="../catalog/index.html" class="dock-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-shop"/></svg>
+    <span>المتجر</span>
+  </a>
+  <a href="../index.html#store" class="dock-item" data-dock-action="search">
+    <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
+    <span>بحث</span>
+  </a>
+  <a href="../index.html#contact" class="dock-item">
+    <svg class="icon" aria-hidden="true"><use href="#icon-clipboard"/></svg>
+    <span>عرض سعر</span>
+  </a>
+  <a href="../index.html#contact" class="dock-item dock-item--wa" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
+    <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
+    <span>واتساب</span>
+  </a>
+</nav>
+<a class="wa-fab" id="wa-fab" href="../index.html#contact" aria-label="التواصل عبر واتساب" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن كاميرات المراقبة والأنظمة الأمنية.">
   <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
 </a>
 <button class="scroll-progress-fab" id="scroll-progress-fab" type="button" aria-label="العودة لأعلى الصفحة" title="العودة لأعلى الصفحة" hidden>
@@ -1980,7 +2036,7 @@
   </div>
 </div>
 <script src="../js/config.js?v=f8f31bd332"></script>
-<script src="../js/main.js?v=fea3c96d70" defer></script>
+<script src="../js/main.js?v=4fbe816235" defer></script>
   
 <script>
 (function () {
@@ -1992,6 +2048,35 @@
   var noResults = document.getElementById("cat-no-results");
   var sortEl = document.getElementById("cat-sort");
   var resetBtn = document.getElementById("cat-filter-reset");
+  var advDetails = document.getElementById("cat-adv-filters");
+  var densityWrap = document.getElementById("cat-grid-density");
+  var subCards = Array.prototype.slice.call(document.querySelectorAll("[data-subcard-filter]"));
+
+  // On mobile screens, collapse secondary checkbox panel initially so users reach products immediately
+  if (advDetails && window.innerWidth <= 768) {
+    advDetails.removeAttribute("open");
+  }
+
+  // Mobile/Tablet 2 vs 3 columns switcher
+  if (densityWrap && grid) {
+    function applyCatCols(cols) {
+      var use3 = String(cols) === "3";
+      grid.classList.toggle("cat-products-grid--cols-3", use3);
+      Array.prototype.forEach.call(densityWrap.querySelectorAll("[data-cat-cols]"), function (btn) {
+        var active = btn.getAttribute("data-cat-cols") === (use3 ? "3" : "2");
+        btn.classList.toggle("is-active", active);
+        btn.setAttribute("aria-pressed", String(active));
+      });
+      try { sessionStorage.setItem("wp_grid_cols", use3 ? "3" : "2"); } catch (e) {}
+    }
+    try {
+      if (sessionStorage.getItem("wp_grid_cols") === "3") applyCatCols("3");
+    } catch (e) {}
+    densityWrap.addEventListener("click", function (event) {
+      var btn = event.target.closest ? event.target.closest("[data-cat-cols]") : null;
+      if (btn) applyCatCols(btn.getAttribute("data-cat-cols"));
+    });
+  }
 
   function bucketOf(raw) {
     var price = parseFloat(raw);
@@ -2020,10 +2105,22 @@
     if (chip) chip.classList.toggle("is-on", input.checked);
   }
 
+  function syncSubcards(activeSubs) {
+    if (!subCards.length) return;
+    subCards.forEach(function (card) {
+      var val = card.getAttribute("data-subcard-filter") || "";
+      var isAll = val === "";
+      var on = isAll ? activeSubs.length === 0 : activeSubs.indexOf(val) !== -1;
+      card.classList.toggle("is-active", on);
+      card.setAttribute("aria-pressed", String(on));
+    });
+  }
+
   function apply() {
     var subs = checkedValues("subcategory");
     var prices = checkedValues("price");
     var brandList = checkedValues("brand");
+    syncSubcards(subs);
     var visible = 0;
     items.forEach(function (item) {
       var ok = true;
@@ -2070,7 +2167,7 @@
 
   function selectSubcategory(id) {
     inputs("subcategory").forEach(function (input) {
-      input.checked = input.value === id;
+      input.checked = Boolean(id) && input.value === id;
       syncChip(input);
     });
   }
@@ -2097,6 +2194,19 @@
     });
   }
 
+  subCards.forEach(function (card) {
+    card.addEventListener("click", function (event) {
+      event.preventDefault();
+      var id = card.getAttribute("data-subcard-filter") || "";
+      selectSubcategory(id);
+      apply();
+      if (history && history.replaceState) {
+        history.replaceState(null, "", id ? "#subcategory-" + id : window.location.pathname);
+      }
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+
   Array.prototype.forEach.call(document.querySelectorAll("a[data-sub-filter]"), function (link) {
     link.addEventListener("click", function (event) {
       var id = link.getAttribute("data-sub-filter");
@@ -2115,6 +2225,9 @@
     if (chipFor(id)) {
       selectSubcategory(id);
       apply();
+      setTimeout(function () {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 80);
     }
   }
 

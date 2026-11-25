@@ -46,7 +46,7 @@
   <link rel="preload" href="assets/fonts/Dubai-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/Dubai-Bold.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/images/hero-showcase.webp" as="image" type="image/webp">
-  <link rel="stylesheet" href="css/style.css?v=77e031666b">
+  <link rel="stylesheet" href="css/style.css?v=80252033d2">
 
   <script type="application/ld+json">
   {
@@ -395,7 +395,7 @@
 
       <nav class="desktop-nav" aria-label="التنقل الرئيسي">
         <ul>
-          <li><a href="#store" data-nav="store">المتجر والأقسام</a></li>
+          <li><a href="catalog/index.html" data-nav="store">المتجر والأقسام</a></li>
           <li><a href="#packages" data-nav="packages">الباقات</a></li>
           <li><a href="#services" data-nav="services">خدماتنا ومن نحن</a></li>
           <li><a href="#brands" data-nav="brands">العلامات التجارية</a></li>
@@ -429,8 +429,15 @@
     </div>
 
     <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+      <div class="mobile-menu-store-cta">
+        <a class="btn btn--primary btn--block" href="catalog/index.html">
+          <span>المتجر — جميع الأقسام والفرعيات</span>
+          <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
+        </a>
+      </div>
       <nav class="mobile-nav" aria-label="التنقل على الموبايل">
-        <a href="#store"><span>المتجر</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+        <a href="catalog/index.html"><span>المتجر والأقسام الفرعية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
+        <a href="#store"><span>تصفح المنتجات هنا</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#packages"><span>الباقات</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#services"><span>الخدمات ومن نحن</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
         <a href="#brands"><span>العلامات التجارية</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
@@ -438,7 +445,7 @@
         <a href="#contact"><span>تواصل معنا</span><svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg></a>
       </nav>
       <div class="mobile-menu-footer">
-        <a class="btn btn--primary btn--block" href="#contact">اطلب عرض سعر</a>
+        <a class="btn btn--outline btn--block" href="#contact">اطلب عرض سعر</a>
         <a class="btn btn--whatsapp btn--block" href="#contact" data-wa-message="مرحبًا Watch Point، أرغب في الاستفسار عن أنظمة المراقبة.">
           <svg class="icon" aria-hidden="true"><use href="#icon-whatsapp"/></svg>
           تواصل عبر واتساب
@@ -479,7 +486,7 @@
               كاميرات مراقبة وأنظمة أمنية متكاملة، مع حلول ذكية تناسب المنازل والشركات والمشاريع بأسعار جملة التوريد.
             </p>
             <div class="hero-actions">
-              <a class="btn btn--primary" href="#store" data-analytics="hero_products">
+              <a class="btn btn--primary" href="catalog/index.html" data-analytics="hero_products">
                 تصفح المتجر والأقسام
                 <svg class="icon" aria-hidden="true"><use href="#icon-arrow-left"/></svg>
               </a>
@@ -555,7 +562,7 @@
           <!-- Rendered dynamically -->
         </div>
 
-        <!-- Search Toolbar -->
+        <!-- Search & Mobile Grid Density Toolbar -->
         <div class="catalog-toolbar">
           <div class="search-field">
             <svg class="icon search-icon" aria-hidden="true"><use href="#icon-search"/></svg>
@@ -565,7 +572,19 @@
               <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
             </button>
           </div>
-          <p class="results-meta" id="results-count" role="status" aria-live="polite">جارٍ تحميل المنتجات…</p>
+          <div class="catalog-toolbar-meta">
+            <p class="results-meta" id="results-count" role="status" aria-live="polite">جارٍ تحميل المنتجات…</p>
+            <div class="grid-density-toggle" id="grid-density-toggle" role="group" aria-label="عدد المنتجات في الصف">
+              <button type="button" class="density-btn is-active" data-grid-cols="2" aria-pressed="true" title="منتجان في الصف">
+                <span class="density-squares density-squares--2" aria-hidden="true"><i></i><i></i></span>
+                <span>2</span>
+              </button>
+              <button type="button" class="density-btn" data-grid-cols="3" aria-pressed="false" title="3 منتجات في الصف">
+                <span class="density-squares density-squares--3" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span>3</span>
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Store Shelves / Products Divided by Category -->
@@ -1298,9 +1317,9 @@
 
   <!-- Smart Mobile Bottom Action Bar -->
   <nav class="mobile-action-dock" id="mobile-action-dock" aria-label="شريط الوصول السريع للموبايل">
-    <a href="#store" class="dock-item" data-dock-action="cats">
-      <svg class="icon" aria-hidden="true"><use href="#icon-camera"/></svg>
-      <span>الأقسام</span>
+    <a href="catalog/index.html" class="dock-item" data-dock-action="store">
+      <svg class="icon" aria-hidden="true"><use href="#icon-shop"/></svg>
+      <span>المتجر</span>
     </a>
     <button type="button" class="dock-item" data-dock-action="search">
       <svg class="icon" aria-hidden="true"><use href="#icon-search"/></svg>
@@ -1358,7 +1377,7 @@
   </noscript>
 
   <script src="js/config.js?v=f8f31bd332"></script>
-  <script src="js/data.js?v=2c71bb1745"></script>
-  <script src="js/main.js?v=fea3c96d70" defer></script>
+  <script src="js/data.js?v=9cbb0fda05"></script>
+  <script src="js/main.js?v=4fbe816235" defer></script>
 </body>
 </html>

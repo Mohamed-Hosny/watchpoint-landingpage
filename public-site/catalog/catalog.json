@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-24",
+  "generatedAt": "2026-11-25",
   "source": "local",
   "note": "بيانات تجريبية. يمكن استبدالها بـ Django REST API عبر js/config.js → data.source = 'api'.",
   "categories": [
